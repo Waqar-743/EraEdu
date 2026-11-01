@@ -11,6 +11,10 @@ export const useCourses = () => {
   const [error, setError] = useState<string | null>(null);
   const [enrolling, setEnrolling] = useState(false);
   const enrollmentPending = useRef(false);
+  const courseRequest = useRef(0);
+  const enrolledRequest = useRef(0);
+  const enrolledLoaded = useRef(false);
+  const activeCourseId = useRef<string>();
   const [pagination, setPagination] = useState({
     page: 1,
     limit: 10,
@@ -33,9 +37,12 @@ export const useCourses = () => {
   }, []);
 
   const fetchCourseById = useCallback(async (id: string, preserveCurrent = false) => {
-    setLoading(true);
+    const request = ++courseRequest.current;
+    const sameCourse = activeCourseId.current === id;
+    activeCourseId.current = id;
+    if (!preserveCurrent || !sameCourse) setLoading(true);
     setError(null);
-    if (!preserveCurrent) {
+    if (!preserveCurrent || !sameCourse) {
       setCurrentCourse(null);
       setTopics([]);
     }
@@ -45,19 +52,27 @@ export const useCourses = () => {
       if (typeof course.isEnrolled !== 'boolean' || typeof course.canViewTopics !== 'boolean') {
         throw new Error('Course enrollment state is unavailable. Please retry.');
       }
-      setCurrentCourse(course);
+      let visibleTopics: Topic[] = [];
       if (course.canViewTopics) {
         const topicsResponse = await api.get(`/courses/${id}/topics`);
-        setTopics(topicsResponse.data.data);
-      } else {
-        setTopics([]);
+        visibleTopics = topicsResponse.data.data;
+        if (!Array.isArray(visibleTopics)) throw new Error('Course topics are unavailable. Please retry.');
       }
-      
+      if (request !== courseRequest.current) return;
+      setCurrentCourse(course);
+      setTopics(visibleTopics);
       setError(null);
     } catch (err: any) {
+      if (request !== courseRequest.current) return;
+      // A successful earlier fetch cannot authorize content after the server
+      // revokes enrollment, unpublishes/deletes a course, or rejects the session.
+      if ([401, 403, 404].includes(err.response?.status)) {
+        setCurrentCourse(null);
+        setTopics([]);
+      }
       setError(err.response?.data?.message || err.response?.data?.error?.message || err.message || 'Failed to fetch course details');
     } finally {
-      setLoading(false);
+      if (request === courseRequest.current) setLoading(false);
     }
   }, []);
 
@@ -69,36 +84,43 @@ export const useCourses = () => {
     try {
       const response = await api.post(`/courses/${courseId}/enroll`);
       if (response.data.data?.isEnrolled !== true) throw new Error('Enrollment confirmation is unavailable. Please retry.');
-      setCurrentCourse(previous => previous ? { ...previous, isEnrolled: true } : previous);
       toast.success(response.data.data.alreadyEnrolled ? 'Already enrolled' : 'Enrolled successfully!');
-      await fetchCourseById(courseId, true);
+      // Navigation may finish before enrollment does. Do not put the previous
+      // course back into the details view of a different course.
+      if (activeCourseId.current === courseId) {
+        setCurrentCourse(previous => previous ? { ...previous, isEnrolled: true } : previous);
+        await fetchCourseById(courseId, true);
+      }
     } catch (err: any) {
       const message = err.response?.data?.message || err.response?.data?.error?.message || err.message || 'Failed to enroll';
       toast.error(message);
-      setError(message);
+      if (activeCourseId.current === courseId) setError(message);
     } finally {
       enrollmentPending.current = false;
       setEnrolling(false);
     }
   }, [fetchCourseById]);
 
-  const fetchEnrolledCourses = useCallback(async () => {
-    setLoading(true);
-    setError(null);
+  const fetchEnrolledCourses = useCallback(async (preserveCurrent = false) => {
+    const request = ++enrolledRequest.current;
+    if (!preserveCurrent || !enrolledLoaded.current) setLoading(true);
     try {
       const response = await api.get('/courses/my/enrolled');
       const rows: Course[] = response.data.data;
       if (!Array.isArray(rows) || rows.some(row => !Number.isSafeInteger(row.topicsCount) || row.topicsCount! < 0)) {
         throw new Error('The enrolled-course response is missing topic counts. Please retry.');
       }
+      if (request !== enrolledRequest.current) return;
+      enrolledLoaded.current = true;
       setCourses(rows);
       setPagination(response.data.pagination);
       setError(null);
     } catch (err: any) {
-      setCourses([]);
+      if (request !== enrolledRequest.current) return;
+      if (!preserveCurrent) setCourses([]);
       setError(err.response?.data?.message || err.response?.data?.error?.message || err.message || 'Failed to fetch enrolled courses');
     } finally {
-      setLoading(false);
+      if (request === enrolledRequest.current) setLoading(false);
     }
   }, []);
 

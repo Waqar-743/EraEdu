@@ -96,6 +96,7 @@ export interface Analytics {
   coursesEnrolled: number; // Changed from enrolledCoursesCount
   quizzesCompleted: number; // Added
   averageScore: number | null;
+  passRate: number | null;
   pendingReviews?: number;
   streakDays: number; // Changed from streak
   

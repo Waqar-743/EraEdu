@@ -4,6 +4,7 @@ import RoleSidebar, { SidebarItem } from './RoleSidebar';
 import ChatbotWidget from './ChatbotWidget';
 import { useAuthStore } from '../../store/authStore';
 import api from '../../services/api';
+import { usePreferencesStore } from '../../store/preferencesStore';
 
 interface Notification {
   id: string;
@@ -62,6 +63,7 @@ const adminItems: SidebarItem[] = [
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { sidebarCollapsed, setSidebarCollapsed } = usePreferencesStore();
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -128,7 +130,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
   };
 
   return (
-    <div className="dashboard-teal flex min-h-[100dvh] bg-ink-50 overflow-hidden relative">
+    <div className="app-workspace dashboard-teal flex min-h-[100dvh] bg-ink-50 overflow-hidden relative">
       <a href="#dashboard-content" className="skip-link">Skip to dashboard content</a>
       {/* Subtle ambient mesh */}
       <div
@@ -151,6 +153,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         role={role}
+        collapsed={sidebarCollapsed}
       />
 
       <div className="flex-1 flex flex-col overflow-hidden relative">
@@ -176,6 +179,17 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
               aria-controls="dashboard-sidebar"
             >
               <Stroke d="M3 6h18 M3 12h18 M3 18h18" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="hidden h-10 w-10 items-center justify-center rounded-full text-ink-500 hover:bg-ink-900/[0.04] hover:text-ink-900 lg:flex"
+              aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              aria-expanded={!sidebarCollapsed}
+              aria-controls="dashboard-sidebar"
+            >
+              <Stroke d={sidebarCollapsed ? 'M9 6l6 6-6 6' : 'M15 6l-6 6 6 6'} />
             </button>
 
             <div className="px-3 hidden sm:flex items-center gap-3">
@@ -340,7 +354,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                     Your profile
                   </Link>
                   <Link
-                    to="/profile"
+                    to="/settings"
                     onClick={() => setShowUserMenu(false)}
                     className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm text-ink-700 transition-colors duration-300 hover:bg-ink-50"
                   >

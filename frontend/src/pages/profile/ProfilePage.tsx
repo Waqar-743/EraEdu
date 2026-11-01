@@ -233,6 +233,7 @@ const ProfilePage: React.FC = () => {
             <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application settings.</p>
           </div>
           <div className="flex space-x-3">
+            <Link to="/settings" className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">Settings</Link>
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}

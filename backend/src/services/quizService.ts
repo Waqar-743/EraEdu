@@ -3,8 +3,9 @@ import { supabase } from '../config/supabase';
 import { explainProtectedDelete, requireAssessmentHistoryProtection } from './assessmentHistoryPolicy';
 import { assertStudentEmailPolicy } from './authService';
 import { aiService } from './aiService';
-import { analyticsService } from './analyticsService';
+import { analyticsService, readAllRows, readRowsForIds } from './analyticsService';
 import { canReleaseStudentResult } from './resultReleasePolicy';
+import { finalResultPercentage, summarizeResults } from './resultMetrics';
 import { teacherTimingSchemaError, legacyTeacherAttemptError } from './teacherTimingSchema';
 
 interface QuizQuestion {
@@ -1477,20 +1478,17 @@ export const quizService = {
     // who have courses and learners but have not authored an exam yet.
     const { totalStudents } = await analyticsService.getTeacherStudentSummary(teacherId);
     // Get all quizzes by this teacher
-    const { data: quizzes, error: quizzesError } = await supabase
-      .from('teacher_quizzes')
-      .select('id, title')
-      .eq('teacher_id', teacherId);
-    if (quizzesError) throw new Error(`Failed to load teacher exams: ${quizzesError.message}`);
-    if (!Array.isArray(quizzes)) throw new Error('Failed to load teacher exams: no rows returned');
+    const quizzes = await readAllRows('teacher_quizzes', 'id, title, course_id', query => query.eq('teacher_id', teacherId));
 
     if (!quizzes || quizzes.length === 0) {
       return {
         totalStudents,
         totalQuizzes: 0,
         totalAttempts: 0,
-        avgScore: 0,
-        passRate: 0,
+        avgScore: null,
+        passRate: null,
+        reviewedAttempts: 0,
+        pendingReviews: 0,
         recentAttempts: [],
         scoreDistribution: [],
         weeklyData: [],
@@ -1501,22 +1499,11 @@ export const quizService = {
     const quizIds = quizzes.map(q => q.id);
 
     // Get all attempts for these quizzes
-    const { data: attempts, error: attemptsError } = await supabase
-      .from('quiz_attempts')
-      .select('*')
-      .in('quiz_id', quizIds)
-      .eq('status', 'completed')
-      .order('completed_at', { ascending: false });
-    if (attemptsError) throw new Error(`Failed to load exam attempts: ${attemptsError.message}`);
-    if (!Array.isArray(attempts)) throw new Error('Failed to load exam attempts: no rows returned');
-
-    const completedAttempts = attempts || [];
-
-    // Calculate stats
-    const scores = completedAttempts.map(a => a.max_score > 0 ? (a.score / a.max_score) * 100 : 0);
-    const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-    const passCount = scores.filter(s => s >= 60).length;
-    const passRate = scores.length > 0 ? (passCount / scores.length) * 100 : 0;
+    const completedAttempts = await readRowsForIds('quiz_attempts',
+      'id, quiz_id, user_id, status, topic_id, teacher_grade, score, max_score, completed_at', 'quiz_id', quizIds,
+      query => query.eq('status', 'completed'));
+    const summary = summarizeResults(completedAttempts);
+    const { scores } = summary;
 
     // Score distribution
     const scoreDistribution = [
@@ -1543,18 +1530,13 @@ export const quizService = {
       weeklyData.push({
         date: `Week ${4 - i}`,
         attempts: weekAttempts.length,
-        avgScore: weekAttempts.length > 0 
-          ? Math.round(weekAttempts.reduce((sum, a) => sum + (a.max_score > 0 ? (a.score / a.max_score) * 100 : 0), 0) / weekAttempts.length)
-          : 0,
+        avgScore: summarizeResults(weekAttempts).avgScore,
       });
     }
 
     // Course-wise participation data (enrolled count, participating count, percentage)
-    const { data: teacherCourses, error: teacherCoursesError } = await supabase
-      .from('courses')
-      .select('id, title, created_by')
-      .eq('created_by', teacherId);
-    if (teacherCoursesError) throw new Error(`Failed to load courses: ${teacherCoursesError.message}`);
+    const teacherCourses = await readAllRows('courses', 'id, title', query => query.eq('created_by', teacherId));
+    const enrollments = await readRowsForIds('enrollments', 'id, user_id, course_id', 'course_id', teacherCourses.map(course => course.id));
 
     const courseParticipation: Array<{
       courseId: string;
@@ -1564,37 +1546,13 @@ export const quizService = {
       participationPercentage: number;
     }> = [];
 
-    for (const course of teacherCourses || []) {
-      const { data: enrollments, error: enrollmentsError } = await supabase
-        .from('enrollments')
-        .select('user_id')
-        .eq('course_id', course.id);
-      if (enrollmentsError) throw new Error(`Failed to load enrollments: ${enrollmentsError.message}`);
+    for (const course of teacherCourses) {
+      const enrolledIds = new Set(enrollments.filter(enrollment => enrollment.course_id === course.id).map(enrollment => enrollment.user_id));
+      const courseQuizIds = new Set(quizzes.filter(quiz => quiz.course_id === course.id).map(quiz => quiz.id));
+      const attemptedStudents = new Set(completedAttempts
+        .filter(attempt => courseQuizIds.has(attempt.quiz_id) && enrolledIds.has(attempt.user_id)).map(attempt => attempt.user_id)).size;
 
-      const enrolledIds = [...new Set((enrollments || []).map((e: any) => e.user_id))];
-
-      const { data: courseQuizzes, error: courseQuizzesError } = await supabase
-        .from('teacher_quizzes')
-        .select('id')
-        .eq('teacher_id', teacherId)
-        .eq('course_id', course.id);
-      if (courseQuizzesError) throw new Error(`Failed to load teacher exams: ${courseQuizzesError.message}`);
-
-      const courseQuizIds = (courseQuizzes || []).map((q: any) => q.id);
-
-      let attemptedStudents = 0;
-      if (courseQuizIds.length > 0) {
-        const { data: courseAttempts, error: courseAttemptsError } = await supabase
-          .from('quiz_attempts')
-          .select('user_id')
-          .in('quiz_id', courseQuizIds)
-          .eq('status', 'completed');
-        if (courseAttemptsError) throw new Error(`Failed to load exam attempts: ${courseAttemptsError.message}`);
-
-        attemptedStudents = new Set((courseAttempts || []).map((a: any) => a.user_id)).size;
-      }
-
-      const enrolledStudents = enrolledIds.length;
+      const enrolledStudents = enrolledIds.size;
       const participationPercentage = enrolledStudents > 0
         ? Math.round((attemptedStudents / enrolledStudents) * 100)
         : 0;
@@ -1612,8 +1570,10 @@ export const quizService = {
       totalStudents,
       totalQuizzes: quizzes.length,
       totalAttempts: completedAttempts.length,
-      avgScore: Math.round(avgScore * 10) / 10,
-      passRate: Math.round(passRate * 10) / 10,
+      avgScore: summary.avgScore,
+      passRate: summary.passRate,
+      reviewedAttempts: summary.reviewedAttempts,
+      pendingReviews: summary.pendingReviews,
       scoreDistribution,
       weeklyData,
       courseParticipation,
@@ -1622,16 +1582,13 @@ export const quizService = {
 
   // Get student analytics
   async getStudentAnalytics(userId: string) {
-    const { data: allAttempts, error } = await supabase
-      .from('quiz_attempts')
-      .select('*')
-      .eq('user_id', userId)
-      .eq('status', 'completed')
-      .order('completed_at', { ascending: true });
-
-    if (error) throw new Error(error.message);
-    const attempts = (allAttempts || []).filter(canReleaseStudentResult);
-    const pendingReviews = (allAttempts || []).length - attempts.length;
+    const allAttempts = await readAllRows('quiz_attempts',
+      'id, status, topic_id, teacher_grade, score, max_score, completed_at',
+      query => query.eq('user_id', userId).eq('status', 'completed'));
+    const summary = summarizeResults(allAttempts);
+    const attempts = allAttempts.filter(attempt => finalResultPercentage(attempt) !== null)
+      .sort((left, right) => new Date(left.completed_at).getTime() - new Date(right.completed_at).getTime());
+    const { pendingReviews } = summary;
 
     if (!attempts || attempts.length === 0) {
       return {
@@ -1644,15 +1601,10 @@ export const quizService = {
       };
     }
 
-    const scores = attempts.map(a => a.max_score > 0 ? (a.score / a.max_score) * 100 : 0);
-    const avgScore = scores.reduce((a, b) => a + b, 0) / scores.length;
-    const passCount = scores.filter(s => s >= 60).length;
-    const passRate = (passCount / scores.length) * 100;
-
     // Performance data for chart (last 6 attempts or weeks)
     const performanceData = attempts.slice(-6).map((a, index) => ({
       week: `Exam ${index + 1}`,
-      score: a.max_score > 0 ? Math.round((a.score / a.max_score) * 100) : 0,
+      score: Math.round(finalResultPercentage(a)!),
     }));
 
     // Calculate streak (simplified - days with at least one quiz)
@@ -1678,8 +1630,8 @@ export const quizService = {
     return {
       totalQuizzes: (allAttempts || []).length,
       pendingReviews,
-      avgScore: Math.round(avgScore * 10) / 10,
-      passRate: Math.round(passRate * 10) / 10,
+      avgScore: summary.avgScore,
+      passRate: summary.passRate,
       streakDays,
       performanceData,
     };

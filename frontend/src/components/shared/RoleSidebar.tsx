@@ -14,6 +14,7 @@ interface RoleSidebarProps {
   isOpen: boolean;
   onClose: () => void;
   role: 'student' | 'teacher' | 'admin';
+  collapsed?: boolean;
 }
 
 const Stroke = ({ d, size = 18 }: { d: string; size?: number }) => (
@@ -38,7 +39,7 @@ const roleAccent: Record<string, string> = {
   admin: 'Administrator',
 };
 
-const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role }) => {
+const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role, collapsed = false }) => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
 
@@ -63,7 +64,8 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role 
         id="dashboard-sidebar"
         aria-label={`${roleAccent[role]} dashboard navigation`}
         className={`
-          fixed inset-y-0 left-0 z-30 flex w-72 p-3
+          fixed inset-y-0 left-0 z-30 flex w-72 shrink-0 p-3
+          ${collapsed ? 'lg:w-24' : 'lg:w-72'}
           transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]
           lg:translate-x-0 lg:static lg:inset-auto
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -100,12 +102,12 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role 
           </div>
 
           {/* Brand (desktop) */}
-          <div className="hidden lg:flex items-center px-6 pt-7 pb-5">
-            <Brand to="/" variant="dark" />
+          <div className={`hidden lg:flex items-center pt-7 pb-5 ${collapsed ? 'justify-center px-2' : 'px-6'}`}>
+            <Brand to="/" variant="dark" iconOnly={collapsed} />
           </div>
 
           {/* Eyebrow role badge */}
-          <div className="px-6 pb-5">
+          <div className={`px-6 pb-5 ${collapsed ? 'lg:hidden' : ''}`}>
             <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.04] ring-1 ring-white/10 px-3 py-1">
               <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
               <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/70">
@@ -115,11 +117,13 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role 
           </div>
 
           {/* Navigation */}
-          <nav aria-label="Dashboard navigation" className="flex-1 overflow-y-auto px-3 space-y-1.5">
+          <nav aria-label="Dashboard navigation" className={`flex-1 overflow-y-auto space-y-1.5 ${collapsed ? 'px-3 lg:px-1.5' : 'px-3'}`}>
             {items.map((item) => (
               <NavLink
                 key={item.label}
                 to={item.href}
+                aria-label={item.label}
+                title={collapsed ? item.label : undefined}
                 onClick={() => {
                   if (window.innerWidth < 1024) onClose();
                 }}
@@ -127,6 +131,7 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role 
                 className={({ isActive }) =>
                   `
                   group relative flex items-center gap-3 rounded-2xl px-3 py-2.5
+                  ${collapsed ? 'lg:justify-center lg:px-1' : ''}
                   text-[13.5px] font-medium tracking-tight
                   transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                   ${
@@ -164,11 +169,11 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role 
                     >
                       {item.icon}
                     </span>
-                    <span className="flex-1">{item.label}</span>
+                    <span className={`flex-1 ${collapsed ? 'lg:hidden' : ''}`}>{item.label}</span>
                     <span
                       aria-hidden
                       className={`
-                        opacity-0 -translate-x-1
+                        opacity-0 -translate-x-1 ${collapsed ? 'lg:hidden' : ''}
                         transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                         ${isActive ? 'opacity-100 translate-x-0' : 'group-hover:opacity-60 group-hover:translate-x-0'}
                       `}
@@ -182,14 +187,14 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role 
           </nav>
 
           {/* Bottom: user card + sign out */}
-          <div className="px-3 pb-3 pt-4 mt-auto">
+          <div className={`pb-3 pt-4 mt-auto ${collapsed ? 'px-3 lg:px-1.5' : 'px-3'}`}>
             <div
               className="
                 rounded-2xl p-1.5 bg-white/[0.04] ring-1 ring-white/10
                 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]
               "
             >
-              <div className="flex items-center gap-3 rounded-[calc(1rem-0.375rem)] bg-primary-950/25 px-3 py-2.5">
+              <div className={`flex items-center gap-3 rounded-[calc(1rem-0.375rem)] bg-primary-950/25 px-3 py-2.5 ${collapsed ? 'lg:justify-center lg:px-0' : ''}`}>
                 <span
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-display text-sm text-white"
                   style={{
@@ -200,7 +205,7 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role 
                 >
                   {user?.name?.charAt(0).toUpperCase() || 'U'}
                 </span>
-                <div className="min-w-0 flex-1">
+                <div className={`min-w-0 flex-1 ${collapsed ? 'lg:hidden' : ''}`}>
                   <p className="truncate text-[13px] font-semibold text-white">
                     {user?.name}
                   </p>
@@ -212,26 +217,29 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role 
 
               <button
                 onClick={handleSignOut}
-                className="
+                aria-label="Sign out"
+                title={collapsed ? 'Sign out' : undefined}
+                className={`
                   group mt-1.5 flex w-full items-center justify-between gap-2
                   rounded-[calc(1rem-0.375rem)] px-3 py-2.5
                   text-[13px] font-medium text-white/70
                   transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                   hover:text-rose-200 hover:bg-rose-500/10 active:scale-[0.985]
-                "
+                  ${collapsed ? 'lg:justify-center lg:px-1' : ''}
+                `}
               >
                 <span className="inline-flex items-center gap-2.5">
                   <Stroke d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 17l-5-5 5-5 M5 12h12" size={15} />
-                  Sign out
+                  <span className={collapsed ? 'lg:hidden' : ''}>Sign out</span>
                 </span>
                 <span
-                  className="
-                    flex h-7 w-7 items-center justify-center rounded-full
+                  className={`
+                    flex h-7 w-7 items-center justify-center rounded-full ${collapsed ? 'lg:hidden' : ''}
                     bg-white/[0.04] ring-1 ring-white/10
                     transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                     group-hover:bg-rose-500/15 group-hover:ring-rose-300/30
                     group-hover:translate-x-0.5 group-hover:-translate-y-[1px]
-                  "
+                  `}
                 >
                   <Stroke d="M7 17 17 7 M9 7h8v8" size={11} />
                 </span>

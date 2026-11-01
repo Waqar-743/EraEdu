@@ -353,6 +353,37 @@ export const authService = {
     return { message: 'Password reset successful. You can now sign in with your new password.' };
   },
 
+  async changePassword(userId: string, currentPassword: string, newPassword: string) {
+    if (typeof currentPassword !== 'string' || !currentPassword || currentPassword.length > MAX_PASSWORD_LEN) {
+      throw createHttpError('Enter your current password');
+    }
+    if (typeof newPassword !== 'string' || newPassword.length < 8 || newPassword.length > MAX_PASSWORD_LEN) {
+      throw createHttpError('New password must be between 8 and 128 characters');
+    }
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
+      throw createHttpError('Password must contain at least one uppercase letter, one lowercase letter, and one number');
+    }
+
+    const { data: user, error } = await supabase.from('users')
+      .select('id, password').eq('id', userId).single();
+    if (error) throw new Error('Unable to verify your current password. Please try again.');
+    if (!user || !(await bcrypt.compare(currentPassword, user.password))) {
+      throw createHttpError('Your current password is incorrect');
+    }
+    if (currentPassword === newPassword) throw createHttpError('Choose a password different from your current password');
+
+    const hashedPassword = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
+    const { data: updated, error: updateError } = await supabase.from('users').update({
+      password: hashedPassword,
+      reset_password_token: null,
+      reset_password_expires_at: null,
+      updated_at: new Date().toISOString(),
+    }).eq('id', userId).eq('password', user.password).select('id').maybeSingle();
+    if (updateError) throw new Error('Unable to change your password. Please try again.');
+    if (!updated) throw createHttpError('Your password changed in another session. Please enter the current password and try again.', 409);
+    return { message: 'Your password has been changed.' };
+  },
+
   async getCurrentUser(userId: string) {
     const { data: user, error } = await supabase
       .from('users')

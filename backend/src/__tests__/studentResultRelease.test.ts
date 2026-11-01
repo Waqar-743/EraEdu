@@ -33,10 +33,10 @@ test('one shared policy denies premature/invalid grades and preserves reviewed z
   expect(canReleaseStudentResult({ ...reviewed, teacher_grade: 0 })).toBe(true);
   expect(canReleaseStudentResult({ ...pending, topic_id: 'topic' })).toBe(true);
 });
-test('student chart and dashboard exclude unreleased perfect scores, retain authoritative 1/3', async () => {
+test('student chart and dashboard exclude unreleased scores and use the published teacher percentage', async () => {
   const eq = setup([reviewed, pending]);
   await expect(quizService.getStudentAnalytics('student-1')).resolves.toMatchObject({
-    totalQuizzes: 2, pendingReviews: 1, avgScore: 33.3, passRate: 0, performanceData: [{ week: 'Exam 1', score: 33 }],
+    totalQuizzes: 2, pendingReviews: 1, avgScore: 33, passRate: 0, performanceData: [{ week: 'Exam 1', score: 33 }],
   });
   await expect(analyticsService.getDashboardStats('student-1')).resolves.toMatchObject({ averageScore: 33, pendingReviews: 1 });
   expect(eq).toHaveBeenCalledWith('user_id', 'student-1');

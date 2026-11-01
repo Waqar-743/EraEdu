@@ -43,6 +43,8 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit }: FaceDetecti
   if (!enabled) return null;
 
   const cfg = statusConfig[status];
+  const unavailable = ['model_load_failed', 'camera_unavailable', 'permission_denied', 'inference_error'].includes(status);
+  const initializing = status === 'model_loading' || status === 'camera_starting';
 
   const borderColor =
     status === 'looking' ? 'border-green-400' :
@@ -62,7 +64,7 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit }: FaceDetecti
         <span className={`h-2 w-2 rounded-full ${
           status === 'looking' ? 'bg-green-300 animate-pulse' : 'bg-red-300 animate-pulse'
         }`} />
-        🛡️ Proctoring Active
+        {unavailable ? 'Monitoring unavailable' : initializing ? 'Starting monitoring' : 'Camera monitoring active'}
       </div>
 
       {/* Camera preview */}
@@ -77,7 +79,7 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit }: FaceDetecti
         />
 
         {/* Status overlay badge */}
-        <div className={`absolute bottom-1 left-1 right-1 flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-semibold ${cfg.bgColor} ${cfg.color} ${cfg.pulse ? 'animate-pulse' : ''}`}>
+        <div role="status" aria-live="polite" className={`absolute bottom-1 left-1 right-1 flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-semibold ${cfg.bgColor} ${cfg.color} ${cfg.pulse ? 'animate-pulse' : ''}`}>
           {status === 'looking' ? (
             <VideoCameraIcon className="h-3.5 w-3.5 flex-shrink-0" />
           ) : status === 'permission_denied' || status === 'camera_unavailable' || status === 'model_load_failed' || status === 'inference_error' ? (

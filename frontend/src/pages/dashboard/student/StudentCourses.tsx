@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCourses } from '../../../hooks/useCourses';
+import { useLiveRefresh } from '../../../hooks/useLiveRefresh';
 import { CourseCard } from '../../../components/shared';
 import { Course } from '../../../types';
 import api from '../../../services/api';
@@ -26,9 +27,8 @@ const StudentCourses = () => {
   const [courseCode, setCourseCode] = useState('');
   const [joining, setJoining] = useState(false);
 
-  useEffect(() => {
-    fetchEnrolledCourses();
-  }, [fetchEnrolledCourses]);
+  const refreshCourses = useCallback(() => fetchEnrolledCourses(true), [fetchEnrolledCourses]);
+  useLiveRefresh(refreshCourses);
 
   useEffect(() => {
     let result = enrolledCourses;
@@ -104,27 +104,6 @@ const StudentCourses = () => {
         </div>
       </header>
 
-      {/* Join Course Card */}
-      <div className="bg-gradient-to-r from-primary-600 to-teal-600 rounded-xl shadow-sm p-6 text-white">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-white/20 rounded-lg backdrop-blur-sm">
-              <AcademicCapIcon className="h-8 w-8 text-white" />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold">Join a New Course</h2>
-              <p className="text-primary-100 text-sm mt-0.5">Enter the course code provided by your teacher to enroll</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setShowJoinModal(true)}
-            className="px-5 py-2.5 bg-white text-primary-700 font-semibold rounded-lg hover:bg-primary-50 transition-colors shadow-sm"
-          >
-            Enter Code
-          </button>
-        </div>
-      </div>
-
       {/* Filters */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
         <div className="flex flex-col sm:flex-row gap-4">
@@ -182,15 +161,8 @@ const StudentCourses = () => {
           <BookOpenIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">No Courses Yet</h3>
           <p className="text-gray-500 mb-4">
-            Ask your teacher for a course code to get started, or browse available courses.
+            Ask your teacher for a course code, then select Join Course above to get started.
           </p>
-          <button
-            onClick={() => setShowJoinModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700"
-          >
-            <PlusIcon className="h-4 w-4" />
-            Join with Code
-          </button>
         </div>
       ) : (
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">

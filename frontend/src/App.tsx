@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import { SESSION_EXPIRED_EVENT } from './services/api';
 import IntegrityReportSync from './components/shared/IntegrityReportSync';
+import { usePreferencesStore } from './store/preferencesStore';
 
 // Layouts
 import MainLayout from './components/layout/MainLayout';
@@ -33,6 +34,7 @@ const QuizTakePage = lazy(() => import('./pages/quiz/QuizTakePage'));
 const TeacherQuizResultsPage = lazy(() => import('./pages/quiz/TeacherQuizResultsPage'));
 const AnalyticsPage = lazy(() => import('./pages/analytics/AnalyticsPage'));
 const ProfilePage = lazy(() => import('./pages/profile/ProfilePage'));
+const SettingsPage = lazy(() => import('./pages/profile/SettingsPage'));
 const CreateQuestionPage = lazy(() => import('./pages/dashboard/CreateQuestionPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
@@ -113,6 +115,11 @@ const DashboardRedirect = () => {
 
 function App() {
   const { checkAuth, expireSession } = useAuthStore();
+  const theme = usePreferencesStore((state) => state.theme);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   // Check auth on app mount
   useEffect(() => {
@@ -156,7 +163,7 @@ function App() {
         <Route path="/courses/:courseId/topics/:topicId" element={<TopicPage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/settings" element={<Navigate to="/profile" replace />} />
+        <Route path="/settings" element={<SettingsPage />} />
       </Route>
 
       {/* Student Dashboard Routes */}

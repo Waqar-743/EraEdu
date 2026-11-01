@@ -2,6 +2,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../../store/authStore';
+import PasswordInput from '../../components/shared/PasswordInput';
 
 interface ResetPasswordFormValues {
   password: string;
@@ -60,14 +61,14 @@ const ResetPasswordPage = () => {
               New password
             </label>
             <div className="mt-1">
-              <input
+              <PasswordInput
                 id="password"
-                type="password"
                 autoComplete="new-password"
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 {...register('password', {
                   required: 'Password is required',
                   minLength: { value: 8, message: 'Password must be at least 8 characters' },
+                  maxLength: { value: 128, message: 'Password must be at most 128 characters' },
                   pattern: {
                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
                     message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number',
@@ -85,9 +86,8 @@ const ResetPasswordPage = () => {
               Confirm new password
             </label>
             <div className="mt-1">
-              <input
+              <PasswordInput
                 id="confirmPassword"
-                type="password"
                 autoComplete="new-password"
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 {...register('confirmPassword', {

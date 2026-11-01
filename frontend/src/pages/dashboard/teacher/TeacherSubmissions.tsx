@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { useLiveRefresh } from '../../../hooks/useLiveRefresh';
 import api from '../../../services/api';
 import { hasTeacherGrade, submissionErrorMessage } from '../../../services/submissionView';
 import toast from 'react-hot-toast';
@@ -84,12 +85,7 @@ const TeacherSubmissions = () => {
   const [saving, setSaving] = useState(false);
   const [filter, setFilter] = useState<'all' | 'pending' | 'graded'>('all');
 
-  useEffect(() => {
-    fetchSubmissions();
-  }, []);
-
-  const fetchSubmissions = async () => {
-    setLoading(true);
+  const fetchSubmissions = useCallback(async () => {
     setLoadError(null);
     try {
       const response = await api.get('/quizzes/teacher/submissions');
@@ -104,7 +100,9 @@ const TeacherSubmissions = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useLiveRefresh(fetchSubmissions, { enabled: !selectedSubmission });
 
   const openReviewModal = async (submission: Submission) => {
     const requestId = ++reviewRequest.current;
@@ -152,26 +150,31 @@ const TeacherSubmissions = () => {
 
   const handleSaveGrade = async () => {
     if (!selectedSubmission || reviewLoading || reviewError || !quizDetails) return;
+    const grade = Number(gradeInput);
+    if (!gradeInput.trim() || !Number.isFinite(grade) || grade < 0 || grade > 100) {
+      toast.error('Enter a grade from 0 to 100.');
+      return;
+    }
     
     setSaving(true);
     try {
       await api.put(`/quizzes/submissions/${selectedSubmission.id}/grade`, {
-        grade: parseFloat(gradeInput),
+        grade,
         feedback: feedbackInput,
       });
       
       toast.success('Grade saved and student notified!');
       
       // Update local state
-      setSubmissions(submissions.map(s => 
+      setSubmissions(current => current.map(s =>
         s.id === selectedSubmission.id 
-          ? { ...s, teacherGrade: parseFloat(gradeInput), teacherFeedback: feedbackInput }
+          ? { ...s, teacherGrade: grade, teacherFeedback: feedbackInput }
           : s
       ));
       
       closeModal();
     } catch (error) {
-      toast.error('Failed to save grade');
+      toast.error(submissionErrorMessage(error, 'Failed to save grade. Please retry.'));
     } finally {
       setSaving(false);
     }

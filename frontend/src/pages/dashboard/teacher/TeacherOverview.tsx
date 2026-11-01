@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { useLiveRefresh } from '../../../hooks/useLiveRefresh';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../../store/authStore';
 import { StatCard } from '../../../components/shared';
@@ -23,13 +24,15 @@ interface TeacherStats {
   totalStudents: number;
   totalQuestions: number;
   totalTopics: number;
-  avgStudentScore: number;
+  avgStudentScore: number | null;
+  passRate: number | null;
+  pendingReviews: number;
   activeEnrollments: number;
 }
 
 interface CoursePerformance {
   courseName: string;
-  avgScore: number;
+  avgScore: number | null;
   completionRate: number;
   enrollments: number;
 }
@@ -176,13 +179,7 @@ const TeacherOverview = () => {
     { name: 'Advanced', value: 20, color: '#7C3AED' },
   ];
 
-  useEffect(() => {
-    fetchTeacherStats();
-    fetchActivity();
-  }, []);
-
-  const fetchActivity = async () => {
-    setActivityLoading(true);
+  const fetchActivity = useCallback(async () => {
     setActivityError(null);
     try {
       const { data } = await api.get('/analytics/teacher/recent-activity');
@@ -194,10 +191,9 @@ const TeacherOverview = () => {
     } finally {
       setActivityLoading(false);
     }
-  };
+  }, []);
 
-  const fetchTeacherStats = async () => {
-    setLoading(true);
+  const fetchTeacherStats = useCallback(async () => {
     setStatsError(null);
     try {
       const [statsRes, performanceRes] = await Promise.all([
@@ -216,7 +212,10 @@ const TeacherOverview = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useLiveRefresh(fetchTeacherStats);
+  useLiveRefresh(fetchActivity, { intervalMs: 30000 });
 
   if (loading) {
     return (
@@ -368,7 +367,7 @@ const TeacherOverview = () => {
       </section>
 
       {/* Stats — Bento */}
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         <StatCard
           icon={<Stroke d="M4 5a2 2 0 0 1 2-2h11v17H6a2 2 0 0 1-2-2V5z M9 3v17 M17 7H9 M17 11H9" />}
           label="Total Courses"
@@ -390,12 +389,19 @@ const TeacherOverview = () => {
         <StatCard
           icon={<Stroke d="M3 21h18 M6 17V9 M11 17V5 M16 17v-7 M21 17v-3" />}
           label="Avg. Student Score"
-          value={`${stats?.avgStudentScore?.toFixed(1) || 0}%`}
+          value={stats.avgStudentScore == null ? 'Pending' : `${stats.avgStudentScore}%`}
           color="orange"
-          trend={stats?.avgStudentScore && stats.avgStudentScore >= 70 ? 'up' : 'down'}
+          trend={stats.avgStudentScore == null ? undefined : stats.avgStudentScore >= 70 ? 'up' : 'down'}
+        />
+        <StatCard
+          icon={<Stroke d="m9 12 2 2 4-4 M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0z" />}
+          label="Pass Rate"
+          value={stats.passRate == null ? 'Pending' : `${stats.passRate}%`}
+          color="green"
+          trend={stats.passRate == null ? undefined : stats.passRate >= 60 ? 'up' : 'down'}
         />
       </section>
-      <p className="text-xs text-ink-500">Total Students counts each learner once across your assigned courses. Growth is unavailable without comparable historical data.</p>
+      <p className="text-xs text-ink-500">Total Students counts each learner once across your assigned courses. Scores use published teacher grades; a grade of 60% or higher passes. {stats.pendingReviews > 0 && `${stats.pendingReviews} submission(s) await review.`}</p>
 
       {/* Charts — Asymmetrical */}
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">

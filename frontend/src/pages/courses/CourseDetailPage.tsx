@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCourses } from '../../hooks/useCourses';
+import { useLiveRefresh } from '../../hooks/useLiveRefresh';
 import { BookOpenIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import { useAuthStore } from '../../store/authStore';
 
@@ -17,11 +18,10 @@ const CourseDetailPage: React.FC = () => {
     enrollInCourse 
   } = useCourses();
 
-  useEffect(() => {
-    if (id) {
-      fetchCourseById(id);
-    }
+  const refreshCourse = useCallback(async () => {
+    if (id) await fetchCourseById(id, true);
   }, [id, fetchCourseById]);
+  useLiveRefresh(refreshCourse, { enabled: !!id });
 
   if ((loading && !currentCourse) || (id && !currentCourse && !error)) {
     return (
@@ -37,6 +37,7 @@ const CourseDetailPage: React.FC = () => {
         <div className="flex">
           <div className="ml-3">
             <p className="text-sm text-red-700">{error || (id ? 'Course not found' : 'A course ID is required.')}</p>
+            {id && <button type="button" onClick={() => void fetchCourseById(id)} className="mt-2 block text-sm font-medium text-red-700 underline">Retry</button>}
             <Link to={`/dashboard/${role || 'student'}/courses`} className="text-sm font-medium text-red-700 hover:text-red-600 mt-2 inline-block">
               &larr; Back to Courses
             </Link>
@@ -91,6 +92,7 @@ const CourseDetailPage: React.FC = () => {
           <p className="mt-1 max-w-2xl text-sm text-gray-500">Master these topics to complete the course.</p>
         </div>
         <div className="border-t border-gray-200">
+          {!topics.length && <p className="px-6 py-5 text-sm text-gray-500">{currentCourse.canViewTopics ? 'Your teacher has not added topics yet. New topics appear here automatically.' : 'Topics are available after enrollment when your teacher publishes the course.'}</p>}
           <ul role="list" className="divide-y divide-gray-200">
             {topics.map((topic, index) => (
               <li key={topic._id}>

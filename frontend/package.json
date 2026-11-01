@@ -9,7 +9,7 @@
     "dev": "vite",
     "build": "vite build",
     "typecheck": "tsc --noEmit",
-    "test:integrity": "node --experimental-strip-types --test verification/integrityOutbox.test.mjs",
+    "test:integrity": "node --experimental-strip-types --test verification/integrityOutbox.test.mjs verification/facePresence.test.mjs",
     "test:exam-save": "node --experimental-strip-types --test verification/examSaveSession.test.mjs",
     "test:submissions": "node --experimental-strip-types --test verification/submissionView.test.mjs",
     "test:hosting": "node --test verification/hostingRoutes.test.mjs",
