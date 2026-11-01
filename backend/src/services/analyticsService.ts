@@ -1,5 +1,5 @@
 import { supabase } from '../config/supabase';
-import { canReleaseStudentResult } from './resultReleasePolicy';
+import { summarizeResults } from './resultMetrics';
 
 function assertAnalyticsRows(data: unknown, error?: unknown): asserts data is any[] {
   if (error || !Array.isArray(data)) {
@@ -9,7 +9,7 @@ function assertAnalyticsRows(data: unknown, error?: unknown): asserts data is an
 
 // Page through PostgREST results so a teacher with more than the default row
 // limit still gets an exact, course-scoped unique learner count.
-async function readAllRows(table: string, columns: string, filter: (query: any) => any): Promise<any[]> {
+export async function readAllRows(table: string, columns: string, filter: (query: any) => any): Promise<any[]> {
   const pageSize = 500;
   const rows: any[] = [];
   for (let start = 0; ; start += pageSize) {
@@ -22,6 +22,14 @@ async function readAllRows(table: string, columns: string, filter: (query: any) 
   }
 }
 
+export async function readRowsForIds(table: string, columns: string, column: string, ids: string[], filter: (query: any) => any = query => query): Promise<any[]> {
+  const rows: any[] = [];
+  for (let start = 0; start < ids.length; start += 100) {
+    rows.push(...await readAllRows(table, columns, query => filter(query.in(column, ids.slice(start, start + 100)))));
+  }
+  return rows;
+}
+
 export const analyticsService = {
   async getDashboardStats(userId: string) {
     const { count, error } = await supabase.from('enrollments')
@@ -29,11 +37,9 @@ export const analyticsService = {
     if (error || typeof count !== 'number') throw Object.assign(new Error('Unable to load enrollment statistics'), { statusCode: 503 });
     const attempts = await readAllRows('quiz_attempts', 'id, status, topic_id, teacher_grade, score, max_score',
       query => query.eq('user_id', userId).eq('status', 'completed'));
-    const released = attempts.filter(canReleaseStudentResult);
-    const averageScore = released.length ? Math.round(released.reduce((sum, attempt) =>
-      sum + (attempt.max_score > 0 ? attempt.score / attempt.max_score * 100 : 0), 0) / released.length) : null;
-    return { coursesEnrolled: count, quizzesCompleted: attempts.length, averageScore,
-      pendingReviews: attempts.length - released.length, streakDays: 0 };
+    const summary = summarizeResults(attempts);
+    return { coursesEnrolled: count, quizzesCompleted: attempts.length, averageScore: summary.avgScore, passRate: summary.passRate,
+      pendingReviews: summary.pendingReviews, streakDays: 0 };
   },
 
   // ============ Teacher Analytics ============
@@ -59,11 +65,7 @@ export const analyticsService = {
     const { courseIds, totalCourses, totalStudents, activeEnrollments } = await this.getTeacherStudentSummary(teacherId);
     let totalQuestions = 0;
     let totalTopics = 0;
-    let avgStudentScore = 0;
-
-    const { data: quizzes, error: quizzesError } = await supabase.from('teacher_quizzes').select('id').eq('teacher_id', teacherId);
-    if (quizzesError) throw new Error(`Failed to load teacher exams: ${quizzesError.message}`);
-    if (!Array.isArray(quizzes)) throw new Error('Failed to load teacher exams: no rows returned');
+    const quizzes = await readAllRows('teacher_quizzes', 'id', query => query.eq('teacher_id', teacherId));
 
     if (courseIds.length > 0) {
       const topics = (await Promise.all(Array.from({ length: Math.ceil(courseIds.length / 100) }, (_, index) =>
@@ -82,61 +84,39 @@ export const analyticsService = {
       }
     }
 
-    // Calculate avg score from teacher_quizzes attempts
     const quizIds = quizzes.map((q: any) => q.id);
-    if (quizIds.length > 0) {
-      const { data: attempts, error: attemptsError } = await supabase
-        .from('quiz_attempts')
-        .select('score, max_score')
-        .in('quiz_id', quizIds)
-        .eq('status', 'completed');
-      if (attemptsError) throw new Error(`Failed to load exam attempts: ${attemptsError.message}`);
-      if (!Array.isArray(attempts)) throw new Error('Failed to load exam attempts: no rows returned');
-
-      if (attempts.length > 0) {
-        const total = attempts.reduce((sum: number, a: any) =>
-          sum + (a.max_score > 0 ? (a.score / a.max_score) * 100 : 0), 0);
-        avgStudentScore = Math.round(total / attempts.length);
-      }
-    }
-    return { totalCourses, totalStudents, totalQuestions, totalTopics, avgStudentScore, activeEnrollments };
+    const attempts = await readRowsForIds('quiz_attempts', 'id, status, topic_id, teacher_grade, score, max_score', 'quiz_id', quizIds,
+      query => query.eq('status', 'completed'));
+    const summary = summarizeResults(attempts);
+    return { totalCourses, totalStudents, totalQuestions, totalTopics, avgStudentScore: summary.avgScore,
+      passRate: summary.passRate, reviewedAttempts: summary.reviewedAttempts, pendingReviews: summary.pendingReviews, activeEnrollments };
   },
 
   async getTeacherCoursePerformance(teacherId: string) {
     try {
-      const { data: courses, error: coursesError } = await supabase
-        .from('courses')
-        .select('id, title')
-        .eq('created_by', teacherId);
-      if (coursesError) throw new Error(`Failed to load courses: ${coursesError.message}`);
-      if (!Array.isArray(courses)) throw new Error('Failed to load courses: no rows returned');
+      const courses = await readAllRows('courses', 'id, title', query => query.eq('created_by', teacherId));
 
       if (!courses || courses.length === 0) return [];
 
       const courseIds = courses.map((c: any) => c.id);
 
       // Fetch all data in parallel — no per-course loops
-      const [enrollResult, quizResult] = await Promise.all([
-        supabase.from('enrollments').select('course_id').in('course_id', courseIds),
-        supabase.from('teacher_quizzes').select('id, course_id').in('course_id', courseIds),
+      const [enrollments, quizzes] = await Promise.all([
+        readRowsForIds('enrollments', 'id, course_id', 'course_id', courseIds),
+        readRowsForIds('teacher_quizzes', 'id, course_id', 'course_id', courseIds,
+          query => query.eq('teacher_id', teacherId)),
       ]);
-      if (enrollResult.error) throw new Error(`Failed to load enrollments: ${enrollResult.error.message}`);
-      if (quizResult.error) throw new Error(`Failed to load teacher exams: ${quizResult.error.message}`);
-
-      const quizIds = (quizResult.data || []).map((q: any) => q.id);
-      const attemptResult = quizIds.length > 0
-        ? await supabase.from('quiz_attempts').select('score, max_score, status, quiz_id').in('quiz_id', quizIds)
-        : { data: [] };
-      if ('error' in attemptResult && attemptResult.error) throw new Error(`Failed to load exam attempts: ${attemptResult.error.message}`);
+      const quizIds = quizzes.map((q: any) => q.id);
+      const attempts = await readRowsForIds('quiz_attempts', 'id, score, max_score, teacher_grade, topic_id, status, quiz_id', 'quiz_id', quizIds);
 
       // Group in memory
       const enrollmentsByCourse: Record<string, number> = {};
-      for (const e of (enrollResult.data || [])) {
+      for (const e of enrollments) {
         enrollmentsByCourse[e.course_id] = (enrollmentsByCourse[e.course_id] || 0) + 1;
       }
 
       const quizByCourse: Record<string, string[]> = {};
-      for (const q of (quizResult.data || [])) {
+      for (const q of quizzes) {
         if (q.course_id) {
           if (!quizByCourse[q.course_id]) quizByCourse[q.course_id] = [];
           quizByCourse[q.course_id].push(q.id);
@@ -144,7 +124,7 @@ export const analyticsService = {
       }
 
       const attemptsByQuiz: Record<string, any[]> = {};
-      for (const a of (attemptResult.data || [])) {
+      for (const a of attempts) {
         if (!attemptsByQuiz[a.quiz_id]) attemptsByQuiz[a.quiz_id] = [];
         attemptsByQuiz[a.quiz_id].push(a);
       }
@@ -154,20 +134,13 @@ export const analyticsService = {
         const allAttempts = courseQuizIds.flatMap(qid => attemptsByQuiz[qid] || []);
         const completed = allAttempts.filter((a: any) => a.status === 'completed');
 
-        let avgScore = 0;
-        let completionRate = 0;
-        if (completed.length > 0) {
-          const total = completed.reduce((sum: number, a: any) =>
-            sum + (a.max_score > 0 ? (a.score / a.max_score) * 100 : 0), 0);
-          avgScore = Math.round(total / completed.length);
-          completionRate = allAttempts.length > 0
-            ? Math.round((completed.length / allAttempts.length) * 100)
-            : 0;
-        }
+        const summary = summarizeResults(completed);
+        const completionRate = allAttempts.length > 0 ? Math.round((completed.length / allAttempts.length) * 100) : 0;
 
         return {
           courseName: course.title,
-          avgScore,
+          avgScore: summary.avgScore,
+          passRate: summary.passRate,
           completionRate,
           enrollments: enrollmentsByCourse[course.id] || 0,
         };

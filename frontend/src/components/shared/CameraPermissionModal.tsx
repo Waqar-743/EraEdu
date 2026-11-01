@@ -8,7 +8,8 @@
  *  4. On denial, shows clear instructions to fix it.
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { acquireCamera } from '../../services/facePresence';
 import {
   VideoCameraIcon,
   VideoCameraSlashIcon,
@@ -28,10 +29,16 @@ interface CameraPermissionModalProps {
 const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle }: CameraPermissionModalProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const requestIdRef = useRef(0);
+  const isOpenRef = useRef(isOpen);
+  isOpenRef.current = isOpen;
   const [permState, setPermState] = useState<PermissionState>('requesting');
   const [retrying, setRetrying] = useState(false);
 
-  const requestCamera = async () => {
+  const requestCamera = useCallback(async () => {
+    if (!isOpenRef.current) return;
+    const requestId = ++requestIdRef.current;
+    const active = () => isOpenRef.current && requestIdRef.current === requestId;
     setPermState('requesting');
     setRetrying(true);
 
@@ -42,30 +49,37 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle }: CameraP
         streamRef.current = null;
       }
 
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: 320, height: 240, facingMode: 'user' },
+      const stream = await acquireCamera(() => navigator.mediaDevices.getUserMedia({
+        video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' },
         audio: false,
-      });
+      }), active);
+      if (!stream) return;
+      if (!active()) { stream.getTracks().forEach(track => track.stop()); return; }
 
       streamRef.current = stream;
+      stream.getVideoTracks().forEach(track => track.addEventListener('ended', () => {
+        if (active()) setPermState('error');
+      }));
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         await videoRef.current.play();
       }
 
-      setPermState('granted');
+      if (active()) setPermState('granted');
     } catch (err: any) {
-      console.error('[CameraPermission] Error:', err);
+      if (!active()) return;
+      streamRef.current?.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
       if (err.name === 'NotAllowedError') {
         setPermState('denied');
       } else {
         setPermState('error');
       }
     } finally {
-      setRetrying(false);
+      if (active()) setRetrying(false);
     }
-  };
+  }, []);
 
   // Request camera when modal opens
   useEffect(() => {
@@ -74,14 +88,16 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle }: CameraP
     requestCamera();
 
     return () => {
+      requestIdRef.current += 1;
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(t => t.stop());
         streamRef.current = null;
       }
     };
-  }, [isOpen]);
+  }, [isOpen, requestCamera]);
 
   const handleContinue = () => {
+    requestIdRef.current += 1;
     // Stop the preview stream — the quiz page will start its own
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(t => t.stop());
@@ -91,6 +107,7 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle }: CameraP
   };
 
   const handleCancel = () => {
+    requestIdRef.current += 1;
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(t => t.stop());
       streamRef.current = null;

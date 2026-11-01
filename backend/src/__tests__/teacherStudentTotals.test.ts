@@ -20,7 +20,7 @@ function setup(courses: Array<{ id: string; created_by: string }>, enrollments: 
       order: () => ({ range: async (start: number, end: number) => ({ data: enrollments.filter(enrollment => ids.includes(enrollment.course_id)).slice(start, end + 1), error: failure === 'enrollments' ? { message: 'database unavailable' } : null }) }),
     }) }) };
     if (table === 'topics') return { select: () => ({ in: () => ({ order: () => ({ range: async () => ({ data: [], error: null }) }) }) }) };
-    if (table === 'teacher_quizzes') return { select: () => ({ eq: async () => ({ data: [], error: null }) }) };
+    if (table === 'teacher_quizzes') return { select: () => ({ eq: () => ({ order: () => ({ range: async () => ({ data: [], error: null }) }) }) }) };
     throw new Error(`Unexpected table ${table}`);
   });
 }

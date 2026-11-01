@@ -1,14 +1,22 @@
 import express from 'express';
 import multer from 'multer';
-import { register, login, forgotPassword, resetPassword, getCurrentUser, updateProfile, switchRole, verifyStudentEmailOtp, logout } from '../controllers/authController';
+import { register, login, forgotPassword, resetPassword, changePassword, getCurrentUser, updateProfile, switchRole, verifyStudentEmailOtp, logout } from '../controllers/authController';
 import { uploadProfilePicture, uploadRegistrationPicture } from '../controllers/profilePictureController';
 import { protect } from '../middleware/auth';
 import { validateBody } from '../middleware/validate';
 import { z } from 'zod';
+import rateLimit from 'express-rate-limit';
 
 const loginSchema = z.object({ email: z.string().trim().email().max(254), password: z.string().min(1).max(128) });
 const forgotPasswordSchema = z.object({ email: z.string().trim().email().max(254) });
 const resetPasswordSchema = z.object({ token: z.string().min(1).max(512), password: z.string().min(8).max(128) });
+const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1).max(128),
+  newPassword: z.string().min(8).max(128)
+    .regex(/[a-z]/, 'Password must contain a lowercase letter')
+    .regex(/[A-Z]/, 'Password must contain an uppercase letter')
+    .regex(/\d/, 'Password must contain a number'),
+});
 const studentOtpSchema = z.object({ tempToken: z.string().min(1).max(2048), code: z.string().regex(/^\d{6}$/, 'Enter the six-digit code from your email.') });
 const registerSchema = z.object({
   name: z.string().trim().min(2).max(80),
@@ -39,6 +47,14 @@ const upload = multer({
 });
 
 const router = express.Router();
+const changePasswordLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => req.user!._id,
+  message: { success: false, error: { message: 'Too many password change attempts. Please try again in 15 minutes.' } },
+});
 
 // Public routes
 router.post('/register', validateBody(registerSchema), register);
@@ -52,6 +68,7 @@ router.post('/logout', logout);
 // Protected routes
 router.get('/me', protect, getCurrentUser);
 router.put('/profile', protect, updateProfile);
+router.put('/change-password', protect, changePasswordLimiter, validateBody(changePasswordSchema), changePassword);
 router.put('/switch-role', protect, switchRole);
 router.post('/upload-profile-picture', protect, upload.single('profilePicture'), uploadProfilePicture);
 

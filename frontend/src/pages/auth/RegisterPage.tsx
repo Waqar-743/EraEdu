@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../../store/authStore';
 import toast from 'react-hot-toast';
 import { CameraIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import PasswordInput from '../../components/shared/PasswordInput';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -166,14 +167,14 @@ const RegisterPage = () => {
               Password
             </label>
             <div className="mt-1">
-              <input
+              <PasswordInput
                 id="password"
-                type="password"
                 autoComplete="new-password"
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 {...register('password', { 
                   required: 'Password is required',
                   minLength: { value: 8, message: 'Password must be at least 8 characters' },
+                  maxLength: { value: 128, message: 'Password must be at most 128 characters' },
                   pattern: {
                     value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
                     message: 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
@@ -183,6 +184,7 @@ const RegisterPage = () => {
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password.message as string}</p>
               )}
+              <p className="mt-2 text-xs text-gray-500">Copy and paste are supported. Show your password to check or copy it.</p>
             </div>
           </div>
 
@@ -191,9 +193,8 @@ const RegisterPage = () => {
               Confirm Password
             </label>
             <div className="mt-1">
-              <input
+              <PasswordInput
                 id="confirmPassword"
-                type="password"
                 autoComplete="new-password"
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 {...register('confirmPassword', { 

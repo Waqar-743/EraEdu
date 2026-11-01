@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useLiveRefresh } from '../../../hooks/useLiveRefresh';
 import { StatCard } from '../../../components/shared';
 import api from '../../../services/api';
 import {
@@ -25,10 +26,12 @@ interface AnalyticsData {
   totalStudents: number;
   totalQuizzes: number;
   totalAttempts: number;
-  avgScore: number;
-  passRate: number;
+  avgScore: number | null;
+  passRate: number | null;
+  reviewedAttempts: number;
+  pendingReviews: number;
   scoreDistribution: { range: string; count: number; color: string }[];
-  weeklyData: { date: string; attempts: number; avgScore: number }[];
+  weeklyData: { date: string; attempts: number; avgScore: number | null }[];
   courseParticipation: {
     courseId: string;
     courseName: string;
@@ -43,12 +46,7 @@ const TeacherAnalytics = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, []);
-
-  const fetchAnalytics = async () => {
-    setLoading(true);
+  const fetchAnalytics = useCallback(async () => {
     setError(null);
     try {
       const response = await api.get('/quizzes/teacher/analytics');
@@ -62,7 +60,9 @@ const TeacherAnalytics = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useLiveRefresh(fetchAnalytics);
 
   if (loading) {
     return (
@@ -91,6 +91,7 @@ const TeacherAnalytics = () => {
         <h1 className="text-2xl font-bold text-gray-900">Analytics Dashboard</h1>
         <p className="text-sm text-gray-500 mt-1">Track student performance and engagement</p>
         <p className="text-xs text-gray-500 mt-1">Total Students counts each learner once across your assigned courses.</p>
+        <p className="text-xs text-gray-500 mt-1">Average score and pass rate use published teacher grades; 60% or higher passes. {analytics.pendingReviews > 0 && `${analytics.pendingReviews} submission(s) await review.`}</p>
       </header>
 
       {/* Stats Grid */}
@@ -110,16 +111,16 @@ const TeacherAnalytics = () => {
         <StatCard
           icon={<ChartBarIcon className="h-6 w-6" />}
           label="Average Score"
-          value={`${analytics?.avgScore || 0}%`}
+          value={analytics.avgScore == null ? 'Pending' : `${analytics.avgScore}%`}
           color="primary"
-          trend={analytics?.avgScore && analytics.avgScore >= 60 ? 'up' : 'down'}
+          trend={analytics.avgScore == null ? undefined : analytics.avgScore >= 60 ? 'up' : 'down'}
         />
         <StatCard
           icon={<ClockIcon className="h-6 w-6" />}
           label="Pass Rate"
-          value={`${analytics?.passRate || 0}%`}
+          value={analytics.passRate == null ? 'Pending' : `${analytics.passRate}%`}
           color="orange"
-          trend={analytics?.passRate && analytics.passRate >= 60 ? 'up' : 'down'}
+          trend={analytics.passRate == null ? undefined : analytics.passRate >= 60 ? 'up' : 'down'}
         />
       </div>
 
@@ -269,9 +270,9 @@ const TeacherAnalytics = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-6 text-white">
               <h4 className="text-lg font-semibold mb-2">Pass Rate</h4>
-              <p className="text-4xl font-bold">{analytics?.passRate || 0}%</p>
+              <p className="text-4xl font-bold">{analytics.passRate == null ? 'Pending' : `${analytics.passRate}%`}</p>
               <p className="text-green-100 mt-2">
-                {analytics?.passRate && analytics.passRate >= 70 
+                {analytics.passRate == null ? 'Publish grades to see the pass rate.' : analytics.passRate >= 70
                   ? 'Great job! Students are performing well.'
                   : 'Consider reviewing difficult topics.'}
               </p>

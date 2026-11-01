@@ -1,42 +1,20 @@
-/**
- * useFaceDetection – Standalone face-detection hook for EraEdu.
- *
- * Uses face-api.js (TinyFaceDetector + 68-point landmarks) running entirely
- * in the browser. No backend calls are needed for detection itself.
- *
- * Green is shown only after a successful, sufficiently confident detector
- * result. Camera/model failures are operational states, not violations.
- */
-
+/** On-device face presence. Camera/model failures are operational states. */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
+import { acquireCamera, FacePresenceTracker, retryableLoader } from '../services/facePresence';
 
-/* ---------- configurable constants --------- */
-const DETECTION_INTERVAL_MS  = 500;
-// Face-api's detection score must meet this threshold before the UI can turn green.
+const DETECTION_INTERVAL_MS = 500;
 const DETECTION_CONFIDENCE_THRESHOLD = 0.6;
-const YAW_THRESHOLD           = 30;
-const PITCH_THRESHOLD         = 25;
-const SMOOTHING_WINDOW        = 5;
-const SMOOTHING_MAJORITY      = 3;
-const GRACE_PERIOD_MS         = 2_000;
-const AWAY_LIMIT_SEC          = 60;
 const MODEL_URL = `${import.meta.env.BASE_URL}models`;
+const loadModels = retryableLoader(async () => {
+  await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+  await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+});
 
-/* ---------- types ---------- */
 export type FaceStatus =
-  | 'model_loading'
-  | 'model_load_failed'
-  | 'camera_starting'
-  | 'camera_ready'
-  | 'camera_unavailable'
-  | 'permission_denied'
-  | 'inference_error'
-  | 'looking'
-  | 'away'
-  | 'no_face';
-
-type DetectionKind = 'valid' | 'away' | 'no_face';
+  | 'model_loading' | 'model_load_failed' | 'camera_starting' | 'camera_ready'
+  | 'camera_unavailable' | 'permission_denied' | 'inference_error'
+  | 'looking' | 'away' | 'no_face';
 
 export interface FaceDetectionCallbacks {
   onViolation?: (kind: 'face_away' | 'no_face') => void;
@@ -52,288 +30,136 @@ export interface FaceDetectionState {
   retryCamera: () => void;
 }
 
-/* ---- lightweight head-pose from 68 landmarks ---- */
 function estimateHeadPose(landmarks: faceapi.FaceLandmarks68) {
   const pts = landmarks.positions;
-
-  const noseTip    = pts[30];
-  const chin       = pts[8];
-  const leftEye    = pts[36];
-  const rightEye   = pts[45];
-  const leftMouth  = pts[48];
-  const rightMouth = pts[54];
-
-  const faceWidth  = Math.hypot(rightEye.x - leftEye.x, rightEye.y - leftEye.y);
-  const faceHeight = Math.hypot(chin.x - noseTip.x, chin.y - noseTip.y);
-
-  if (faceWidth === 0 || faceHeight === 0) return { yaw: 0, pitch: 0 };
-
-  const faceCenterX = (leftEye.x + rightEye.x) / 2;
-  const noseOffsetX = noseTip.x - faceCenterX;
-  const yaw = (noseOffsetX / (faceWidth / 2)) * 45;
-
-  const mouthCenterY = (leftMouth.y + rightMouth.y) / 2;
-  const eyeCenterY   = (leftEye.y + rightEye.y) / 2;
-  const vertRef      = mouthCenterY - eyeCenterY;
-  const noseOffsetY  = noseTip.y - eyeCenterY;
-  const pitch = vertRef === 0 ? 0 : ((noseOffsetY / vertRef) - 0.55) * 80;
-
+  const nose = pts[30], chin = pts[8], leftEye = pts[36], rightEye = pts[45];
+  const leftMouth = pts[48], rightMouth = pts[54];
+  const width = Math.hypot(rightEye.x - leftEye.x, rightEye.y - leftEye.y);
+  const height = Math.hypot(chin.x - nose.x, chin.y - nose.y);
+  const mouthToEye = (leftMouth.y + rightMouth.y - leftEye.y - rightEye.y) / 2;
+  if (!width || !height || !mouthToEye) throw new Error('Invalid face landmarks');
+  const yaw = ((nose.x - (leftEye.x + rightEye.x) / 2) / (width / 2)) * 45;
+  const pitch = (((nose.y - (leftEye.y + rightEye.y) / 2) / mouthToEye) - 0.55) * 80;
+  if (!Number.isFinite(yaw) || !Number.isFinite(pitch)) throw new Error('Invalid face pose');
   return { yaw, pitch };
 }
 
-/* ---- the hook ---- */
-export function useFaceDetection(
-  enabled: boolean,
-  callbacks: FaceDetectionCallbacks = {},
-): FaceDetectionState {
-  const videoRef        = useRef<HTMLVideoElement>(null!);
-  const streamRef       = useRef<MediaStream | null>(null);
-  const timerRef        = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const validFaceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastValidDetectionRef = useRef<number | null>(null);
-  const episodeStartRef = useRef<number | null>(null);
-  const episodeKindRef = useRef<Exclude<DetectionKind, 'valid'> | null>(null);
-  const violationEmittedRef = useRef(false);
-  const autoSubmittedRef = useRef(false);
-  const smoothingBuffer = useRef<DetectionKind[]>([]);
-  const isDetecting     = useRef(false); // prevents concurrent ML calls
-
-  const [status,        setStatus]        = useState<FaceStatus>('model_loading');
-  const [awaySeconds,   setAwaySeconds]   = useState(0);
-  const [violationCount,setViolationCount]= useState(0);
-  const [modelsLoaded,  setModelsLoaded]  = useState(false);
-  const [cameraRetryCount, setCameraRetryCount] = useState(0);
-
+export function useFaceDetection(enabled: boolean, callbacks: FaceDetectionCallbacks = {}): FaceDetectionState {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const isDetecting = useRef(false);
   const cbRef = useRef(callbacks);
   cbRef.current = callbacks;
+  const [status, setStatus] = useState<FaceStatus>('model_loading');
+  const [awaySeconds, setAwaySeconds] = useState(0);
+  const [violationCount, setViolationCount] = useState(0);
+  const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [retry, setRetry] = useState(0);
+  const retryCamera = useCallback(() => setRetry(value => value + 1), []);
 
-  const clearDetectionState = useCallback((nextStatus: FaceStatus = 'camera_ready') => {
-    if (validFaceTimerRef.current) clearTimeout(validFaceTimerRef.current);
-    validFaceTimerRef.current = null;
-    lastValidDetectionRef.current = null;
-    smoothingBuffer.current = [];
-    episodeStartRef.current = null;
-    episodeKindRef.current = null;
-    violationEmittedRef.current = false;
-    autoSubmittedRef.current = false;
-    setAwaySeconds(0);
-    setStatus(nextStatus);
-  }, []);
-
-  /* ---- 1. Load face-api models ---- */
+  // One lifecycle owns the model load, stream and recursive detector loop.
+  // Updating a status badge must not cancel an in-flight detector call.
   useEffect(() => {
     if (!enabled) return;
     let cancelled = false;
-    setStatus('model_loading');
-    setModelsLoaded(false);
-
-    (async () => {
-      try {
-        await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-        if (!cancelled) setModelsLoaded(true);
-      } catch {
-        if (!cancelled) setStatus('model_load_failed');
-      }
-    })();
-
-    return () => { cancelled = true; };
-  }, [enabled]);
-
-  /* ---- 2. Start camera ---- */
-  const startCamera = useCallback(async () => {
-    clearDetectionState('camera_starting');
-    try {
-      if (navigator.permissions?.query) {
-        const permResult = await navigator.permissions.query({ name: 'camera' as PermissionName });
-        if (permResult.state === 'denied') {
-          clearDetectionState('permission_denied');
-          return null;
-        }
-      }
-    } catch { /* permissions.query may not support 'camera' — continue */ }
-
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: 320, height: 240, facingMode: 'user' },
-        audio: false,
-      });
-      streamRef.current = stream;
-      stream.getTracks().forEach(track => {
-        track.addEventListener('ended', () => {
-          if (streamRef.current === stream) {
-            streamRef.current = null;
-            clearDetectionState('camera_unavailable');
-          }
-        });
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
-      }
-      // A stream is merely ready; only detector evidence may mark it "looking".
-      clearDetectionState('camera_ready');
-      return stream;
-    } catch (err: unknown) {
-      const errorName = err instanceof DOMException ? err.name : '';
-      clearDetectionState(errorName === 'NotAllowedError' || errorName === 'SecurityError'
-        ? 'permission_denied'
-        : 'camera_unavailable');
-      return null;
-    }
-  }, [clearDetectionState]);
-
-  const retryCamera = useCallback(() => {
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(t => t.stop());
-      streamRef.current = null;
-    }
-    clearDetectionState(modelsLoaded ? 'camera_starting' : 'model_loading');
-    setCameraRetryCount(c => c + 1);
-  }, [clearDetectionState, modelsLoaded]);
-
-  useEffect(() => {
-    if (!enabled || !modelsLoaded) return;
-    let cancelled = false;
-
-    (async () => {
-      const stream = await startCamera();
-      if (cancelled && stream) stream.getTracks().forEach(t => t.stop());
-    })();
-
-    return () => {
-      cancelled = true;
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(t => t.stop());
-        streamRef.current = null;
-      }
-      clearDetectionState('camera_unavailable');
-    };
-  }, [enabled, modelsLoaded, cameraRetryCount, startCamera, clearDetectionState]);
-
-  /* ---- helper: process a single detection result ---- */
-  const processDetection = useCallback((kind: DetectionKind) => {
-    const now = Date.now();
-    if (kind === 'valid') {
-      const buffer = smoothingBuffer.current;
-      buffer.push(kind);
-      if (buffer.length > SMOOTHING_WINDOW) buffer.shift();
-      if (buffer.filter(value => value === 'valid').length >= SMOOTHING_MAJORITY) {
-        episodeStartRef.current = null;
-        episodeKindRef.current = null;
-        violationEmittedRef.current = false;
-        autoSubmittedRef.current = false;
-        setAwaySeconds(0);
-        setStatus('looking');
-        lastValidDetectionRef.current = now;
-        if (validFaceTimerRef.current) clearTimeout(validFaceTimerRef.current);
-        // Do not leave a green badge visible when detection is paused or throttled.
-        validFaceTimerRef.current = setTimeout(() => {
-          if (lastValidDetectionRef.current && Date.now() - lastValidDetectionRef.current >= GRACE_PERIOD_MS) {
-            smoothingBuffer.current = [];
-            setStatus('camera_ready');
-          }
-        }, GRACE_PERIOD_MS);
-      } else {
-        setStatus('camera_ready');
-      }
-      return;
-    }
-
-    // Empty frames clear earlier successes immediately; no stale green state.
-    if (validFaceTimerRef.current) clearTimeout(validFaceTimerRef.current);
-    validFaceTimerRef.current = null;
-    lastValidDetectionRef.current = null;
-    smoothingBuffer.current = [];
-    if (episodeKindRef.current !== kind) {
-      episodeKindRef.current = kind;
-      episodeStartRef.current = now;
-      violationEmittedRef.current = false;
-      autoSubmittedRef.current = false;
-    }
-    const elapsedMs = now - (episodeStartRef.current ?? now);
-    if (elapsedMs < GRACE_PERIOD_MS) {
-      setAwaySeconds(0);
-      setStatus('camera_ready');
-      return;
-    }
-
-    const elapsedSec = Math.floor(elapsedMs / 1000);
-    setAwaySeconds(elapsedSec);
-    setStatus(kind === 'away' ? 'away' : 'no_face');
-    if (!violationEmittedRef.current) {
-      violationEmittedRef.current = true;
-      setViolationCount(c => c + 1);
-      cbRef.current.onViolation?.(kind === 'away' ? 'face_away' : 'no_face');
-    }
-    if (elapsedSec >= AWAY_LIMIT_SEC && !autoSubmittedRef.current) {
-      autoSubmittedRef.current = true;
-      cbRef.current.onAutoSubmit?.();
-    }
-  }, []);
-
-  /* ---- 3. Detection loop — recursive setTimeout prevents queued-up calls ---- */
-  useEffect(() => {
-    if (!enabled || !modelsLoaded || status === 'model_loading' || status === 'camera_starting' || status === 'permission_denied' || status === 'camera_unavailable' || status === 'model_load_failed') return;
-
+    let stream: MediaStream | null = null;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let validFaceTimer: ReturnType<typeof setTimeout> | undefined;
+    const tracker = new FacePresenceTracker();
     const video = videoRef.current;
-    if (!video) return;
 
-    let cancelled = false;
+    const clearValidTimer = () => {
+      if (validFaceTimer) clearTimeout(validFaceTimer);
+      validFaceTimer = undefined;
+    };
+    const unavailable = (nextStatus: FaceStatus) => {
+      clearValidTimer();
+      tracker.reset();
+      setAwaySeconds(0);
+      setStatus(nextStatus);
+    };
 
     const runDetection = async () => {
       if (cancelled) return;
-
-      const streamIsLive = streamRef.current?.getVideoTracks().some(track => track.readyState === 'live');
-      if (!streamIsLive) {
-        clearDetectionState('camera_unavailable');
-      } else if (!isDetecting.current && !video.paused && !video.ended && video.readyState >= 2) {
+      const track = stream?.getVideoTracks()[0];
+      if (!track || track.readyState !== 'live' || track.muted) {
+        unavailable('camera_unavailable');
+      } else if (video && !isDetecting.current && !video.paused && !video.ended && video.readyState >= 2) {
         isDetecting.current = true;
         try {
-          const detection = await faceapi
-            .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ scoreThreshold: DETECTION_CONFIDENCE_THRESHOLD }))
+          const detection = await faceapi.detectSingleFace(video,
+            new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: DETECTION_CONFIDENCE_THRESHOLD }))
             .withFaceLandmarks();
-
-          if (!cancelled) {
-            if (!detection || detection.detection.score < DETECTION_CONFIDENCE_THRESHOLD) {
-              processDetection('no_face');
-            } else {
-              const { yaw, pitch } = estimateHeadPose(detection.landmarks);
-              processDetection(Math.abs(yaw) <= YAW_THRESHOLD && Math.abs(pitch) <= PITCH_THRESHOLD ? 'valid' : 'away');
-            }
+          if (cancelled) return;
+          let kind: 'valid' | 'away' | 'no_face' = 'no_face';
+          if (detection && detection.detection.score >= DETECTION_CONFIDENCE_THRESHOLD) {
+            const { yaw, pitch } = estimateHeadPose(detection.landmarks);
+            kind = Math.abs(yaw) <= 30 && Math.abs(pitch) <= 25 ? 'valid' : 'away';
+          }
+          const result = tracker.observe(kind, Date.now());
+          clearValidTimer();
+          setStatus(result.status);
+          setAwaySeconds(result.awaySeconds);
+          if (result.violation) {
+            setViolationCount(value => value + 1);
+            cbRef.current.onViolation?.(result.violation);
+          }
+          if (result.autoSubmit) cbRef.current.onAutoSubmit?.();
+          if (result.status === 'looking') {
+            // A stalled/throttled detector must not leave a stale green badge.
+            validFaceTimer = setTimeout(() => {
+              if (!cancelled) unavailable('camera_ready');
+            }, 2_000);
           }
         } catch {
-          if (!cancelled) clearDetectionState('inference_error');
+          if (!cancelled) unavailable('inference_error');
         } finally {
           isDetecting.current = false;
         }
       }
-
-      if (!cancelled) {
-        timerRef.current = setTimeout(runDetection, DETECTION_INTERVAL_MS);
-      }
+      if (!cancelled) timer = setTimeout(runDetection, DETECTION_INTERVAL_MS);
     };
 
-    runDetection();
+    const start = async () => {
+      setModelsLoaded(false);
+      unavailable('model_loading');
+      try { await loadModels(); }
+      catch { if (!cancelled) unavailable('model_load_failed'); return; }
+      if (cancelled) return;
+      setModelsLoaded(true);
+      unavailable('camera_starting');
+      try {
+        const acquired = await acquireCamera(() => navigator.mediaDevices.getUserMedia({
+          video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' }, audio: false,
+        }), () => !cancelled);
+        if (!acquired) return;
+        if (cancelled) { acquired.getTracks().forEach(track => track.stop()); return; }
+        stream = acquired;
+        stream.getVideoTracks().forEach(track => track.addEventListener('ended', () => {
+          if (!cancelled) unavailable('camera_unavailable');
+        }));
+        if (!video) throw new Error('Camera preview is unavailable');
+        video.srcObject = stream;
+        await video.play();
+        if (cancelled) return;
+        unavailable('camera_ready');
+        void runDetection();
+      } catch (error: unknown) {
+        stream?.getTracks().forEach(track => track.stop());
+        if (cancelled) return;
+        const name = error instanceof DOMException ? error.name : '';
+        unavailable(name === 'NotAllowedError' || name === 'SecurityError' ? 'permission_denied' : 'camera_unavailable');
+      }
+    };
+    void start();
 
     return () => {
       cancelled = true;
-      if (timerRef.current) clearTimeout(timerRef.current);
+      if (timer) clearTimeout(timer);
+      clearValidTimer();
+      stream?.getTracks().forEach(track => track.stop());
+      if (video && video.srcObject === stream) video.srcObject = null;
     };
-  }, [enabled, modelsLoaded, status, processDetection, clearDetectionState]);
-
-  /* ---- 4. Camera-blocked ping — fire no_face violations so students cannot
-            bypass proctoring by denying camera access mid-quiz ---- */
-  /* ---- Cleanup on unmount ---- */
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      if (validFaceTimerRef.current) clearTimeout(validFaceTimerRef.current);
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(t => t.stop());
-      }
-    };
-  }, []);
+  }, [enabled, retry]);
 
   return { status, awaySeconds, violationCount, modelsLoaded, videoRef, retryCamera };
 }

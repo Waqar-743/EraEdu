@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../../store/authStore';
 import toast from 'react-hot-toast';
+import PasswordInput from '../../components/shared/PasswordInput';
 
 const LoginPage = () => {
   const { login, isLoading, sessionNotice } = useAuthStore();
@@ -30,7 +31,7 @@ const LoginPage = () => {
       <div><label htmlFor="email" className="block text-sm font-medium text-gray-700">Email address</label><input id="email" type="email" autoComplete="email" className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500" {...register('email', { required: 'Email is required' })} />{errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message as string}</p>}</div>
       <div>
         <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-        <input id="password" type="password" autoComplete="current-password"
+        <PasswordInput id="password" autoComplete="current-password"
           aria-invalid={Boolean(errors.password)} aria-describedby={errors.password ? 'password-error' : undefined}
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-primary-500"
           {...register('password', { required: 'Password is required' })} />

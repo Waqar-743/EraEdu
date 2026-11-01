@@ -124,7 +124,7 @@ const QuizTakePage = () => {
 
   // Anti-cheating state
   const unqueuedReports = useRef(new Map<string, ViolationPayload>());
-  const tabHiddenStartRef      = useRef<number | null>(null);
+  const tabHiddenRef           = useRef(false);
   // Prevents blur + visibilitychange from double-counting the same event
   const violationCooldownRef   = useRef(false);
   const lastViolationAtRef     = useRef<Record<string, number>>({});
@@ -291,22 +291,27 @@ const QuizTakePage = () => {
   // Browser anti-cheat event listeners
   // -----------------------------------------------------------------------
   useEffect(() => {
-    // Tab visibility — tracks how long tab was hidden
+    // Save as soon as the page is hidden. Waiting until it becomes visible
+    // loses the report if the student leaves the tab or closes the browser.
+    let visibilityTimer: ReturnType<typeof setTimeout>;
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         violationCooldownRef.current = true; // block blur handler
-        tabHiddenStartRef.current = Date.now();
+        clearTimeout(visibilityTimer);
+        if (!tabHiddenRef.current) {
+          tabHiddenRef.current = true;
+          void reportViolation(createViolationPayload(
+            'TAB_SWITCH',
+            'Exam tab became hidden',
+            { focusState: 'document_hidden' },
+          ));
+        }
         return;
       }
-      if (document.visibilityState === 'visible' && tabHiddenStartRef.current) {
-        const durationSeconds = Math.max(1, Math.round((Date.now() - tabHiddenStartRef.current) / 1000));
-        tabHiddenStartRef.current = null;
-        reportViolation(createViolationPayload(
-          'TAB_SWITCH',
-          'Tab Switch Violation',
-          { durationSeconds },
-        ));
-        setTimeout(() => { violationCooldownRef.current = false; }, 500);
+      if (document.visibilityState === 'visible') {
+        tabHiddenRef.current = false;
+        focusLossEpisodeRef.current = false;
+        visibilityTimer = setTimeout(() => { violationCooldownRef.current = false; }, 500);
       }
     };
 
@@ -439,6 +444,7 @@ const QuizTakePage = () => {
       window.removeEventListener('resize', handleResize);
       clearTimeout(blurTimer);
       clearTimeout(resizeTimer);
+      clearTimeout(visibilityTimer);
     };
   }, [createViolationPayload, reportViolation, submitting]);
 

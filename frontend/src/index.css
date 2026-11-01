@@ -409,3 +409,54 @@
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 }
+
+/* Display preferences apply to signed-in workspaces, including profile/settings.
+   The green navigation and assessment hero panels retain their own contrast. */
+:root[data-theme="dark"] .app-workspace {
+  color-scheme: dark;
+  color: #E6F4EF;
+  background-color: #0C1715 !important;
+}
+:root[data-theme="dark"] .app-workspace :is(.bg-white, [class~="bg-white/75"], [class~="bg-white/80"], .input-field, .card, .quiz-opening-footer) {
+  background-color: #142722 !important;
+}
+:root[data-theme="dark"] .app-workspace :is([class~="bg-white/70"], [class~="bg-white/90"], [class~="bg-white/95"], [class~="bg-white/60"]) {
+  background-color: rgba(20, 39, 34, 0.94) !important;
+}
+:root[data-theme="dark"] .app-workspace :is(.bg-ink-50, .bg-ink-100, [class*="bg-ink-50/"], [class*="bg-gray-"], [class*="bg-slate-"], .bg-primary-50, .bg-primary-100, [class*="bg-primary-50/"], [class*="bg-primary-100/"], [class*="bg-indigo-50"], [class*="bg-blue-50"], [class*="bg-purple-50"]) {
+  background-color: #1C342C !important;
+}
+:root[data-theme="dark"] .app-workspace :is(.text-ink-900, .text-ink-950, .text-ink-800, .text-gray-900, .text-gray-800, .text-slate-900, .quiz-opening-title) {
+  color: #E6F4EF !important;
+}
+:root[data-theme="dark"] .app-workspace :is(.text-ink-600, .text-ink-700, .text-gray-600, .text-gray-700, .text-slate-700, .quiz-opening-subtitle) {
+  color: #BFD8CF !important;
+}
+:root[data-theme="dark"] .app-workspace :is(.text-ink-300, .text-ink-400, .text-ink-500, .text-gray-400, .text-gray-500, .text-slate-500) {
+  color: #9FBDB1 !important;
+}
+:root[data-theme="dark"] .app-workspace :is(.text-primary-600, .text-primary-700, .text-primary-800, .text-primary-900, [class*="text-indigo-"], [class*="text-blue-"], [class*="text-purple-"], [class*="text-violet-"]) {
+  color: #6CE8B7 !important;
+}
+:root[data-theme="dark"] .app-workspace :is([class*="border-ink-900"], [class*="border-gray-"], [class*="border-slate-"]) {
+  border-color: #38554A !important;
+}
+:root[data-theme="dark"] .app-workspace [class*="ring-ink-900"] {
+  --tw-ring-color: rgba(159, 189, 177, 0.24) !important;
+}
+:root[data-theme="dark"] .app-workspace :is(input:not([type="radio"]):not([type="checkbox"]), textarea, select) {
+  color: #E6F4EF !important;
+  background-color: #10211C !important;
+  border-color: #38554A !important;
+}
+:root[data-theme="dark"] .app-workspace :is(input, textarea)::placeholder {
+  color: #9FBDB1;
+}
+:root[data-theme="dark"] .app-workspace :is(.hover\:bg-ink-50, .hover\:bg-gray-50, .hover\:bg-primary-50):hover {
+  background-color: #244337 !important;
+}
+:root[data-theme="dark"] .app-workspace .quiz-secondary-action {
+  background-color: #1C342C !important;
+  color: #E6F4EF !important;
+  border-color: #38554A !important;
+}

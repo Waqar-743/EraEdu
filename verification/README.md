@@ -1,5 +1,9 @@
 # Product verification
 
+The [1 November QA repair review](QA_FIXES_2026-11-01.md) records password and
+settings controls, course/topic refresh, final-grade analytics and camera/event
+recovery fixes, with isolated browser regression commands and their limits.
+
 The [21 October live database review](LIVE_DATABASE_REVIEW_2026-10-21.md)
 records the approved production repairs and targeted course publication,
 zero remaining schema blockers, 67 database regression tests, 70 live public

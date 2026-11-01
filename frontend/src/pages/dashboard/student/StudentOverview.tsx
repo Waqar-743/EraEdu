@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { useLiveRefresh } from '../../../hooks/useLiveRefresh';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../../../store/authStore';
 import { StatCard } from '../../../components/shared';
@@ -55,17 +56,7 @@ const StudentOverview = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [notifLoading, setNotifLoading] = useState(false);
 
-  useEffect(() => {
-    fetchAnalytics();
-    fetchNotifications();
-    const pollInterval = setInterval(() => {
-      fetchNotifications();
-    }, 10000);
-    return () => clearInterval(pollInterval);
-  }, []);
-
-  const fetchAnalytics = async () => {
-    setAnalyticsLoading(true);
+  const fetchAnalytics = useCallback(async () => {
     try {
       const response = await api.get('/quizzes/student/analytics');
       setAnalytics(response.data.data);
@@ -77,9 +68,9 @@ const StudentOverview = () => {
     } finally {
       setAnalyticsLoading(false);
     }
-  };
+  }, []);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     setNotifLoading(true);
     try {
       const response = await api.get('/notifications');
@@ -90,7 +81,10 @@ const StudentOverview = () => {
     } finally {
       setNotifLoading(false);
     }
-  };
+  }, []);
+
+  useLiveRefresh(fetchAnalytics);
+  useLiveRefresh(fetchNotifications, { intervalMs: 10000 });
 
   if (analyticsLoading) {
     return (
@@ -183,7 +177,7 @@ const StudentOverview = () => {
       </section>
 
       {/* Stats */}
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           icon={<Stroke d="M9 11l3 3 7-7 M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10" />}
           label="Exams Completed"
@@ -195,7 +189,14 @@ const StudentOverview = () => {
           label="Average Score"
           value={analytics?.avgScore != null ? `${analytics.avgScore}%` : 'Not released'}
           color="blue"
-          trend={analytics?.avgScore && analytics.avgScore >= 60 ? 'up' : 'down'}
+          trend={analytics?.avgScore == null ? undefined : analytics.avgScore >= 60 ? 'up' : 'down'}
+        />
+        <StatCard
+          icon={<Stroke d="m9 12 2 2 4-4 M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0z" />}
+          label="Pass Rate"
+          value={analytics?.passRate == null ? 'Not released' : `${analytics.passRate}%`}
+          color="green"
+          trend={analytics?.passRate == null ? undefined : analytics.passRate >= 60 ? 'up' : 'down'}
         />
         <StatCard
           icon={<Stroke d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" />}

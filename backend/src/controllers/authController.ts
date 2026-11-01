@@ -77,6 +77,11 @@ export const getCurrentUser = asyncHandler(async (req: Request, res: Response) =
   });
 });
 
+export const changePassword = asyncHandler(async (req: Request, res: Response) => {
+  const result = await authService.changePassword(req.user!._id, req.body.currentPassword, req.body.newPassword);
+  res.status(200).json({ success: true, data: result });
+});
+
 export const updateProfile = asyncHandler(async (req: Request, res: Response) => {
   const user = await authService.updateProfile(req.user!._id.toString(), req.body);
   
