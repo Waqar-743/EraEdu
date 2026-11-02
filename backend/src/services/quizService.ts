@@ -1350,7 +1350,7 @@ export const quizService = {
     const { data: course, error: courseError } = await supabase.from('courses')
       .select('id, is_published').eq('id', topic.course_id).maybeSingle();
     if (courseError) throw new Error(courseError.message);
-    if (!course || course.is_published !== true) throw topicError('This topic is not published for exams', 403);
+    if (!course) throw topicError('Course not found', 404);
 
     const { data: enrollment, error: enrollmentError } = await supabase.from('enrollments')
       .select('id').eq('user_id', userId).eq('course_id', course.id).maybeSingle();

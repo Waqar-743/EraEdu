@@ -92,7 +92,7 @@ const CourseDetailPage: React.FC = () => {
           <p className="mt-1 max-w-2xl text-sm text-gray-500">Master these topics to complete the course.</p>
         </div>
         <div className="border-t border-gray-200">
-          {!topics.length && <p className="px-6 py-5 text-sm text-gray-500">{currentCourse.canViewTopics ? 'Your teacher has not added topics yet. New topics appear here automatically.' : 'Topics are available after enrollment when your teacher publishes the course.'}</p>}
+          {!topics.length && <p className="px-6 py-5 text-sm text-gray-500">{currentCourse.canViewTopics ? 'Your teacher has not added topics yet. New topics appear here automatically.' : 'Topics are available after you enroll in this course.'}</p>}
           <ul role="list" className="divide-y divide-gray-200">
             {topics.map((topic, index) => (
               <li key={topic._id}>

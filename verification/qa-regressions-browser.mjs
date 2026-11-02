@@ -189,7 +189,7 @@ try {
     await page.getByRole('heading', { name: 'Updated educator topic', exact: true }).waitFor();
     canViewTopics = false;
     await page.evaluate(() => window.dispatchEvent(new Event('focus')));
-    await page.getByText('Topics are available after enrollment', { exact: false }).waitFor();
+    await page.getByText('Topics are available after you enroll', { exact: false }).waitFor();
     assert.equal(await page.getByRole('link', { name: 'Study', exact: true }).count(), 0);
     canViewTopics = true;
     await page.evaluate(() => window.dispatchEvent(new Event('focus')));

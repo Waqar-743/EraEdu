@@ -123,7 +123,7 @@ export const courseService = {
     }
     const canViewTopics = role === 'admin'
       || (role === 'teacher' && course.created_by === userId)
-      || (role === 'student' && isEnrolled && course.is_published === true);
+      || (role === 'student' && isEnrolled);
     return { ...course, _id: course.id, maxStudents: course.max_students, isEnrolled, canViewTopics };
   },
 
@@ -156,7 +156,9 @@ export const courseService = {
       if (!e.courses) throw new Error(`Enrollment references a missing course: ${e.course_id}`);
       return e.courses;
     });
-    const visibleIds = courses.filter((course: any) => course.is_published === true).map((course: any) => course.id);
+    // Enrollment grants access to private course material. Publishing controls
+    // discovery in the public catalog, not the topics of an already joined course.
+    const visibleIds = courses.map((course: any) => course.id);
     const topicCounts = new Map<string, number>();
     // Fetch topic IDs in batches, not once per course. Range through PostgREST's
     // default row cap so large courses cannot silently undercount.
@@ -365,7 +367,6 @@ export const courseService = {
 
     if (role !== 'admin' && !(role === 'teacher' && course.created_by === userId)) {
       if (role !== 'student') return fail('Not authorized to study this topic', 403);
-      if (course.is_published !== true) return fail('This course is not published', 403);
       const { data: enrollment, error: enrollmentError } = await supabase
         .from('enrollments')
         .select('course_id')
@@ -390,7 +391,6 @@ export const courseService = {
         .from('enrollments').select('course_id').eq('course_id', courseId).eq('user_id', userId).maybeSingle();
       if (enrollmentError) throw new Error(enrollmentError.message);
       if (!enrollment) throw courseError('Enroll in this course to view its topics', 403);
-      if (course.is_published !== true) return [];
     }
     const visibleTopics: any[] = [];
     for (let start = 0; ;) {

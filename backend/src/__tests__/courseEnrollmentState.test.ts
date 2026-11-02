@@ -48,10 +48,10 @@ describe('course detail enrollment state', () => {
       .resolves.toMatchObject({ isEnrolled: false, canViewTopics: false });
   });
 
-  it('keeps draft topics hidden even when enrolled', async () => {
+  it('keeps joined private-course topics available without public catalog publication', async () => {
     setupDetail(true, false);
     await expect(courseService.getCourseById('course-1', 'student-1', 'student'))
-      .resolves.toMatchObject({ isEnrolled: true, canViewTopics: false });
+      .resolves.toMatchObject({ isEnrolled: true, canViewTopics: true });
   });
 
   it('does not turn a failed enrollment lookup into a false state', async () => {

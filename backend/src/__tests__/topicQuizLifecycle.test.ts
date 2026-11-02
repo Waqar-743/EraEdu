@@ -89,12 +89,17 @@ describe('published topic exam lifecycle', () => {
     await expect(quizService.submitAnswer('attempt-1', 'question-4', 2, 'student-1')).rejects.toThrow('no longer active');
   });
 
-  it('blocks invalid, unpublished and unenrolled starts before creating an attempt', async () => {
+  it('allows a published topic exam for a joined private course', async () => {
+    const attempts = setup({ published: false });
+    const started = await quizService.getQuizForTopic('topic-1', 'student-1');
+    expect(started).toMatchObject({ attemptId: 'attempt-1', question: { _id: 'question-0' } });
+    expect(JSON.stringify(started)).not.toMatch(/correct_answer|correctAnswer/);
+    expect(attempts).toHaveLength(1);
+  });
+
+  it('blocks invalid topics, unpublished exams and unenrolled starts before creating an attempt', async () => {
     let attempts = setup({ topic: false });
     await expect(quizService.getQuizForTopic('topic-1', 'student-1')).rejects.toThrow('Topic not found');
-    expect(attempts).toHaveLength(0);
-    attempts = setup({ published: false });
-    await expect(quizService.getQuizForTopic('topic-1', 'student-1')).rejects.toThrow('not published');
     expect(attempts).toHaveLength(0);
     attempts = setup({ enrolled: false });
     await expect(quizService.getQuizForTopic('topic-1', 'student-1')).rejects.toThrow('not enrolled');

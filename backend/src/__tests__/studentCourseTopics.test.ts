@@ -44,7 +44,7 @@ function setup(topicRows: Array<{ id: string; course_id: string }>, options: { f
 beforeEach(() => mockFrom.mockReset());
 
 describe('student visible topic counts', () => {
-  it('counts multiple published courses in one topic query, excluding draft-course topics', async () => {
+  it('counts topics for all enrolled courses, including private courses absent from the public catalog', async () => {
     const queried = setup([
       { id: '1', course_id: 'one' }, { id: '2', course_id: 'one' }, { id: '3', course_id: 'one' },
       { id: '4', course_id: 'draft' },
@@ -52,9 +52,9 @@ describe('student visible topic counts', () => {
     await expect(courseService.getEnrolledCourses('student')).resolves.toEqual([
       expect.objectContaining({ _id: 'one', topicsCount: 3 }),
       expect.objectContaining({ _id: 'two', topicsCount: 0 }),
-      expect.objectContaining({ _id: 'draft', topicsCount: 0 }),
+      expect.objectContaining({ _id: 'draft', topicsCount: 1 }),
     ]);
-    expect(queried).toEqual([['one', 'two']]);
+    expect(queried).toEqual([['one', 'two', 'draft']]);
   });
 
   it('returns a genuine zero for no enrollments without querying topics', async () => {
@@ -106,9 +106,9 @@ describe('student topic detail access', () => {
     await expect(courseService.getTopicById('one', 'topic', 'student', 'student')).resolves.toMatchObject({ _id: 'topic' });
   });
 
-  it('denies direct draft-topic access to students', async () => {
+  it('allows an enrolled student to study a private-course topic', async () => {
     accessSetup(false, true);
-    await expect(courseService.getTopicById('one', 'topic', 'student', 'student')).rejects.toMatchObject({ statusCode: 403 });
+    await expect(courseService.getTopicById('one', 'topic', 'student', 'student')).resolves.toMatchObject({ _id: 'topic' });
   });
 
   it('denies unenrolled students', async () => {
@@ -144,9 +144,9 @@ describe('student topic list visibility', () => {
     ]);
   });
 
-  it('hides draft topics from students but not the owner', async () => {
+  it('shows private-course topics to its enrolled student and owner', async () => {
     setupList(false, true);
-    await expect(courseService.getTopicsByCourse('one', 'student', 'student')).resolves.toEqual([]);
+    await expect(courseService.getTopicsByCourse('one', 'student', 'student')).resolves.toHaveLength(1);
     await expect(courseService.getTopicsByCourse('one', 'teacher', 'teacher')).resolves.toHaveLength(1);
   });
 

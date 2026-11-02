@@ -65,7 +65,7 @@ export const useCourses = () => {
     } catch (err: any) {
       if (request !== courseRequest.current) return;
       // A successful earlier fetch cannot authorize content after the server
-      // revokes enrollment, unpublishes/deletes a course, or rejects the session.
+      // revokes enrollment, deletes a course, or rejects the session.
       if ([401, 403, 404].includes(err.response?.status)) {
         setCurrentCourse(null);
         setTopics([]);
