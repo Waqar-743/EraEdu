@@ -91,7 +91,7 @@ const TeacherAnalytics = () => {
         <h1 className="text-2xl font-bold text-gray-900">Analytics Dashboard</h1>
         <p className="text-sm text-gray-500 mt-1">Track student performance and engagement</p>
         <p className="text-xs text-gray-500 mt-1">Total Students counts each learner once across your assigned courses.</p>
-        <p className="text-xs text-gray-500 mt-1">Average score and pass rate use published teacher grades; 60% or higher passes. {analytics.pendingReviews > 0 && `${analytics.pendingReviews} submission(s) await review.`}</p>
+        <p className="text-xs text-gray-500 mt-1">Average score and pass rate include completed multiple-choice exams and final teacher grades; 60% or higher passes. {analytics.pendingReviews > 0 && `${analytics.pendingReviews} submission(s) await a final grade.`}</p>
       </header>
 
       {/* Stats Grid */}

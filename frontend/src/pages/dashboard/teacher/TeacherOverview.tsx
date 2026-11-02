@@ -401,7 +401,7 @@ const TeacherOverview = () => {
           trend={stats.passRate == null ? undefined : stats.passRate >= 60 ? 'up' : 'down'}
         />
       </section>
-      <p className="text-xs text-ink-500">Total Students counts each learner once across your assigned courses. Scores use published teacher grades; a grade of 60% or higher passes. {stats.pendingReviews > 0 && `${stats.pendingReviews} submission(s) await review.`}</p>
+      <p className="text-xs text-ink-500">Total Students counts each learner once across your assigned courses. Scores use completed multiple-choice exams and final teacher grades; 60% or higher passes. {stats.pendingReviews > 0 && `${stats.pendingReviews} submission(s) await a final grade.`}</p>
 
       {/* Charts — Asymmetrical */}
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">

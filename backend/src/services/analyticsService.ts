@@ -35,7 +35,7 @@ export const analyticsService = {
     const { count, error } = await supabase.from('enrollments')
       .select('*', { count: 'exact', head: true }).eq('user_id', userId);
     if (error || typeof count !== 'number') throw Object.assign(new Error('Unable to load enrollment statistics'), { statusCode: 503 });
-    const attempts = await readAllRows('quiz_attempts', 'id, status, topic_id, teacher_grade, score, max_score',
+    const attempts = await readAllRows('quiz_attempts', 'id, status, topic_id, teacher_grade, score, max_score, teacher_quiz_snapshot',
       query => query.eq('user_id', userId).eq('status', 'completed'));
     const summary = summarizeResults(attempts);
     return { coursesEnrolled: count, quizzesCompleted: attempts.length, averageScore: summary.avgScore, passRate: summary.passRate,
@@ -85,7 +85,7 @@ export const analyticsService = {
     }
 
     const quizIds = quizzes.map((q: any) => q.id);
-    const attempts = await readRowsForIds('quiz_attempts', 'id, status, topic_id, teacher_grade, score, max_score', 'quiz_id', quizIds,
+    const attempts = await readRowsForIds('quiz_attempts', 'id, status, topic_id, teacher_grade, score, max_score, teacher_quiz_snapshot', 'quiz_id', quizIds,
       query => query.eq('status', 'completed'));
     const summary = summarizeResults(attempts);
     return { totalCourses, totalStudents, totalQuestions, totalTopics, avgStudentScore: summary.avgScore,
@@ -107,7 +107,7 @@ export const analyticsService = {
           query => query.eq('teacher_id', teacherId)),
       ]);
       const quizIds = quizzes.map((q: any) => q.id);
-      const attempts = await readRowsForIds('quiz_attempts', 'id, score, max_score, teacher_grade, topic_id, status, quiz_id', 'quiz_id', quizIds);
+      const attempts = await readRowsForIds('quiz_attempts', 'id, score, max_score, teacher_grade, topic_id, status, quiz_id, teacher_quiz_snapshot', 'quiz_id', quizIds);
 
       // Group in memory
       const enrollmentsByCourse: Record<string, number> = {};

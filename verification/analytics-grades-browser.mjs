@@ -109,7 +109,7 @@ try {
     await page.goto(`${base}/dashboard/teacher`);
     await expectStat(page, 'Avg. Student Score', '40%');
     await expectStat(page, 'Pass Rate', '50%');
-    await page.getByText('1 submission(s) await review.', { exact: false }).waitFor();
+    await page.getByText('1 submission(s) await a final grade.', { exact: false }).waitFor();
     state.grades = [100, 80, null];
     await focusRefresh(page);
     await expectStat(page, 'Avg. Student Score', '90%');

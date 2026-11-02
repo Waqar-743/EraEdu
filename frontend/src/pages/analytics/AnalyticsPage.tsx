@@ -10,7 +10,7 @@ export default function AnalyticsPage() {
   </div>;
   return <main className="mx-auto max-w-5xl space-y-6 p-6">
     <h1 className="text-2xl font-bold text-gray-900">Your exam analytics</h1>
-    <p className="text-gray-700">Scores include completed topic exams and published teacher grades. A grade of 60% or higher passes.</p>
+    <p className="text-gray-700">Scores include completed multiple-choice exams, topic exams and published teacher grades. Exams with written answers await a final teacher grade. A grade of 60% or higher passes.</p>
     <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       <div className="rounded-lg border bg-white p-6"><dt>Enrolled courses</dt><dd className="text-2xl font-semibold">{stats?.coursesEnrolled ?? '—'}</dd></div>
       <div className="rounded-lg border bg-white p-6"><dt>Completed exams</dt><dd className="text-2xl font-semibold">{stats?.quizzesCompleted ?? '—'}</dd></div>

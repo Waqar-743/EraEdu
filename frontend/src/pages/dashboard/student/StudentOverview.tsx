@@ -103,7 +103,7 @@ const StudentOverview = () => {
 
   return (
     <div className="student-teal mx-auto max-w-7xl space-y-8">
-      {!!analytics?.pendingReviews && <p role="status" className="rounded bg-amber-50 p-3 text-amber-900">{analytics.pendingReviews} exam result(s) pending teacher review. Scores and charts include released results only.</p>}
+      {!!analytics?.pendingReviews && <p role="status" className="rounded bg-amber-50 p-3 text-amber-900">{analytics.pendingReviews} exam result(s) await a final teacher grade. Completed multiple-choice exams are included automatically.</p>}
       {/* HERO */}
       <section className="relative overflow-hidden rounded-[2rem] bg-primary-100/70 p-1.5 ring-1 ring-primary-200/70">
         <div

@@ -21,13 +21,15 @@ function database(attempts: Row[], quizzes: Row[] = [{ id: 'exam', title: 'Exam'
   mockFrom.mockImplementation((table: string) => {
     const filters: Array<(row: Row) => boolean> = [];
     let patch: Row | undefined;
+    let columns = '*';
     const result = () => {
       const data = rows[table].filter(row => filters.every(filter => filter(row)));
       if (patch) data.forEach(row => Object.assign(row, patch));
-      return { data, count: data.length, error: null };
+      const selected = columns === '*' ? data : data.map(row => Object.fromEntries(columns.split(',').map(key => key.trim()).map(key => [key, row[key]])));
+      return { data: selected, count: data.length, error: null };
     };
     const query: any = {
-      select: () => query,
+      select: (value = '*') => { columns = value; return query; },
       eq: (key: string, value: unknown) => { filters.push(row => row[key] === value); return query; },
       in: (key: string, ids: unknown[]) => { filters.push(row => ids.includes(row[key])); return query; },
       order: () => query,
@@ -64,6 +66,23 @@ test('final grades replace automatic marks, retain zero and exclude pending, act
   expect(summarizeResults([attempt('boundary', 60), attempt('below', 59.9)])).toMatchObject({ avgScore: 60, passRate: 50 });
 });
 
+test('only completed, valid immutable all-MCQ snapshots contribute automatic percentages', () => {
+  const question = { options: ['Right', 'Wrong'], correctAnswer: 0 };
+  const completed = attempt('automatic', null, { score: 1, max_score: 1, teacher_quiz_snapshot: { questions: [question] } });
+  expect(finalResultPercentage(completed)).toBe(100);
+  expect(finalResultPercentage({ ...completed, score: 0 })).toBe(0);
+  expect(finalResultPercentage({ ...completed, teacher_grade: 0 })).toBe(0);
+  for (const invalid of [
+    { status: 'in-progress' }, { score: NaN }, { score: 2 }, { max_score: 0 }, { max_score: 2 }, { teacher_grade: 101 },
+    { teacher_quiz_snapshot: null }, { teacher_quiz_snapshot: { questions: [] } },
+    { teacher_quiz_snapshot: { questions: [{ ...question, questionType: 'shortAnswer' }] } },
+    { teacher_quiz_snapshot: { questions: [{ ...question, options: [] }] } },
+    { teacher_quiz_snapshot: { questions: [{ ...question, questionType: 'unknown' }] } },
+    { teacher_quiz_snapshot: { questions: [question, { questionType: 'shortAnswer', options: [] }] }, max_score: 2 },
+    { teacher_quiz_snapshot: { questions: [{ ...question, correctAnswer: -1 }] } },
+  ]) expect(finalResultPercentage({ ...completed, ...invalid })).toBeNull();
+});
+
 test('overview, analytics, course performance and learner metrics agree and reflect subsequent grade edits', async () => {
   const { rows } = database([
     attempt('graded', 80), attempt('zero', 0, { score: 10 }), attempt('pending', null),
@@ -89,6 +108,19 @@ test('overview, analytics, course performance and learner metrics agree and refl
   await expect(analyticsService.getTeacherCoursePerformance('teacher')).resolves.toMatchObject([{ avgScore: 25, passRate: 0 }]);
   await expect(quizService.getStudentAnalytics('student')).resolves.toMatchObject({ avgScore: 25, passRate: 0 });
   expect(rows.quiz_attempts.find(row => row.id === 'graded')).toMatchObject({ teacher_grade: 50, score: 0, max_score: 10 });
+});
+
+test('analytics queries select the immutable snapshot and count MCQ completion while excluding mixed exams', async () => {
+  const question = { options: ['Right', 'Wrong'], correctAnswer: 0 };
+  database([
+    attempt('automatic', null, { score: 1, max_score: 1, teacher_quiz_snapshot: { questions: [question] } }),
+    attempt('written', null, { score: 2, max_score: 2, teacher_quiz_snapshot: { questions: [question, { questionType: 'shortAnswer', options: [] }] } }),
+  ]);
+  await expect(analyticsService.getTeacherStats('teacher')).resolves.toMatchObject({ avgStudentScore: 100, passRate: 100, pendingReviews: 1 });
+  await expect(quizService.getTeacherAnalytics('teacher')).resolves.toMatchObject({ avgScore: 100, passRate: 100, totalAttempts: 2, pendingReviews: 1 });
+  await expect(analyticsService.getTeacherCoursePerformance('teacher')).resolves.toMatchObject([{ avgScore: 100, passRate: 100 }]);
+  await expect(quizService.getStudentAnalytics('student')).resolves.toMatchObject({ avgScore: 100, passRate: 100, pendingReviews: 1 });
+  await expect(analyticsService.getDashboardStats('student')).resolves.toMatchObject({ averageScore: 100, passRate: 100, pendingReviews: 1 });
 });
 
 test('metrics read every page and batch quiz IDs instead of silently truncating large classes', async () => {

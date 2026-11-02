@@ -1500,7 +1500,7 @@ export const quizService = {
 
     // Get all attempts for these quizzes
     const completedAttempts = await readRowsForIds('quiz_attempts',
-      'id, quiz_id, user_id, status, topic_id, teacher_grade, score, max_score, completed_at', 'quiz_id', quizIds,
+      'id, quiz_id, user_id, status, topic_id, teacher_grade, score, max_score, completed_at, teacher_quiz_snapshot', 'quiz_id', quizIds,
       query => query.eq('status', 'completed'));
     const summary = summarizeResults(completedAttempts);
     const { scores } = summary;
@@ -1583,7 +1583,7 @@ export const quizService = {
   // Get student analytics
   async getStudentAnalytics(userId: string) {
     const allAttempts = await readAllRows('quiz_attempts',
-      'id, status, topic_id, teacher_grade, score, max_score, completed_at',
+      'id, status, topic_id, teacher_grade, score, max_score, completed_at, teacher_quiz_snapshot',
       query => query.eq('user_id', userId).eq('status', 'completed'));
     const summary = summarizeResults(allAttempts);
     const attempts = allAttempts.filter(attempt => finalResultPercentage(attempt) !== null)
