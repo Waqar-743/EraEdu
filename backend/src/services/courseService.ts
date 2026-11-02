@@ -876,6 +876,7 @@ export const courseService = {
         text: q.content || q.question_text,
         options: q.options || [],
         correctAnswer: q.correct_answer,
+        correctAnswers: q.correct_answers || [],
         answerText: q.correct_answers?.[0] || '',
         questionType: q.question_type || 'multipleChoice',
         createdBy: q.created_by,

@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
 import { questionService } from '../services/questionService';
 import { asyncHandler } from '../middleware/errorHandler';
+import { createQuestionBatch } from '../services/questionBatchService';
+
+export const createQuestions = asyncHandler(async (req: Request, res: Response) => {
+  const questions = await createQuestionBatch(req.body.questions, req.user!._id, req.user!.role);
+  res.status(201).json({ success: true, data: questions });
+});
 
 export const createQuestion = asyncHandler(async (req: Request, res: Response) => {
   const { 

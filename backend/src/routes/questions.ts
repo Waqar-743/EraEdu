@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   createQuestion,
+  createQuestions,
   getQuestionsByTopic,
   getQuestionById,
   updateQuestion,
@@ -15,6 +16,7 @@ router.use(authorize('teacher', 'admin'));
 
 // Create a new question
 router.post('/', createQuestion);
+router.post('/batch', createQuestions);
 
 // Get questions by topic
 router.get('/topic/:topicId', getQuestionsByTopic);
