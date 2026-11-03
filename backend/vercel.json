@@ -1,7 +1,8 @@
 {
   "version": 2,
   "env": {
-    "GITHUB_PAGES_ORIGIN": "https://muhammadayantoorie-creator.github.io"
+    "GITHUB_PAGES_ORIGIN": "https://muhammadayantoorie-creator.github.io",
+    "ALLOWED_ORIGINS": "https://waqar-743.github.io"
   },
   "builds": [
     {
