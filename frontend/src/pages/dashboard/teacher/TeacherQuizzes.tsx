@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { DataTable, QuizOpeningConfirmationModal } from '../../../components/shared';
 import api from '../../../services/api';
 import { ExamSaveSession } from '../../../services/examSaveSession';
+import { buildQuestionAssessmentPayload } from '../../../services/questionAssessment';
 import toast from 'react-hot-toast';
-import { useAuthStore } from '../../../store/authStore';
 import {
   PlusIcon,
   MagnifyingGlassIcon,
@@ -94,7 +94,6 @@ const scheduleToIso = (date: string, hour: string, minute: string, period: 'AM' 
 };
 
 const TeacherQuizzes = () => {
-  const user = useAuthStore((state) => state.user);
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [teacherCourses, setTeacherCourses] = useState<TeacherCourse[]>([]);
   const [bankQuestions, setBankQuestions] = useState<BankQuestion[]>([]);
@@ -142,6 +141,15 @@ const TeacherQuizzes = () => {
       setFormData(prev => ({ ...prev, timeLimit: totalMinutes }));
     }
   }, [formData.questions, selectedBankIds, bankQuestions]);
+
+  const selectCourse = (courseId: string) => {
+    setFormData((current) => ({ ...current, courseId }));
+    setSelectedBankIds([]);
+    setBankTopicId('all');
+  };
+
+  const courseBankQuestions = bankQuestions.filter((question) => question.courseId === formData.courseId && question.topicId);
+  const visibleBankQuestions = courseBankQuestions.filter((question) => bankTopicId === 'all' || question.topicId === bankTopicId);
 
   const fetchBankQuestions = async () => {
     setBankLoading(true);
@@ -210,7 +218,7 @@ const TeacherQuizzes = () => {
       const course = response.data.data;
       const entry = { _id: course._id || course.id, title: course.title };
       setTeacherCourses((previous) => [...previous, entry]);
-      setFormData((previous) => ({ ...previous, courseId: entry._id }));
+      selectCourse(entry._id);
       setNewCourseTitle('');
       setCreatingCourse(false);
       toast.success('Course created and selected');
@@ -322,46 +330,8 @@ const TeacherQuizzes = () => {
     if (saveSession.current.isSaving) return;
 
     if (formMode === 'question') {
-      if (!formData.courseId) {
-        toast.error('Please select a course');
-        return;
-      }
-      if (!formData.questionTitle.trim()) {
-        toast.error('Title is required');
-        return;
-      }
-      for (const q of formData.questions) {
-        if (!q.text.trim()) {
-          toast.error('All questions must have text');
-          return;
-        }
-      }
-
       try {
-        const questionScheduledStart = formData.questionScheduledStart && formData.questionScheduledStart.trim() !== ''
-          ? new Date(formData.questionScheduledStart).toISOString()
-          : null;
-
-        const totalSeconds = formData.questions.reduce((sum, q) => sum + (q.timeLimit || 60), 0);
-
-        const payload = {
-          title: formData.questionTitle,
-          description: formData.description || 'Short-answer assessment',
-          courseId: formData.courseId,
-          scheduledStart: questionScheduledStart,
-          timeLimit: Math.max(1, Math.ceil(totalSeconds / 60)),
-          cameraMonitoring: formData.cameraMonitoring,
-          violationLimit: formData.violationLimit,
-          questions: formData.questions.map((q) => ({
-            text: q.text,
-            options: [],
-            correctAnswer: -1,
-            questionType: 'shortAnswer',
-            difficulty: q.difficulty,
-            explanation: q.explanation,
-            timeLimit: q.timeLimit || 60,
-          })),
-        };
+        const payload = buildQuestionAssessmentPayload(formData, selectedBankIds, bankQuestions);
         const result = await saveSession.current.submit(payload, true, async key => {
           setSaving(true);
           try { return await api.post('/quizzes', payload, { headers: { 'Idempotency-Key': key } }); }
@@ -369,8 +339,9 @@ const TeacherQuizzes = () => {
         });
         if (!result.started) return;
 
-        toast.success(formData.questions.length > 1
-          ? `${formData.questions.length} questions created successfully`
+        const questionCount = payload.questions.length + payload.bankQuestionIds.length;
+        toast.success(questionCount > 1
+          ? `${questionCount} questions created successfully`
           : 'Question created successfully');
         setModalOpen(false);
         fetchQuizzes();
@@ -627,18 +598,7 @@ const TeacherQuizzes = () => {
                 <button
                   type="button"
                   disabled={saving}
-                  onClick={() => {
-                    setFormMode('question');
-                    setFormData((prev) => ({
-                      ...prev,
-                      title: '',
-                      description: '',
-                      ...emptySchedule,
-                      questionTitle: '',
-                      questionScheduledStart: '',
-                      questions: [prev.questions[0] || { text: '', options: ['', '', '', ''], correctAnswer: 0, difficulty: 'Medium', explanation: '', timeLimit: 60, answerText: '' }],
-                    }));
-                  }}
+                  onClick={() => setFormMode('question')}
                   className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
                     formMode === 'question' ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100'
                   }`}
@@ -668,11 +628,7 @@ const TeacherQuizzes = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
                       <select
                         value={formData.courseId}
-                        onChange={(e) => {
-                          setFormData({ ...formData, courseId: e.target.value });
-                          setSelectedBankIds([]);
-                          setBankTopicId('all');
-                        }}
+                        onChange={(e) => selectCourse(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         required
                       >
@@ -777,7 +733,7 @@ const TeacherQuizzes = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
                     <select
                       value={formData.courseId}
-                      onChange={(e) => setFormData({ ...formData, courseId: e.target.value })}
+                      onChange={(e) => selectCourse(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       required
                     >
@@ -843,7 +799,7 @@ const TeacherQuizzes = () => {
                   </button>
                 </div>
 
-                {formMode === 'quiz' && !editingQuiz && (
+                {!editingQuiz && (
                   <div className="mb-5 rounded-lg border border-gray-200 p-4">
                     <div className="mb-2 flex items-center justify-between gap-3">
                       <h5 className="text-sm font-semibold text-gray-900">Add from question bank</h5>
@@ -860,15 +816,15 @@ const TeacherQuizzes = () => {
                         <label htmlFor="bank-topic" className="block text-xs font-medium text-gray-600">Topic</label>
                         <select id="bank-topic" value={bankTopicId} onChange={(event) => setBankTopicId(event.target.value)} className="mt-1 mb-3 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
                           <option value="all">All topics</option>
-                          {[...new Map(bankQuestions.filter((question) => question.courseId === formData.courseId && question.createdBy === user?._id && question.topicId).map((question) => [question.topicId, question.topicName])).entries()].map(([id, name]) => (
+                          {[...new Map(courseBankQuestions.map((question) => [question.topicId, question.topicName])).entries()].map(([id, name]) => (
                             <option key={id} value={id || ''}>{name}</option>
                           ))}
                         </select>
-                        {bankQuestions.filter((question) => question.courseId === formData.courseId && question.createdBy === user?._id && question.topicId && (bankTopicId === 'all' || question.topicId === bankTopicId)).length === 0 ? (
+                        {visibleBankQuestions.length === 0 ? (
                           <p className="text-sm text-gray-500">No bank questions in this course/topic yet. You can still write questions below.</p>
                         ) : (
                           <div className="max-h-48 space-y-2 overflow-y-auto">
-                            {bankQuestions.filter((question) => question.courseId === formData.courseId && question.createdBy === user?._id && question.topicId && (bankTopicId === 'all' || question.topicId === bankTopicId)).map((question) => (
+                            {visibleBankQuestions.map((question) => (
                               <label key={question._id} className="flex items-start gap-2 rounded border border-gray-200 p-2 text-sm">
                                 <input type="checkbox" checked={selectedBankIds.includes(question._id)} onChange={() => toggleBankQuestion(question._id)} disabled={!['multipleChoice', 'shortAnswer'].includes(question.questionType)} className="mt-1" />
                                 <span><span className="font-medium">{question.text}</span><span className="block text-xs text-gray-500">{question.topicName} · {question.questionType === 'shortAnswer' ? 'Short answer' : question.questionType === 'multipleChoice' ? 'Multiple choice' : 'Unsupported type'} · {question.timeLimit || 60} seconds</span></span>
@@ -876,7 +832,7 @@ const TeacherQuizzes = () => {
                             ))}
                           </div>
                         )}
-                        {selectedBankIds.length > 0 && <p className="mt-2 text-xs text-indigo-700">{selectedBankIds.length} bank question{selectedBankIds.length === 1 ? '' : 's'} selected. A snapshot is saved when you create the exam.</p>}
+                        {selectedBankIds.length > 0 && <p className="mt-2 text-xs text-indigo-700">{selectedBankIds.length} bank question{selectedBankIds.length === 1 ? '' : 's'} selected. Their question types and answers are kept when you save.</p>}
                       </>
                     )}
                   </div>
@@ -915,7 +871,7 @@ const TeacherQuizzes = () => {
                             <option value="Hard">Hard</option>
                           </select>
 
-                          {formData.questions.length > 1 && (
+                          {(formData.questions.length > 1 || selectedBankIds.length > 0) && (
                             <button
                               type="button"
                               onClick={() => removeQuestion(qIndex)}
