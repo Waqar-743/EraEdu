@@ -54,6 +54,9 @@
     "vite": "^8.2.1"
   },
   "overrides": {
-    "node-fetch": "2.6.7"
+    "node-fetch": "2.6.7",
+    "face-api.js": {
+      "tfjs-image-recognition-base": "0.6.0"
+    }
   }
 }

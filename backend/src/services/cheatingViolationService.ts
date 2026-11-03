@@ -75,6 +75,14 @@ function monitoringMigrationRequired(error: any, atomicWriter = false): Error | 
   return null;
 }
 
+async function topicTeacherId(topicId: string): Promise<string | null> {
+  const { data: topic, error: topicError } = await supabase.from('topics').select('course_id').eq('id', topicId).single();
+  if (topicError || !topic?.course_id) throw new Error('Could not confirm the monitored topic course');
+  const { data: course, error: courseError } = await supabase.from('courses').select('created_by').eq('id', topic.course_id).single();
+  if (courseError || !course) throw new Error('Could not confirm the monitored course teacher');
+  return course.created_by || null;
+}
+
 export const cheatingViolationService = {
   // Report a new violation
   async reportViolation(input: ViolationInput) {
@@ -116,16 +124,21 @@ export const cheatingViolationService = {
     if (!attempt.topic_id && attempt.status === 'in-progress') {
       throw teacherAttemptMigrationRequired({ message: 'Teacher exam timing migration is required' });
     }
-    if (attempt.status !== 'in-progress') {
-      // A hidden/unread count is not a factual zero.
-      return { violationId: null, autoSubmitted: false, alreadySubmitted: true };
+    if (!['in-progress', 'completed'].includes(attempt.status)) {
+      throw Object.assign(new Error('Exam is no longer active'), { statusCode: 409 });
     }
 
-    const { data: quiz } = await supabase
-      .from('teacher_quizzes')
-      .select('violation_limit, teacher_id')
-      .eq('id', attempt.quiz_id)
-      .single();
+    // A topic attempt references quizzes, not teacher_quizzes. Its current
+    // manager comes from the topic's course, including after reassignment.
+    let quiz: { teacher_id?: string | null; violation_limit?: number | null } | null;
+    if (attempt.topic_id) {
+      quiz = { teacher_id: await topicTeacherId(attempt.topic_id), violation_limit: 3 };
+    } else {
+      const { data, error } = await supabase.from('teacher_quizzes')
+        .select('violation_limit, teacher_id').eq('id', attempt.quiz_id).single();
+      if (error) throw new Error('Could not confirm exam monitoring settings');
+      quiz = data;
+    }
     const violationLimit = Math.min(100, Math.max(1, Number(quiz?.violation_limit) || 3));
 
     const row = {
@@ -163,7 +176,8 @@ export const cheatingViolationService = {
 
     // Update the attempt and auto-submit as soon as the teacher's limit is reached.
     // The status predicate prevents duplicate completion during concurrent reports.
-    const shouldAutoSubmit = currentCount >= violationLimit;
+    const alreadySubmitted = attempt.status === 'completed';
+    const shouldAutoSubmit = !alreadySubmitted && currentCount >= violationLimit;
     const updateData: any = { 
       violation_count: currentCount 
     };
@@ -188,6 +202,7 @@ export const cheatingViolationService = {
       violationCount: currentCount,
       violationLimit,
       autoSubmitted: shouldAutoSubmit,
+      alreadySubmitted,
       remainingViolations: Math.max(0, violationLimit - currentCount),
     };
   },
@@ -197,7 +212,7 @@ export const cheatingViolationService = {
     // First get the attempt to verify access
     const { data: attempt } = await supabase
       .from('quiz_attempts')
-      .select('user_id, quiz_id')
+      .select('user_id, quiz_id, topic_id')
       .eq('id', attemptId)
       .single();
 
@@ -210,12 +225,14 @@ export const cheatingViolationService = {
       // teacher/admin review, including when a student owns the attempt.
       throw Object.assign(new Error('Integrity details are available to authorized reviewers only'), { statusCode: 403 });
     } else if (requesterRole !== 'admin') {
-      const { data: quiz } = await supabase
-        .from('teacher_quizzes')
-        .select('teacher_id')
-        .eq('id', attempt.quiz_id)
-        .single();
-      if (!quiz || quiz.teacher_id !== requesterId) {
+      let currentTeacherId: string | null;
+      if (attempt.topic_id) currentTeacherId = await topicTeacherId(attempt.topic_id);
+      else {
+        const { data: quiz } = await supabase.from('teacher_quizzes')
+          .select('teacher_id').eq('id', attempt.quiz_id).single();
+        currentTeacherId = quiz?.teacher_id || null;
+      }
+      if (!currentTeacherId || currentTeacherId !== requesterId) {
         throw Object.assign(new Error('You are not authorized to view these violations'), { statusCode: 403 });
       }
     }
@@ -249,6 +266,17 @@ export const cheatingViolationService = {
       .eq('teacher_id', teacherId);
     if (quizError) throw new Error(quizError.message);
     const ownedIds = (ownedQuizzes || []).map((quiz: any) => quiz.id);
+    const { data: courses, error: courseError } = await supabase.from('courses').select('id').eq('created_by', teacherId);
+    if (courseError) throw new Error(courseError.message);
+    if (courses?.length) {
+      const { data: topics, error: topicError } = await supabase.from('topics').select('id').in('course_id', courses.map(course => course.id));
+      if (topicError) throw new Error(topicError.message);
+      if (topics?.length) {
+        const { data: topicQuizzes, error: topicQuizError } = await supabase.from('quizzes').select('id').in('topic_id', topics.map(topic => topic.id));
+        if (topicQuizError) throw new Error(topicQuizError.message);
+        ownedIds.push(...(topicQuizzes || []).map(quiz => quiz.id));
+      }
+    }
     let data: any[] = [];
     if (ownedIds.length && (!quizId || ownedIds.includes(quizId))) {
       const result = await supabase
@@ -286,6 +314,8 @@ export const cheatingViolationService = {
       totalViolations: data?.length || 0,
       suspiciousAttempts: Object.keys(attemptViolations).length,
       byType: {
+        face_away: data?.filter(v => v.violation_type === 'face_away' || v.violation_type === 'FACE_AWAY').length || 0,
+        no_face: data?.filter(v => v.violation_type === 'no_face' || v.violation_type === 'NO_FACE').length || 0,
         tab_change: data?.filter(v => v.violation_type === 'tab_change').length || 0,
         TAB_SWITCH: data?.filter(v => v.violation_type === 'TAB_SWITCH').length || 0,
         SYSTEM_FOCUS_LOST: data?.filter(v => v.violation_type === 'SYSTEM_FOCUS_LOST').length || 0,
@@ -339,17 +369,19 @@ export const cheatingViolationService = {
     if (requesterRole === 'admin') return;
     const { data: attempt, error: attemptError } = await supabase
       .from('quiz_attempts')
-      .select('quiz_id')
+      .select('quiz_id, topic_id')
       .eq('id', attemptId)
       .single();
     if (attemptError || !attempt) throw Object.assign(new Error('Exam attempt not found'), { statusCode: 404 });
 
-    const { data: quiz } = await supabase
-      .from('teacher_quizzes')
-      .select('teacher_id')
-      .eq('id', attempt.quiz_id)
-      .single();
-    if (!quiz || quiz.teacher_id !== requesterId) {
+    let teacherId: string | null;
+    if (attempt.topic_id) teacherId = await topicTeacherId(attempt.topic_id);
+    else {
+      const { data: quiz } = await supabase.from('teacher_quizzes')
+        .select('teacher_id').eq('id', attempt.quiz_id).single();
+      teacherId = quiz?.teacher_id || null;
+    }
+    if (!teacherId || teacherId !== requesterId) {
       throw Object.assign(new Error('Not authorized to manage this attempt'), { statusCode: 403 });
     }
   },

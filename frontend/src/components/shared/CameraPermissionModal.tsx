@@ -24,9 +24,10 @@ interface CameraPermissionModalProps {
   onAllow: () => void;    // called when camera is working and student clicks "Continue"
   onCancel: () => void;   // called when student cancels
   quizTitle?: string;
+  showAwayLimit?: boolean;
 }
 
-const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle }: CameraPermissionModalProps) => {
+const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle, showAwayLimit = true }: CameraPermissionModalProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const requestIdRef = useRef(0);
@@ -203,7 +204,8 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle }: CameraP
                   <li>Keep your face visible in the camera at all times</li>
                   <li>Do not look away from the screen for extended periods</li>
                   <li>Do not switch tabs or windows during the exam</li>
-                  <li>Exam will auto-submit if you look away for 60+ seconds</li>
+                  {showAwayLimit && <li>Exam will auto-submit if you look away for 60+ seconds</li>}
+                  {!showAwayLimit && <li>Three recorded violations will submit this topic exam automatically</li>}
                 </ul>
               </div>
             </div>

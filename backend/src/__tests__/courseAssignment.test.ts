@@ -136,6 +136,7 @@ describe('reassigned exam review access', () => {
   it('does not use historical event.teacher_id to grant a former manager summary access', async () => {
     mockFrom.mockImplementation((table: string) => {
       if (table === 'teacher_quizzes') return { select: () => ({ eq: async () => ({ data: [], error: null }) }) };
+      if (table === 'courses') return { select: () => ({ eq: async () => ({ data: [], error: null }) }) };
       throw new Error(`Unexpected table ${table}`);
     });
     await expect(cheatingViolationService.getViolationSummary('former-teacher'))

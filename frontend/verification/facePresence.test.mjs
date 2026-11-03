@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { acquireCamera, FacePresenceTracker, retryableLoader } from '../src/services/facePresence.ts';
+import { acquireCamera, FacePresenceTracker, retryableLoader, withInferenceTimeout } from '../src/services/facePresence.ts';
 
 test('a brief missing frame is tolerated; three positive frames confirm a face', () => {
   const tracker = new FacePresenceTracker();
@@ -69,4 +69,11 @@ test('a cancelled camera request releases all late tracks and cannot replace the
   assert.equal(stopped, 2);
   assert.equal(await acquireCamera(async () => stream, () => true), stream);
   assert.equal(stopped, 2);
+});
+
+test('a hung inference settles as an operational timeout; successful results and real rejections propagate', async () => {
+  await assert.rejects(withInferenceTimeout(new Promise(() => {}), 10), { name: 'FaceInferenceTimeout' });
+  assert.equal(await withInferenceTimeout(Promise.resolve('no_face'), 100), 'no_face');
+  const original = new Error('GPU failure');
+  await assert.rejects(withInferenceTimeout(Promise.reject(original), 100), error => error === original);
 });

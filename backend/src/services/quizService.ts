@@ -1005,6 +1005,7 @@ export const quizService = {
       if (topicQuizError) throw new Error(topicQuizError.message);
       return {
         id: attempt.id, score: attempt.score, maxScore: snapshot.length, isTopicExam: true,
+        autoSubmitted: attempt.auto_submitted === true, submissionReason: attempt.submission_reason || null,
         percentage: Math.round((Number(attempt.score || 0) / snapshot.length) * 100),
         status: attempt.status, startedAt: attempt.started_at, completedAt: attempt.completed_at,
         answers: attempt.answers || [], reviewPending: false, reviewStatus: 'reviewed',

@@ -80,3 +80,12 @@ export async function acquireCamera(
   stream.getTracks().forEach(track => track.stop());
   return null;
 }
+
+export function withInferenceTimeout<T>(inference: Promise<T>, milliseconds = 10_000): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(Object.assign(new Error('Face detection timed out. Retry monitoring.'), { name: 'FaceInferenceTimeout' }));
+    }, milliseconds);
+    inference.then(value => { clearTimeout(timer); resolve(value); }, error => { clearTimeout(timer); reject(error); });
+  });
+}

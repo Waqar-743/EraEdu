@@ -99,7 +99,8 @@ it('HTTP failures return a safe retryable message without private database diagn
 it('legacy read compatibility does not drop the stable event-ID requirement for new writes', async () => {
   mockFrom.mockImplementation(table => {
     if (table === 'quiz_attempts') return { select: () => ({ eq: () => ({ eq: () => ({ single: async () => ({ data: { id: 'attempt', user_id: 'student', quiz_id: 'exam', topic_id: 'topic', status: 'in-progress' }, error: null }) }) }) }) };
-    if (table === 'teacher_quizzes') return { select: () => ({ eq: () => ({ single: async () => ({ data: { teacher_id: 'teacher', violation_limit: 3 }, error: null }) }) }) };
+    if (table === 'topics') return { select: () => ({ eq: () => ({ single: async () => ({ data: { course_id: 'course' }, error: null }) }) }) };
+    if (table === 'courses') return { select: () => ({ eq: () => ({ single: async () => ({ data: { created_by: 'teacher' }, error: null }) }) }) };
     if (table === 'cheating_violations') return { insert: () => ({ select: () => ({ single: async () => ({ data: null, error: { code: '42703', message: 'column event_id does not exist' } }) }) }) };
     throw new Error(`Unexpected ${table}`);
   });

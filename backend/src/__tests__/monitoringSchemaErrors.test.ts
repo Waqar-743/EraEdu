@@ -11,7 +11,8 @@ function setup(error: any, atomic = false) {
       topic_id: atomic ? null : 'topic', teacher_quiz_snapshot: atomic ? { questions: [] } : null }, error: null }) };
   mockFrom.mockImplementation(table => {
     if (table === 'quiz_attempts') return attemptQuery;
-    if (table === 'teacher_quizzes') return { select: () => ({ eq: () => ({ single: async () => ({ data: { teacher_id: 'teacher', violation_limit: 3 }, error: null }) }) }) };
+    if (table === 'topics') return { select: () => ({ eq: () => ({ single: async () => ({ data: { course_id: 'course' }, error: null }) }) }) };
+    if (table === 'courses') return { select: () => ({ eq: () => ({ single: async () => ({ data: { created_by: 'teacher' }, error: null }) }) }) };
     if (table === 'cheating_violations') return { insert: () => ({ select: () => ({ single: async () => ({ data: null, error }) }) }) };
     throw new Error(`Unexpected ${table}`);
   });

@@ -1,10 +1,10 @@
 /** On-device face presence. Camera/model failures are operational states. */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
-import { acquireCamera, FacePresenceTracker, retryableLoader } from '../services/facePresence';
+import { acquireCamera, FacePresenceTracker, retryableLoader, withInferenceTimeout } from '../services/facePresence';
+import { inferFaceObservation } from '../services/faceInference';
 
 const DETECTION_INTERVAL_MS = 500;
-const DETECTION_CONFIDENCE_THRESHOLD = 0.6;
 const MODEL_URL = `${import.meta.env.BASE_URL}models`;
 const loadModels = retryableLoader(async () => {
   await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
@@ -30,23 +30,8 @@ export interface FaceDetectionState {
   retryCamera: () => void;
 }
 
-function estimateHeadPose(landmarks: faceapi.FaceLandmarks68) {
-  const pts = landmarks.positions;
-  const nose = pts[30], chin = pts[8], leftEye = pts[36], rightEye = pts[45];
-  const leftMouth = pts[48], rightMouth = pts[54];
-  const width = Math.hypot(rightEye.x - leftEye.x, rightEye.y - leftEye.y);
-  const height = Math.hypot(chin.x - nose.x, chin.y - nose.y);
-  const mouthToEye = (leftMouth.y + rightMouth.y - leftEye.y - rightEye.y) / 2;
-  if (!width || !height || !mouthToEye) throw new Error('Invalid face landmarks');
-  const yaw = ((nose.x - (leftEye.x + rightEye.x) / 2) / (width / 2)) * 45;
-  const pitch = (((nose.y - (leftEye.y + rightEye.y) / 2) / mouthToEye) - 0.55) * 80;
-  if (!Number.isFinite(yaw) || !Number.isFinite(pitch)) throw new Error('Invalid face pose');
-  return { yaw, pitch };
-}
-
 export function useFaceDetection(enabled: boolean, callbacks: FaceDetectionCallbacks = {}): FaceDetectionState {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const isDetecting = useRef(false);
   const cbRef = useRef(callbacks);
   cbRef.current = callbacks;
   const [status, setStatus] = useState<FaceStatus>('model_loading');
@@ -64,6 +49,7 @@ export function useFaceDetection(enabled: boolean, callbacks: FaceDetectionCallb
     let stream: MediaStream | null = null;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let validFaceTimer: ReturnType<typeof setTimeout> | undefined;
+    let inferenceWarmed = false;
     const tracker = new FacePresenceTracker();
     const video = videoRef.current;
 
@@ -83,18 +69,13 @@ export function useFaceDetection(enabled: boolean, callbacks: FaceDetectionCallb
       const track = stream?.getVideoTracks()[0];
       if (!track || track.readyState !== 'live' || track.muted) {
         unavailable('camera_unavailable');
-      } else if (video && !isDetecting.current && !video.paused && !video.ended && video.readyState >= 2) {
-        isDetecting.current = true;
+      } else if (video && !video.paused && !video.ended && video.readyState >= 2) {
         try {
-          const detection = await faceapi.detectSingleFace(video,
-            new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: DETECTION_CONFIDENCE_THRESHOLD }))
-            .withFaceLandmarks();
+          // Initial WebGL shader compilation can exceed ten seconds on a
+          // slower device. Keep a bound while allowing the first frame to warm.
+          const kind = await withInferenceTimeout(inferFaceObservation(video), inferenceWarmed ? 10_000 : 30_000);
           if (cancelled) return;
-          let kind: 'valid' | 'away' | 'no_face' = 'no_face';
-          if (detection && detection.detection.score >= DETECTION_CONFIDENCE_THRESHOLD) {
-            const { yaw, pitch } = estimateHeadPose(detection.landmarks);
-            kind = Math.abs(yaw) <= 30 && Math.abs(pitch) <= 25 ? 'valid' : 'away';
-          }
+          inferenceWarmed = true;
           const result = tracker.observe(kind, Date.now());
           clearValidTimer();
           setStatus(result.status);
@@ -110,11 +91,16 @@ export function useFaceDetection(enabled: boolean, callbacks: FaceDetectionCallb
               if (!cancelled) unavailable('camera_ready');
             }, 2_000);
           }
-        } catch {
+        } catch (error: unknown) {
           if (!cancelled) unavailable('inference_error');
-        } finally {
-          isDetecting.current = false;
+          // A hung GPU operation cannot be cancelled safely. Wait for an
+          // explicit Retry instead of piling up more inference operations.
+          if (error instanceof Error && error.name === 'FaceInferenceTimeout') return;
         }
+      } else {
+        // A live track is insufficient if playback stalls or has no decoded
+        // frames. Unobserved time must never extend a face-absence episode.
+        unavailable('camera_unavailable');
       }
       if (!cancelled) timer = setTimeout(runDetection, DETECTION_INTERVAL_MS);
     };

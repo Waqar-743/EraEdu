@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuiz } from '../../hooks/useQuiz';
 import { PlayIcon } from '@heroicons/react/24/solid';
+import CameraPermissionModal from '../../components/shared/CameraPermissionModal';
 
 const QuizStartPage: React.FC = () => {
   const { topicId } = useParams<{ topicId: string }>();
   const navigate = useNavigate();
   const { startQuiz, loading, error } = useQuiz();
+  const [showCamera, setShowCamera] = useState(false);
 
   const handleStart = () => {
     if (topicId) {
@@ -22,6 +24,8 @@ const QuizStartPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <CameraPermissionModal isOpen={showCamera} onCancel={() => setShowCamera(false)}
+        onAllow={() => { setShowCamera(false); handleStart(); }} showAwayLimit={false} />
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 text-center">
           <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 mb-4">
@@ -39,7 +43,7 @@ const QuizStartPage: React.FC = () => {
           )}
 
           <button
-            onClick={handleStart}
+            onClick={() => setShowCamera(true)}
             disabled={loading}
             className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
               ${loading ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}`}

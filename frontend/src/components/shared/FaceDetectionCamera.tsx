@@ -19,6 +19,7 @@ interface FaceDetectionCameraProps {
   onViolation?: (kind: 'face_away' | 'no_face') => void;
   /** Called when the student has been away > 60 s continuously. */
   onAutoSubmit?: () => void;
+  showAwayLimit?: boolean;
 }
 
 const statusConfig: Record<FaceStatus, { label: string; color: string; bgColor: string; pulse: boolean }> = {
@@ -34,7 +35,7 @@ const statusConfig: Record<FaceStatus, { label: string; color: string; bgColor: 
   permission_denied: { label: 'Camera blocked',      color: 'text-red-700',    bgColor: 'bg-red-100',    pulse: false },
 };
 
-const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit }: FaceDetectionCameraProps) => {
+const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit, showAwayLimit = true }: FaceDetectionCameraProps) => {
   const { status, awaySeconds, violationCount, modelsLoaded, videoRef, retryCamera } = useFaceDetection(
     enabled,
     { onViolation, onAutoSubmit },
@@ -140,16 +141,16 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit }: FaceDetecti
           <div className="flex items-center justify-between text-xs">
             <span className="text-red-700 font-semibold">Away timer</span>
             <span className={`font-mono font-bold ${awaySeconds >= 45 ? 'text-red-600 animate-pulse' : 'text-red-500'}`}>
-              {awaySeconds}s / 60s
+              {awaySeconds}s{showAwayLimit ? ' / 60s' : ''}
             </span>
           </div>
-          <div className="mt-1 h-1.5 bg-red-200 rounded-full overflow-hidden">
+          {showAwayLimit && <div className="mt-1 h-1.5 bg-red-200 rounded-full overflow-hidden">
             <div
               className="h-full bg-red-500 transition-all duration-500"
               style={{ width: `${Math.min(100, (awaySeconds / 60) * 100)}%` }}
             />
-          </div>
-          {awaySeconds >= 45 && (
+          </div>}
+          {showAwayLimit && awaySeconds >= 45 && (
             <p className="mt-1 text-[10px] text-red-600 font-medium">
               ⚠ Exam will auto-submit at 60 s!
             </p>

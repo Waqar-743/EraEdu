@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { lazy, Suspense, useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuiz } from '../../hooks/useQuiz';
 import { LightBulbIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { useQuizSecurity } from '../../hooks/useQuizSecurity';
+const FaceDetectionCamera = lazy(() => import('../../components/shared/FaceDetectionCamera'));
 
 const QuizPage: React.FC = () => {
   const { quizId, attemptId } = useParams<{ quizId: string; attemptId: string }>();
@@ -19,6 +21,8 @@ const QuizPage: React.FC = () => {
   const [hint, setHint] = useState<string | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [timeLeft, setTimeLeft] = useState<number>(60); // Default 60s if not specified
+  const monitoring = useQuizSecurity({ quizAttemptId: attemptId || '', enabled: !!currentQuestion && !error,
+    onAutoSubmitted: () => navigate(`/quiz/results/${attemptId}`) });
 
   useEffect(() => {
     if (attemptId) void getCurrentTopicQuestion(attemptId);
@@ -77,7 +81,7 @@ const QuizPage: React.FC = () => {
     setShowHint(true);
   };
 
-  if (loading) {
+  if (loading && !currentQuestion) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-100">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
@@ -114,6 +118,12 @@ const QuizPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <Suspense fallback={<p role="status">Starting exam camera monitoring…</p>}>
+        <FaceDetectionCamera enabled={!!currentQuestion && !error} onViolation={monitoring.reportViolation} showAwayLimit={false} />
+      </Suspense>
+      {monitoring.writeError && <div role="alert" className="mx-auto mb-4 max-w-3xl rounded border border-amber-300 bg-amber-50 p-3 text-amber-900">
+        {monitoring.writeError} <button type="button" className="underline" onClick={monitoring.retryReports}>Retry reports</button>
+      </div>}
       <div className="max-w-3xl mx-auto">
         {/* Progress / Header */}
         <div className="mb-8 flex justify-between items-center">
@@ -130,6 +140,8 @@ const QuizPage: React.FC = () => {
             </span>
           </div>
         </div>
+        <p role="status" className="mb-4 text-sm text-slate-700">Camera and browser monitoring is enabled. Three recorded violations submit this topic exam automatically.
+          {monitoring.violationCount > 0 && ` Recorded violations: ${monitoring.violationCount}.`}</p>
 
         {/* Question Card */}
         <div className="bg-white shadow sm:rounded-lg overflow-hidden">

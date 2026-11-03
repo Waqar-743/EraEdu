@@ -11,19 +11,21 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../fron
 const models = `
   const fixture = window.__face;
   const load = async () => { fixture.modelLoads++; if (fixture.modelFailure) throw new Error('fixture model offline'); };
-  export const nets = { tinyFaceDetector: { loadFromUri: load }, faceLandmark68Net: { loadFromUri: async () => {} } };
-  export class TinyFaceDetectorOptions { constructor(options) { Object.assign(this, options); } }
-  export const detectSingleFace = () => ({ withFaceLandmarks: async () => {
+  export const nets = { tinyFaceDetector: { loadFromUri: load, locateFaces: async () => {
     fixture.inferences++;
     if (fixture.inferenceFailure) throw new Error('fixture inference failed');
-    if (fixture.mode === 'no_face') return undefined;
+    return fixture.mode === 'no_face' ? [] : [{ score: 0.99 }];
+  } }, faceLandmark68Net: { loadFromUri: async () => {}, detectLandmarks: async () => landmarks() } };
+  export const extractFaces = async input => [input];
+  export class TinyFaceDetectorOptions { constructor(options) { Object.assign(this, options); } }
+  const landmarks = () => {
     const positions = Array.from({ length: 68 }, () => ({ x: 150, y: 150 }));
     positions[30] = { x: fixture.mode === 'away' ? 205 : 150, y: 155 };
     positions[8] = { x: 150, y: 250 };
     positions[36] = { x: 100, y: 100 }; positions[45] = { x: 200, y: 100 };
     positions[48] = { x: 120, y: 200 }; positions[54] = { x: 180, y: 200 };
-    return { detection: { score: 0.99 }, landmarks: { positions } };
-  } });
+    return { positions };
+  };
 `;
 const entry = `
   import React from 'react';
