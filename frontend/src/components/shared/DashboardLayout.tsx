@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import RoleSidebar, { SidebarItem } from './RoleSidebar';
+import MotionControl from "./MotionControl";
 import ChatbotWidget from './ChatbotWidget';
 import { useAuthStore } from '../../store/authStore';
 import api from '../../services/api';
@@ -130,7 +131,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
   };
 
   return (
-    <div className="app-workspace dashboard-teal flex min-h-[100dvh] bg-ink-50 overflow-hidden relative">
+    <div className="app-workspace era-workspace flex h-[100dvh] bg-ink-50 overflow-hidden relative">
       <a href="#dashboard-content" className="skip-link">Skip to dashboard content</a>
       {/* Subtle ambient mesh */}
       <div
@@ -141,13 +142,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
             'radial-gradient(60% 40% at 80% 0%, rgba(16,185,129,0.06) 0%, transparent 60%), radial-gradient(40% 30% at 0% 100%, rgba(6,182,212,0.05) 0%, transparent 60%)',
         }}
       />
-      <div aria-hidden="true" className="dashboard-learning-flow" />
-      <img
-        src="/dashboard-open-book.png"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none fixed -right-20 top-20 z-0 hidden w-[30rem] select-none opacity-[0.10] blur-[0.2px] lg:block xl:w-[36rem]"
-      />
+
       <RoleSidebar
         items={sidebarItems}
         isOpen={sidebarOpen}
@@ -156,13 +151,13 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
         collapsed={sidebarCollapsed}
       />
 
-      <div className="flex-1 flex flex-col overflow-hidden relative">
+      <div className="min-h-0 flex-1 flex flex-col overflow-hidden relative">
         {/* Floating glass header */}
         <header className="sticky top-0 z-20 px-3 sm:px-5 lg:px-6 pt-3 lg:pt-4">
           <div
             className="
               mx-auto flex h-14 w-full items-center gap-2 rounded-full px-2
-              bg-white/75 backdrop-blur-2xl ring-1 ring-ink-900/5
+              bg-white/90 ring-1 ring-ink-900/5
               shadow-[0_12px_40px_-20px_rgba(5,7,11,0.15)]
             "
           >
@@ -203,6 +198,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
             </div>
 
             <div className="ml-auto flex items-center gap-1.5 pr-1">
+              <MotionControl compact />
               {/* Notifications */}
               <div className="relative" ref={notifRef}>
                 <button
@@ -224,7 +220,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
 
                 <div
                   className={`
-                    absolute right-0 mt-3 w-[22rem] origin-top-right
+                    absolute right-0 mt-3 w-[min(22rem,calc(100vw-2rem))] origin-top-right
                     rounded-3xl p-1.5 bg-ink-900/[0.04] ring-1 ring-ink-900/5
                     shadow-[0_30px_80px_-20px_rgba(5,7,11,0.25)]
                     transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
@@ -374,7 +370,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
           </div>
         </header>
 
-        <main id="dashboard-content" tabIndex={-1} className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 relative">
+        <main id="dashboard-content" tabIndex={-1} className="min-h-0 flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 relative">
           <Outlet />
         </main>
       </div>

@@ -50,9 +50,9 @@ const CourseCard: React.FC<CourseCardProps> = ({
   const difficulty = course.difficulty || course.difficultyLevel || 'Beginner';
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+    <div className="era-course-card group flex h-full flex-col rounded-[1.75rem] border border-ink-900/5 bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lift">
       {/* Title */}
-      <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
+      <h3 className="font-display text-2xl tracking-tightest text-ink-900 mb-2 line-clamp-2">
         {course.title}
       </h3>
 
@@ -94,7 +94,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-primary-700 h-2 rounded-full transition-all duration-300"
+              className="bg-gradient-to-r from-primary-500 to-accent-500 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -102,11 +102,11 @@ const CourseCard: React.FC<CourseCardProps> = ({
       )}
 
       {/* Actions */}
-      <div className="flex flex-wrap gap-2">
+      <div className="mt-auto flex flex-wrap gap-2 pt-2">
         {variant === 'student' && onContinue && (
           <button
             onClick={onContinue}
-            className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-700 hover:bg-primary-800"
+            className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-primary-700 hover:bg-primary-800"
           >
             <AcademicCapIcon className="h-4 w-4 mr-1" />
             Continue
@@ -117,7 +117,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             {onView && (
               <button
                 onClick={onView}
-                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50"
+                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
               >
                 View
               </button>
@@ -125,7 +125,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             {onEdit && (
               <button
                 onClick={onEdit}
-                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50"
+                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
               >
                 Edit
               </button>
@@ -133,7 +133,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             {onManageTopics && (
               <button
                 onClick={onManageTopics}
-                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-700 hover:bg-primary-800"
+                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm font-medium rounded-full text-white bg-primary-700 hover:bg-primary-800"
               >
                 Topics
               </button>

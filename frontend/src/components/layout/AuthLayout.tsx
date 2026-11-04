@@ -1,6 +1,8 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import { Outlet, Navigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
-import { Brand } from '../shared';
+import Brand from '../shared/Brand';
+import MotionControl from '../shared/MotionControl';
+import { AssessmentJourney, CompactJourney } from '../landing/Illustrations';
 
 const AuthLayout = () => {
   const { isAuthenticated } = useAuthStore();
@@ -9,29 +11,29 @@ const AuthLayout = () => {
     return <Navigate to="/dashboard" replace />;
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <Brand
-            to="/"
-            textClassName="text-3xl font-extrabold text-primary-600"
-            iconWrapperClassName="bg-primary-50 ring-1 ring-primary-100"
-            iconClassName="h-6 w-6 text-primary-700"
-          />
+  return <div className="era-auth min-h-[100dvh] bg-ink-50">
+    <a href="#account-content" className="skip-link">Skip to account form</a>
+    <header className="era-auth-header">
+      <Brand to="/" />
+      <Link to="/" className="era-back-link"><span aria-hidden="true">↖</span> Back to home</Link>
+    </header>
+    <main id="account-content" className="era-auth-grid" tabIndex={-1}>
+      <section className="era-auth-story" aria-labelledby="account-story-title">
+        <span className="eyebrow eyebrow-light">Learning, with integrity</span>
+        <h1 id="account-story-title">A clearer path to <span className="era-gradient-text">what comes next.</span></h1>
+        <p>Your courses, assessments, and feedback, together in one thoughtful workspace.</p>
+        <div className="bezel mt-10"><div className="bezel-core overflow-hidden bg-[#f7faf8]"><AssessmentJourney /><CompactJourney /></div></div>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs text-ink-500">Create. Schedule. Review. Grade.</span>
+          <MotionControl />
         </div>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          AI-Powered Adaptive Learning Platform
-        </p>
-      </div>
-
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <Outlet />
-        </div>
-      </div>
-    </div>
-  );
+      </section>
+      <section className="bezel era-auth-form" aria-label="Your account">
+        <div className="bezel-core px-6 py-8 sm:px-10 sm:py-10"><Outlet /></div>
+      </section>
+    </main>
+    <footer className="era-auth-footer"><span>© {new Date().getFullYear()} EraEdu</span><div className="flex gap-5"><Link to="/contact">Support</Link><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link></div></footer>
+  </div>;
 };
 
 export default AuthLayout;

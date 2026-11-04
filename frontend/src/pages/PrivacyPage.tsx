@@ -21,7 +21,7 @@ const privacyPoints = [
 
 const PrivacyPage = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="era-document min-h-screen bg-white">
       <header className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
           <Brand to="/" />

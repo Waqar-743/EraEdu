@@ -810,7 +810,7 @@ const QuizTakePage = () => {
 
   if (!quizData) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="app-workspace era-assessment min-h-screen flex items-center justify-center">
         <div className="text-center max-w-lg p-6">
           {loadError ? <>
             <p role="alert" className="text-red-700">{loadError}</p>
@@ -831,7 +831,7 @@ const QuizTakePage = () => {
     && !!activeDeadline && Date.parse(activeDeadline) > Date.now() + serverClockOffsetMs && timeLeft > 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 select-none">
+    <div className="app-workspace era-assessment min-h-screen bg-gray-50 select-none">
       {!secureModeReady && typeof document.documentElement.requestFullscreen === 'function' && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-xl">
           <div role="dialog" aria-modal="true" aria-labelledby="secure-mode-title" className="w-full max-w-md rounded-3xl border border-white/15 bg-white p-8 text-center shadow-2xl">
