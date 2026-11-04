@@ -176,7 +176,7 @@ const TeacherOverview = () => {
   const difficultyDistribution = [
     { name: 'Beginner', value: 35, color: '#10B981' },
     { name: 'Intermediate', value: 45, color: '#06B6D4' },
-    { name: 'Advanced', value: 20, color: '#7C3AED' },
+    { name: 'Advanced', value: 20, color: '#047857' },
   ];
 
   const fetchActivity = useCallback(async () => {
@@ -228,7 +228,7 @@ const TeacherOverview = () => {
   }
 
   if (statsError || !stats) {
-    return <div role="alert" className="mx-auto max-w-7xl rounded-2xl border border-rose-200 bg-rose-50 p-6 text-rose-800">
+    return <div role="alert" className="mx-auto max-w-7xl rounded-2xl border border-red-200 bg-red-50 p-6 text-red-800">
       <p>{statsError || 'Teacher analytics are unavailable.'}</p>
       <button type="button" onClick={() => void fetchTeacherStats()} className="mt-3 rounded-lg bg-primary-700 px-4 py-2 text-sm font-semibold text-white">Retry</button>
     </div>;
@@ -519,7 +519,7 @@ const TeacherOverview = () => {
               </button>
             </div>
             {activityLoading ? <p className="text-sm text-ink-500">Loading recent activity…</p>
-              : activityError ? <div role="alert" className="rounded-xl bg-rose-50 p-4 text-sm text-rose-700">{activityError} <button type="button" onClick={() => void fetchActivity()} className="font-semibold underline">Retry</button></div>
+              : activityError ? <div role="alert" className="rounded-xl bg-red-50 p-4 text-sm text-red-700">{activityError} <button type="button" onClick={() => void fetchActivity()} className="font-semibold underline">Retry</button></div>
                 : activity.length === 0 ? <p className="rounded-xl bg-ink-50/60 p-4 text-sm text-ink-500">No recent activity has been recorded for your courses or exams.</p>
                   : <ul className="space-y-2">{activity.map((event) => (
                 <li key={event.id}>

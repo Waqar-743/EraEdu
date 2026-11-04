@@ -99,7 +99,7 @@ const TeacherQuizResultsPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
       </div>
     );
   }
@@ -109,7 +109,7 @@ const TeacherQuizResultsPage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error || 'Results not found'}</p>
-          <Link to="/dashboard/student" className="text-indigo-600 hover:text-indigo-500">
+          <Link to="/dashboard/student" className="text-primary-600 hover:text-primary-500">
             Return to Dashboard
           </Link>
         </div>
@@ -123,7 +123,7 @@ const TeacherQuizResultsPage = () => {
 
   if (isPendingReview) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
         <PostQuizFeedbackModal attemptId={attemptId} />
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-xl shadow-sm border p-8 text-center">
@@ -155,7 +155,7 @@ const TeacherQuizResultsPage = () => {
               </button>
               <Link
                 to="/dashboard/student/quiz-history"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-lg hover:bg-primary-800"
               >
                 View Exam History
               </Link>
@@ -167,7 +167,7 @@ const TeacherQuizResultsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
       <PostQuizFeedbackModal attemptId={attemptId} />
       <div className="max-w-3xl mx-auto">
         {/* Success Banner */}
@@ -191,8 +191,8 @@ const TeacherQuizResultsPage = () => {
           <p className="mb-4 text-sm text-gray-600">Student: {result.studentName || 'Unknown student'}{result.studentEmail ? ` (${result.studentEmail})` : ''} · Assessment: {result.quiz.title}</p>
           
           <div className="grid grid-cols-4 gap-4 mb-6">
-            <div className="text-center p-4 bg-indigo-50 rounded-lg">
-              <p className="text-4xl font-bold text-indigo-600">{percentage}%</p>
+            <div className="text-center p-4 bg-primary-50 rounded-lg">
+              <p className="text-4xl font-bold text-primary-600">{percentage}%</p>
               <p className="text-sm text-gray-500">Score</p>
             </div>
             <div className="text-center p-4 bg-green-50 rounded-lg">
@@ -207,9 +207,9 @@ const TeacherQuizResultsPage = () => {
               }`}>{result.violations?.length || 0}</p>
               <p className="text-sm text-gray-500">Violations</p>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
+            <div className="text-center p-4 bg-primary-50 rounded-lg">
               <div className="flex items-center justify-center gap-1">
-                <ClockIcon className="h-6 w-6 text-purple-600" />
+                <ClockIcon className="h-6 w-6 text-primary-600" />
               </div>
               <p className="text-sm text-gray-500 mt-1">
                 {result.completedAt ? new Date(result.completedAt).toLocaleTimeString() : 'N/A'}
@@ -230,7 +230,7 @@ const TeacherQuizResultsPage = () => {
                     <span className={`px-2 py-1 text-xs font-medium rounded ${
                       v.type === 'tab_switch' ? 'bg-orange-100 text-orange-700' :
                       v.type === 'copy_attempt' ? 'bg-red-100 text-red-700' :
-                      v.type === 'paste_attempt' ? 'bg-purple-100 text-purple-700' :
+                      v.type === 'paste_attempt' ? 'bg-primary-100 text-primary-700' :
                       'bg-gray-100 text-gray-700'
                     }`}>
                       {eventLabel(v)}
@@ -340,7 +340,7 @@ const TeacherQuizResultsPage = () => {
           </button>
           <Link
             to="/dashboard/student/join-quiz"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-lg hover:bg-primary-800"
           >
             Take Another Exam
           </Link>

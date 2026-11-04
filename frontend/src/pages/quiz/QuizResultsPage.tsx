@@ -15,7 +15,7 @@ const QuizResultsPage: React.FC = () => {
   if (loading) return <div className="flex min-h-screen items-center justify-center bg-primary-50"><span className="h-12 w-12 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600" /></div>;
 
   if (error || !currentAttempt) {
-    return <div className="flex min-h-screen items-center justify-center bg-primary-50 px-4"><div className="text-center"><p className="text-rose-700">{error || 'Results not found'}</p><Link to="/dashboard" className="mt-4 inline-block font-semibold text-primary-700 hover:text-primary-800">Return to Dashboard</Link></div></div>;
+    return <div className="flex min-h-screen items-center justify-center bg-primary-50 px-4"><div className="text-center"><p className="text-red-700">{error || 'Results not found'}</p><Link to="/dashboard" className="mt-4 inline-block font-semibold text-primary-700 hover:text-primary-800">Return to Dashboard</Link></div></div>;
   }
 
   // Teacher-graded and short-answer submissions deliberately return no score
@@ -59,10 +59,10 @@ const QuizResultsPage: React.FC = () => {
           </div>
         ) : (
           <div className="px-6 py-8 sm:px-10">
-            {result.autoSubmitted && <div className="mb-6 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm font-medium text-rose-800">This exam was auto-submitted due to detected violations.</div>}
+            {result.autoSubmitted && <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-800">This exam was auto-submitted due to detected violations.</div>}
             <div className="text-center"><div className="mx-auto inline-flex h-32 w-32 items-center justify-center rounded-full bg-primary-50 ring-8 ring-primary-100"><span className="text-4xl font-bold text-primary-700">{percentage}%</span></div></div>
             <dl className="mt-8 grid gap-4 sm:grid-cols-3"><div className="rounded-2xl bg-primary-50 p-5 text-center"><dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Score</dt><dd className="mt-2 text-2xl font-bold text-ink-900">{score} / {maxScore}</dd></div><div className="rounded-2xl bg-primary-50 p-5 text-center"><dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Questions</dt><dd className="mt-2 text-2xl font-bold text-ink-900">{answers.length}</dd></div><div className="rounded-2xl bg-primary-50 p-5 text-center"><dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Status</dt><dd className="mt-2 text-2xl font-bold capitalize text-ink-900">{result.status || 'Completed'}</dd></div></dl>
-            {answers.length > 0 && <><h2 className="mt-9 text-lg font-bold text-ink-900">Question review</h2><ul className="mt-3 divide-y divide-ink-900/10">{answers.map((answer: any, index: number) => <li key={index} className="flex gap-3 py-4">{answer.isCorrect ? <CheckCircleIcon className="h-6 w-6 shrink-0 text-emerald-500" /> : <XCircleIcon className="h-6 w-6 shrink-0 text-rose-500" />}<div><p className="text-sm font-semibold text-ink-900">Question {index + 1}</p><p className="mt-1 text-sm text-ink-500">Your answer: <span className={answer.isCorrect ? 'text-emerald-700' : 'text-rose-700'}>{answerLabel(answer)}</span></p></div></li>)}</ul></>}
+            {answers.length > 0 && <><h2 className="mt-9 text-lg font-bold text-ink-900">Question review</h2><ul className="mt-3 divide-y divide-ink-900/10">{answers.map((answer: any, index: number) => <li key={index} className="flex gap-3 py-4">{answer.isCorrect ? <CheckCircleIcon className="h-6 w-6 shrink-0 text-emerald-500" /> : <XCircleIcon className="h-6 w-6 shrink-0 text-red-500" />}<div><p className="text-sm font-semibold text-ink-900">Question {index + 1}</p><p className="mt-1 text-sm text-ink-500">Your answer: <span className={answer.isCorrect ? 'text-emerald-700' : 'text-red-700'}>{answerLabel(answer)}</span></p></div></li>)}</ul></>}
             <div className="mt-8 text-center"><Link to="/dashboard" className="inline-flex rounded-xl bg-primary-700 px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-800">Back to Dashboard</Link></div>
           </div>
         )}

@@ -119,11 +119,11 @@ export default function QuestionBatchModal({ topics, initialTopicId, editingQues
               <textarea maxLength={10000} rows={2} value={draft.explanation} onChange={event => update(draft.id, { explanation: event.target.value })} className="input-field mt-1" />
             </label>
           </fieldset>)}
-          {!editingQuestion && <button type="button" disabled={drafts.length >= 100} onClick={() => setDrafts(current => [...current, newDraft(current[current.length - 1].topicId)])} className="rounded-lg border border-indigo-300 px-4 py-2 font-medium text-indigo-700 disabled:opacity-50">Add another question</button>}
+          {!editingQuestion && <button type="button" disabled={drafts.length >= 100} onClick={() => setDrafts(current => [...current, newDraft(current[current.length - 1].topicId)])} className="rounded-lg border border-primary-300 px-4 py-2 font-medium text-primary-700 disabled:opacity-50">Add another question</button>}
         </fieldset>
         {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
         <div className="flex justify-end border-t border-gray-100 pt-4">
-          <button type="submit" disabled={saving} className="rounded-lg bg-indigo-600 px-5 py-2 font-semibold text-white disabled:opacity-50">{saving ? 'Saving…' : editingQuestion ? 'Update question' : `Save ${drafts.length} question${drafts.length === 1 ? '' : 's'}`}</button>
+          <button type="submit" disabled={saving} className="rounded-lg bg-primary-700 px-5 py-2 font-semibold text-white disabled:opacity-50">{saving ? 'Saving…' : editingQuestion ? 'Update question' : `Save ${drafts.length} question${drafts.length === 1 ? '' : 's'}`}</button>
         </div>
       </form>
     </section>

@@ -361,17 +361,17 @@ const Hero = () => (
                       key={i}
                       className={`aspect-square rounded-lg ring-1 ${
                         i === 5
-                          ? 'bg-rose-100 ring-rose-300'
+                          ? 'bg-red-100 ring-red-300'
                           : 'bg-primary-50 ring-primary-200'
                       }`}
                     />
                   ))}
                 </div>
-                <div className="mt-4 rounded-2xl bg-rose-50 p-3 ring-1 ring-rose-200">
-                  <p className="text-[10px] font-semibold uppercase tracking-eyebrow text-rose-700">
+                <div className="mt-4 rounded-2xl bg-red-50 p-3 ring-1 ring-red-200">
+                  <p className="text-[10px] font-semibold uppercase tracking-eyebrow text-red-700">
                     Flagged
                   </p>
-                  <p className="mt-1 text-xs text-rose-900">
+                  <p className="mt-1 text-xs text-red-900">
                     Seat 06 — face absent 4.2s
                   </p>
                 </div>
@@ -449,7 +449,7 @@ const FeatureCard = ({ title, copy, span, visual, accent = 'emerald' }: Feat) =>
     accent === 'cyan'
       ? 'text-accent-700 bg-accent-50 ring-accent-200'
       : accent === 'violet'
-      ? 'text-secondary-700 bg-secondary-50 ring-secondary-200'
+      ? 'text-primary-700 bg-primary-50 ring-primary-200'
       : 'text-primary-700 bg-primary-50 ring-primary-200';
   return (
     <div className={`reveal bezel ${span} transition-transform duration-500 ease-spring hover:-translate-y-1`}>
@@ -516,7 +516,7 @@ const FeaturesBento = () => (
                     key={i}
                     className={`h-10 w-14 rounded-md ring-1 ${
                       i === 4
-                        ? 'bg-rose-500/20 ring-rose-400/60'
+                        ? 'bg-red-500/20 ring-red-400/60'
                         : 'bg-white/5 ring-white/10'
                     }`}
                   />
@@ -591,7 +591,7 @@ const FeaturesBento = () => (
                 <path
                   d="M0 80 C 30 60, 60 30, 90 50 S 150 90, 200 30"
                   fill="none"
-                  stroke="#7C3AED"
+                  stroke="#047857"
                   strokeWidth="1.5"
                 />
                 <path
@@ -751,13 +751,13 @@ const IntegritySpotlight = () => (
             <div className="bezel-core-dark relative aspect-[4/5] overflow-hidden p-8">
               <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-transparent to-accent-500/10"
+                className="absolute inset-0 bg-gradient-to-br from-primary-700/10 via-transparent to-accent-500/10"
               />
 
               <div className="relative flex h-full flex-col">
                 <div className="flex items-center justify-between">
                   <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-eyebrow text-white/70 ring-1 ring-white/10">
-                    <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary-400 animate-pulse" />
                     REC · 00:14:32
                   </span>
                   <span className="font-mono text-[10px] text-white/40">

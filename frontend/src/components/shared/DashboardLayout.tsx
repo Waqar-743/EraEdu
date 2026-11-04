@@ -216,7 +216,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                 >
                   <Stroke d="M6 8a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9z M10 21a2 2 0 0 0 4 0" />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white ring-2 ring-white">
+                    <span className="absolute top-1.5 right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-primary-500 px-1 text-[9px] font-bold text-white ring-2 ring-white">
                       {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                   )}
@@ -363,7 +363,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                   </Link>
                   <button
                     onClick={handleSignOut}
-                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-rose-600 transition-colors duration-300 hover:bg-rose-50"
+                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-primary-600 transition-colors duration-300 hover:bg-primary-50"
                   >
                     <Stroke d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 17l-5-5 5-5 M5 12h12" size={15} />
                     Sign out

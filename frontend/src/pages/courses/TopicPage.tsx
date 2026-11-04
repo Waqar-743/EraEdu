@@ -45,7 +45,7 @@ const TopicPage: React.FC = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
       </div>
     );
   }
@@ -71,7 +71,7 @@ const TopicPage: React.FC = () => {
         <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
           <h1 className="text-3xl font-bold text-gray-900">{topic.title}</h1>
           {topic.difficulty && <p className="mt-1 max-w-2xl text-sm text-gray-500">
-            Difficulty: <span className="font-medium text-indigo-600">{topic.difficulty}</span>
+            Difficulty: <span className="font-medium text-primary-600">{topic.difficulty}</span>
           </p>}
         </div>
         
@@ -84,7 +84,7 @@ const TopicPage: React.FC = () => {
         <div className="px-4 py-5 sm:px-6 bg-gray-50 border-t border-gray-200 flex justify-end">
           <Link
             to={`/quiz/start/${topic._id}`}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           >
             <CheckCircleIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             Take Exam for this Topic

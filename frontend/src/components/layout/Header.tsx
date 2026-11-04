@@ -143,7 +143,7 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
               </Link>
               <button
                 onClick={handleLogout}
-                className="block w-full rounded-xl px-3 py-2 text-left text-sm text-rose-600 transition-colors duration-300 hover:bg-rose-50"
+                className="block w-full rounded-xl px-3 py-2 text-left text-sm text-primary-600 transition-colors duration-300 hover:bg-primary-50"
               >
                 Sign out
               </button>

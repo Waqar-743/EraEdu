@@ -77,7 +77,7 @@ const StudentCourses = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
       </div>
     );
   }
@@ -95,7 +95,7 @@ const StudentCourses = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowJoinModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white text-sm font-medium rounded-lg hover:bg-primary-800 transition-colors shadow-sm"
           >
             <PlusIcon className="h-5 w-5" />
             Join Course
@@ -223,7 +223,7 @@ const StudentCourses = () => {
               <button
                 onClick={handleJoinCourse}
                 disabled={joining || courseCode.length < 6}
-                className="px-6 py-2 bg-primary-600 text-white rounded-lg font-medium text-sm hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
+                className="px-6 py-2 bg-primary-700 text-white rounded-lg font-medium text-sm hover:bg-primary-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
               >
                 {joining ? (
                   <>

@@ -134,7 +134,7 @@ const CreateCoursePage = () => {
             type="text"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             placeholder="Enter your course title"
             required
             autoFocus
@@ -150,7 +150,7 @@ const CreateCoursePage = () => {
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             placeholder="Brief description of the course (optional)"
           />
         </div>
@@ -165,7 +165,7 @@ const CreateCoursePage = () => {
               type="text"
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
               placeholder="Enter a category or choose a suggestion"
               maxLength={MAX_COURSE_CATEGORY_LENGTH + 20}
               required
@@ -174,7 +174,7 @@ const CreateCoursePage = () => {
               type="button"
               onClick={() => setShowSuggestedCategories((show) => !show)}
               aria-expanded={showSuggestedCategories}
-              className="mt-2 text-sm text-indigo-600 hover:text-indigo-800"
+              className="mt-2 text-sm text-primary-600 hover:text-primary-800"
             >
               {showSuggestedCategories ? 'Hide category suggestions' : 'Show category suggestions'}
             </button>
@@ -188,7 +188,7 @@ const CreateCoursePage = () => {
                       setFormData((current) => ({ ...current, category: cat }));
                       setShowSuggestedCategories(false);
                     }}
-                    className="rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-700 hover:border-indigo-500 hover:text-indigo-700"
+                    className="rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-700 hover:border-primary-500 hover:text-primary-700"
                   >
                     {cat}
                   </button>
@@ -203,7 +203,7 @@ const CreateCoursePage = () => {
             <select
               value={formData.difficulty}
               onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             >
               <option value="Beginner">Beginner</option>
               <option value="Intermediate">Intermediate</option>
@@ -223,7 +223,7 @@ const CreateCoursePage = () => {
             value={formData.maxStudents}
             onChange={(e) => setFormData({ ...formData, maxStudents: e.target.value })}
             placeholder="e.g. 50"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           />
         </div>
 
@@ -239,7 +239,7 @@ const CreateCoursePage = () => {
           <button
             type="submit"
             disabled={loading || !formData.title.trim()}
-            className="px-6 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+            className="px-6 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
           >
             {loading ? (
               <>

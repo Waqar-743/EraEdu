@@ -42,10 +42,10 @@ const tones: Record<string, { ring: string; bg: string; fg: string; glow: string
     glow: 'rgba(6,182,212,0.18)',
   },
   purple: {
-    ring: 'ring-secondary-200/70',
-    bg: 'bg-gradient-to-br from-secondary-50 to-white',
-    fg: 'text-secondary-700',
-    glow: 'rgba(124,58,237,0.18)',
+    ring: 'ring-primary-200/70',
+    bg: 'bg-gradient-to-br from-primary-50 to-white',
+    fg: 'text-primary-700',
+    glow: 'rgba(16,185,129,0.18)',
   },
   orange: {
     ring: 'ring-amber-200/70',
@@ -60,16 +60,16 @@ const tones: Record<string, { ring: string; bg: string; fg: string; glow: string
     glow: 'rgba(245,158,11,0.20)',
   },
   red: {
-    ring: 'ring-rose-200/70',
-    bg: 'bg-gradient-to-br from-rose-50 to-white',
-    fg: 'text-rose-700',
-    glow: 'rgba(244,63,94,0.18)',
+    ring: 'ring-red-200/70',
+    bg: 'bg-gradient-to-br from-red-50 to-white',
+    fg: 'text-red-700',
+    glow: 'rgba(239,68,68,0.18)',
   },
   danger: {
-    ring: 'ring-rose-200/70',
-    bg: 'bg-gradient-to-br from-rose-50 to-white',
-    fg: 'text-rose-700',
-    glow: 'rgba(244,63,94,0.18)',
+    ring: 'ring-red-200/70',
+    bg: 'bg-gradient-to-br from-red-50 to-white',
+    fg: 'text-red-700',
+    glow: 'rgba(239,68,68,0.18)',
   },
 };
 
@@ -135,12 +135,12 @@ const StatCard: React.FC<StatCardProps> = ({
             {trend && change !== undefined && (
               <p
                 className={`mt-2 inline-flex items-center gap-1 text-[11px] font-medium ${
-                  trend === 'up' ? 'text-primary-700' : 'text-rose-600'
+                  trend === 'up' ? 'text-primary-700' : 'text-red-600'
                 }`}
               >
                 <span
                   className={`inline-flex h-4 w-4 items-center justify-center rounded-full ${
-                    trend === 'up' ? 'bg-primary-100' : 'bg-rose-100'
+                    trend === 'up' ? 'bg-primary-100' : 'bg-red-100'
                   }`}
                 >
                   {trend === 'up' ? '↑' : '↓'}

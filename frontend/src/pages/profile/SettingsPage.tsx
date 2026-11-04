@@ -40,7 +40,7 @@ const SettingsPage = () => {
           <legend className="mb-2 text-sm font-semibold text-ink-900">Theme</legend>
           <div className="flex flex-wrap gap-3">
             {(['light', 'dark'] as const).map((value) => <label key={value} className="flex cursor-pointer items-center gap-2 rounded-xl border border-ink-900/10 px-4 py-3 text-sm text-ink-800">
-              <input type="radio" name="theme" value={value} checked={theme === value} onChange={() => setTheme(value)} className="accent-emerald-600" />
+              <input type="radio" name="theme" value={value} checked={theme === value} onChange={() => setTheme(value)} className="h-4 w-4" />
               {value === 'light' ? 'Light' : 'Dark'}
             </label>)}
           </div>
@@ -49,7 +49,7 @@ const SettingsPage = () => {
           <legend className="mb-2 text-sm font-semibold text-ink-900">Desktop sidebar</legend>
           <div className="flex flex-wrap gap-3">
             {[false, true].map((collapsed) => <label key={String(collapsed)} className="flex cursor-pointer items-center gap-2 rounded-xl border border-ink-900/10 px-4 py-3 text-sm text-ink-800">
-              <input type="radio" name="sidebar" checked={sidebarCollapsed === collapsed} onChange={() => setSidebarCollapsed(collapsed)} className="accent-emerald-600" />
+              <input type="radio" name="sidebar" checked={sidebarCollapsed === collapsed} onChange={() => setSidebarCollapsed(collapsed)} className="h-4 w-4" />
               {collapsed ? 'Collapsed' : 'Expanded'}
             </label>)}
           </div>
@@ -64,7 +64,7 @@ const SettingsPage = () => {
         <div>
           <label htmlFor="current-password" className="mb-1 block text-sm font-medium text-ink-800">Current password</label>
           <PasswordInput id="current-password" autoComplete="current-password" className="input-field" aria-invalid={Boolean(errors.currentPassword)} aria-describedby={errors.currentPassword ? 'current-password-error' : undefined} {...register('currentPassword', { required: 'Enter your current password.', maxLength: { value: 128, message: 'Password must be at most 128 characters.' } })} />
-          {errors.currentPassword && <p id="current-password-error" className="mt-1 text-sm text-rose-700">{errors.currentPassword.message}</p>}
+          {errors.currentPassword && <p id="current-password-error" className="mt-1 text-sm text-red-700">{errors.currentPassword.message}</p>}
         </div>
         <div>
           <label htmlFor="new-password" className="mb-1 block text-sm font-medium text-ink-800">New password</label>
@@ -75,14 +75,14 @@ const SettingsPage = () => {
             pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, message: 'Include an uppercase letter, a lowercase letter and a number.' },
             validate: (value) => value !== getValues('currentPassword') || 'Choose a password different from your current password.',
           })} />
-          {errors.newPassword && <p id="new-password-error" className="mt-1 text-sm text-rose-700">{errors.newPassword.message}</p>}
+          {errors.newPassword && <p id="new-password-error" className="mt-1 text-sm text-red-700">{errors.newPassword.message}</p>}
         </div>
         <div>
           <label htmlFor="confirm-password" className="mb-1 block text-sm font-medium text-ink-800">Confirm new password</label>
           <PasswordInput id="confirm-password" autoComplete="new-password" className="input-field" aria-invalid={Boolean(errors.confirmPassword)} aria-describedby={errors.confirmPassword ? 'confirm-password-error' : undefined} {...register('confirmPassword', { required: 'Confirm your new password.', validate: (value) => value === getValues('newPassword') || 'Passwords do not match.' })} />
-          {errors.confirmPassword && <p id="confirm-password-error" className="mt-1 text-sm text-rose-700">{errors.confirmPassword.message}</p>}
+          {errors.confirmPassword && <p id="confirm-password-error" className="mt-1 text-sm text-red-700">{errors.confirmPassword.message}</p>}
         </div>
-        {passwordError && <p role="alert" className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-700">{passwordError}</p>}
+        {passwordError && <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{passwordError}</p>}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-xs text-ink-500">Enter your current password to confirm this change.</p>
           <button type="submit" className="btn-primary" disabled={isSubmitting}>{isSubmitting ? 'Changing password…' : 'Change password'}</button>

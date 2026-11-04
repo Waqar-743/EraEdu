@@ -45,7 +45,7 @@ const ContactPage = () => {
         <div className="mt-12 flex flex-col gap-3 sm:flex-row">
           <Link
             to="/login"
-            className="inline-flex items-center justify-center rounded-md bg-primary-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-700"
+            className="inline-flex items-center justify-center rounded-md bg-primary-700 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-800"
           >
             Sign in
           </Link>

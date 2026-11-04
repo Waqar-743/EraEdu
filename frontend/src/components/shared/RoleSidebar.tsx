@@ -224,7 +224,7 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role,
                   rounded-[calc(1rem-0.375rem)] px-3 py-2.5
                   text-[13px] font-medium text-white/70
                   transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                  hover:text-rose-200 hover:bg-rose-500/10 active:scale-[0.985]
+                  hover:text-primary-200 hover:bg-primary-500/10 active:scale-[0.985]
                   ${collapsed ? 'lg:justify-center lg:px-1' : ''}
                 `}
               >
@@ -237,7 +237,7 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role,
                     flex h-7 w-7 items-center justify-center rounded-full ${collapsed ? 'lg:hidden' : ''}
                     bg-white/[0.04] ring-1 ring-white/10
                     transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                    group-hover:bg-rose-500/15 group-hover:ring-rose-300/30
+                    group-hover:bg-primary-500/15 group-hover:ring-primary-300/30
                     group-hover:translate-x-0.5 group-hover:-translate-y-[1px]
                   `}
                 >

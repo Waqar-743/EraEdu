@@ -28,8 +28,8 @@ const QuizStartPage: React.FC = () => {
         onAllow={() => { setShowCamera(false); handleStart(); }} showAwayLimit={false} />
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 text-center">
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 mb-4">
-            <PlayIcon className="h-6 w-6 text-indigo-600" aria-hidden="true" />
+          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-primary-100 mb-4">
+            <PlayIcon className="h-6 w-6 text-primary-600" aria-hidden="true" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Ready to Start?</h2>
           <p className="text-gray-500 mb-6">
@@ -46,7 +46,7 @@ const QuizStartPage: React.FC = () => {
             onClick={() => setShowCamera(true)}
             disabled={loading}
             className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
-              ${loading ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}`}
+              ${loading ? 'bg-primary-400 cursor-not-allowed' : 'bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'}`}
           >
             {loading ? (
               <>
@@ -63,7 +63,7 @@ const QuizStartPage: React.FC = () => {
           
           <button
             onClick={() => navigate(-1)}
-            className="mt-4 w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            className="mt-4 w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           >
             Cancel
           </button>

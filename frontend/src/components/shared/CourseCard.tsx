@@ -94,7 +94,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
             <div
-              className="bg-primary-600 h-2 rounded-full transition-all duration-300"
+              className="bg-primary-700 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -106,7 +106,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
         {variant === 'student' && onContinue && (
           <button
             onClick={onContinue}
-            className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700"
+            className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-700 hover:bg-primary-800"
           >
             <AcademicCapIcon className="h-4 w-4 mr-1" />
             Continue
@@ -133,7 +133,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             {onManageTopics && (
               <button
                 onClick={onManageTopics}
-                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700"
+                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-700 hover:bg-primary-800"
               >
                 Topics
               </button>

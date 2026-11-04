@@ -226,7 +226,7 @@ const TeacherSubmissions = () => {
             <button
               onClick={() => setFilter('all')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                filter === 'all' ? 'bg-primary-700 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
               All
@@ -255,7 +255,7 @@ const TeacherSubmissions = () => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         {loading ? (
           <div className="p-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-500 mx-auto"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-600 mx-auto"></div>
           </div>
         ) : loadError ? (
           <div role="alert" className="p-8 text-center text-red-800">
@@ -327,7 +327,7 @@ const TeacherSubmissions = () => {
                     
                     <button
                       onClick={() => openReviewModal(submission)}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition-colors"
                     >
                       <EyeIcon className="h-4 w-4" />
                       Review
@@ -562,7 +562,7 @@ const TeacherSubmissions = () => {
               <button
                 onClick={handleSaveGrade}
                 disabled={saving || reviewLoading || !!reviewError || !quizDetails}
-                className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 flex items-center gap-2"
+                className="px-6 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 disabled:opacity-50 flex items-center gap-2"
               >
                 {saving ? (
                   <>

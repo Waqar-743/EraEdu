@@ -111,7 +111,7 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
                 key={`${message.role}-${index}`}
                 className={
                   message.role === 'user'
-                    ? 'ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-primary-600 px-3 py-2 text-sm text-white'
+                    ? 'ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-primary-700 px-3 py-2 text-sm text-white'
                     : 'w-fit max-w-[85%] rounded-2xl rounded-bl-sm bg-gray-100 px-3 py-2 text-sm text-gray-700'
                 }
               >
@@ -165,7 +165,7 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
 
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-600 text-white shadow-lg transition hover:bg-primary-700"
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-700 text-white shadow-lg transition hover:bg-primary-800"
         aria-label="Open assistant"
       >
         <FiMessageCircle className="h-5 w-5" />

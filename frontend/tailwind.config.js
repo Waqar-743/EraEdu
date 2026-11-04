@@ -47,16 +47,17 @@ export default {
           900: '#164E63',
         },
         secondary: {
-          50: '#F5F3FF',
-          100: '#EDE9FE',
-          200: '#DDD6FE',
-          300: '#C4B5FD',
-          400: '#A78BFA',
-          500: '#8B5CF6',
-          600: '#7C3AED',
-          700: '#6D28D9',
-          800: '#5B21B6',
-          900: '#4C1D95',
+          // Legacy secondary controls follow the primary brand palette.
+          50: '#ECFEF7',
+          100: '#D0FBE9',
+          200: '#A4F4D3',
+          300: '#6CE8B7',
+          400: '#34D399',
+          500: '#10B981',
+          600: '#059669',
+          700: '#047857',
+          800: '#065F46',
+          900: '#064E3B',
         },
       },
       fontFamily: {
@@ -81,7 +82,7 @@ export default {
         'inner-hl-dark': 'inset 0 1px 0 rgba(255,255,255,0.08)',
       },
       backgroundImage: {
-        'mesh-emerald': 'radial-gradient(at 18% 22%, rgba(16,185,129,0.18) 0px, transparent 45%), radial-gradient(at 82% 10%, rgba(34,211,238,0.14) 0px, transparent 50%), radial-gradient(at 50% 90%, rgba(124,58,237,0.10) 0px, transparent 55%)',
+        'mesh-emerald': 'radial-gradient(at 18% 22%, rgba(16,185,129,0.18) 0px, transparent 45%), radial-gradient(at 82% 10%, rgba(34,211,238,0.14) 0px, transparent 50%), radial-gradient(at 50% 90%, rgba(4,120,87,0.10) 0px, transparent 55%)',
         'grid-faint': "linear-gradient(rgba(15,23,42,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,0.04) 1px, transparent 1px)",
       },
       keyframes: {

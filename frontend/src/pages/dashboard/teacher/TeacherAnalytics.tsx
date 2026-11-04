@@ -67,7 +67,7 @@ const TeacherAnalytics = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
       </div>
     );
   }
@@ -277,7 +277,7 @@ const TeacherAnalytics = () => {
                   : 'Consider reviewing difficult topics.'}
               </p>
             </div>
-            <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl p-6 text-white">
+            <div className="bg-gradient-to-br from-primary-700 to-primary-700 rounded-xl p-6 text-white">
               <h4 className="text-lg font-semibold mb-2">Total Exams</h4>
               <p className="text-4xl font-bold">{analytics?.totalQuizzes || 0}</p>
               <p className="text-white/90 mt-2">Exams created and available</p>

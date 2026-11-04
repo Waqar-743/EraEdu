@@ -179,19 +179,19 @@ const QuizOpeningConfirmationModal = ({ isOpen, quiz, onClose, onEdit, onOpen }:
             transition={{ type: 'spring', damping: 26, stiffness: 320 }}
             className="quiz-opening-modal relative flex max-h-[94vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-white/30 bg-white/90 shadow-[0_32px_100px_-20px_rgba(2,6,23,0.65)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/90"
           >
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-400 via-indigo-500 to-violet-500" />
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-400 via-primary-500 to-primary-500" />
             <header className="flex items-start justify-between border-b border-slate-200/70 px-5 py-5 sm:px-7 dark:border-white/10">
               <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-lg shadow-indigo-500/25">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-700 to-primary-800 text-white shadow-lg shadow-primary-500/25">
                   <AcademicCapIcon className="h-7 w-7" aria-hidden="true" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-300">{isPreparing ? 'Secure launch' : showFinalConfirmation ? 'Final checkpoint' : 'Pre-launch review'}</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-primary-600 dark:text-primary-300">{isPreparing ? 'Secure launch' : showFinalConfirmation ? 'Final checkpoint' : 'Pre-launch review'}</p>
                   <h2 id="quiz-preview-title" className="quiz-opening-title mt-1 text-xl font-bold text-slate-950 sm:text-2xl dark:text-white">{isPreparing ? 'Preparing Exam...' : showFinalConfirmation ? 'Final Confirmation' : 'Exam Preview'}</h2>
                   <p className="quiz-opening-subtitle mt-1 text-sm text-slate-500 dark:text-slate-400">{isPreparing ? 'Please wait while EraEdu completes its launch checks.' : showFinalConfirmation ? 'You are about to open this exam.' : 'Review the assessment before opening it.'}</p>
                 </div>
               </div>
-              <button ref={closeButtonRef} type="button" onClick={onClose} aria-label="Close dialog" className="rounded-xl p-2 text-slate-500 transition hover:bg-slate-200/70 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:hover:bg-white/10 dark:hover:text-white">
+              <button ref={closeButtonRef} type="button" onClick={onClose} aria-label="Close dialog" className="rounded-xl p-2 text-slate-500 transition hover:bg-slate-200/70 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:hover:bg-white/10 dark:hover:text-white">
                 <XMarkIcon className="h-6 w-6" />
               </button>
             </header>
@@ -206,8 +206,8 @@ const QuizOpeningConfirmationModal = ({ isOpen, quiz, onClose, onEdit, onOpen }:
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex min-h-[390px] items-center justify-center overflow-y-auto px-5 py-8 sm:px-7"
               >
-                <section className="w-full max-w-xl rounded-3xl border border-indigo-200/70 bg-gradient-to-br from-indigo-50/90 via-white/80 to-cyan-50/80 p-6 shadow-inner sm:p-8 dark:border-indigo-400/20 dark:from-indigo-400/[0.10] dark:via-white/[0.04] dark:to-cyan-400/[0.06]">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-xl shadow-indigo-500/25">
+                <section className="w-full max-w-xl rounded-3xl border border-primary-200/70 bg-gradient-to-br from-primary-50/90 via-white/80 to-cyan-50/80 p-6 shadow-inner sm:p-8 dark:border-primary-400/20 dark:from-primary-400/[0.10] dark:via-white/[0.04] dark:to-cyan-400/[0.06]">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-700 to-primary-800 text-white shadow-xl shadow-primary-500/25">
                     {preparationStep >= 5 ? <CheckCircleIcon className="h-9 w-9" /> : <SparklesIcon className="h-8 w-8 animate-pulse" />}
                   </div>
                   <h3 className="mt-5 text-center text-xl font-bold text-slate-950 dark:text-white">Preparing Exam...</h3>
@@ -226,12 +226,12 @@ const QuizOpeningConfirmationModal = ({ isOpen, quiz, onClose, onEdit, onOpen }:
                           key={label}
                           initial={{ opacity: 0.45 }}
                           animate={{ opacity: complete || active ? 1 : 0.45 }}
-                          className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${complete ? 'border-emerald-200 bg-emerald-50/80 dark:border-emerald-400/20 dark:bg-emerald-400/[0.08]' : active ? 'border-indigo-200 bg-indigo-50 dark:border-indigo-400/20 dark:bg-indigo-400/[0.08]' : 'border-slate-200 bg-white/50 dark:border-white/10 dark:bg-white/[0.03]'}`}
+                          className={`flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors ${complete ? 'border-emerald-200 bg-emerald-50/80 dark:border-emerald-400/20 dark:bg-emerald-400/[0.08]' : active ? 'border-primary-200 bg-primary-50 dark:border-primary-400/20 dark:bg-primary-400/[0.08]' : 'border-slate-200 bg-white/50 dark:border-white/10 dark:bg-white/[0.03]'}`}
                         >
                           {complete ? (
                             <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-500 text-white"><CheckCircleIcon className="h-4 w-4" /></motion.span>
                           ) : active ? (
-                            <span className="h-5 w-5 animate-spin rounded-full border-2 border-indigo-200 border-t-indigo-600" aria-hidden="true" />
+                            <span className="h-5 w-5 animate-spin rounded-full border-2 border-primary-200 border-t-primary-600" aria-hidden="true" />
                           ) : (
                             <span className="h-5 w-5 rounded-full border-2 border-slate-300 dark:border-slate-600" aria-hidden="true" />
                           )}
@@ -241,7 +241,7 @@ const QuizOpeningConfirmationModal = ({ isOpen, quiz, onClose, onEdit, onOpen }:
                     })}
                   </div>
                   <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-                    <motion.div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-emerald-500" animate={{ width: `${(preparationStep / 5) * 100}%` }} transition={{ duration: 0.35 }} />
+                    <motion.div className="h-full rounded-full bg-gradient-to-r from-primary-700 to-emerald-500" animate={{ width: `${(preparationStep / 5) * 100}%` }} transition={{ duration: 0.35 }} />
                   </div>
                 </section>
               </motion.div>
@@ -279,8 +279,8 @@ const QuizOpeningConfirmationModal = ({ isOpen, quiz, onClose, onEdit, onOpen }:
                     ))}
                   </ul>
 
-                  <div id="final-confirmation-warning" className="mt-6 rounded-2xl border border-rose-200 bg-rose-50/80 p-4 dark:border-rose-400/20 dark:bg-rose-400/[0.08]">
-                    <p className="text-sm font-semibold leading-6 text-rose-900 dark:text-rose-100">Once students begin the exam, editing may affect their results.</p>
+                  <div id="final-confirmation-warning" className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/80 p-4 dark:border-amber-400/20 dark:bg-amber-400/[0.08]">
+                    <p className="text-sm font-semibold leading-6 text-amber-900 dark:text-amber-100">Once students begin the exam, editing may affect their results.</p>
                   </div>
                   <p className="mt-6 text-center text-base font-bold text-slate-950 dark:text-white">Are you sure you want to continue?</p>
                 </section>
@@ -299,7 +299,7 @@ const QuizOpeningConfirmationModal = ({ isOpen, quiz, onClose, onEdit, onOpen }:
                   </div>
                   <div className="mt-4 grid gap-3 rounded-2xl bg-slate-100/80 p-4 sm:grid-cols-2 dark:bg-slate-900/80">
                     <div className="flex gap-3"><ClockIcon className="h-5 w-5 shrink-0 text-emerald-600" /><div><p className="text-xs text-slate-500 dark:text-slate-400">Start time</p><p className="text-sm font-medium text-slate-900 dark:text-white">{formatDate(quiz.startTime)}</p></div></div>
-                    <div className="flex gap-3"><ClockIcon className="h-5 w-5 shrink-0 text-rose-500" /><div><p className="text-xs text-slate-500 dark:text-slate-400">End time</p><p className="text-sm font-medium text-slate-900 dark:text-white">{formatDate(quiz.endTime)}</p></div></div>
+                    <div className="flex gap-3"><ClockIcon className="h-5 w-5 shrink-0 text-primary-500" /><div><p className="text-xs text-slate-500 dark:text-slate-400">End time</p><p className="text-sm font-medium text-slate-900 dark:text-white">{formatDate(quiz.endTime)}</p></div></div>
                   </div>
                 </section>
 
@@ -324,8 +324,8 @@ const QuizOpeningConfirmationModal = ({ isOpen, quiz, onClose, onEdit, onOpen }:
                 )}
               </AnimatePresence>
 
-              <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-2xl border border-indigo-200 bg-indigo-50/70 p-4 transition hover:border-indigo-300 dark:border-indigo-400/20 dark:bg-indigo-400/[0.08]">
-                <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="mt-0.5 h-5 w-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500" aria-describedby="confirmation-help" />
+              <label className="mt-5 flex cursor-pointer items-start gap-3 rounded-2xl border border-primary-200 bg-primary-50/70 p-4 transition hover:border-primary-300 dark:border-primary-400/20 dark:bg-primary-400/[0.08]">
+                <input type="checkbox" checked={confirmed} onChange={(e) => setConfirmed(e.target.checked)} className="mt-0.5 h-5 w-5 rounded border-slate-300 text-primary-600 focus:ring-primary-500" aria-describedby="confirmation-help" />
                 <span><span className="block text-sm font-semibold text-slate-900 dark:text-white">I have reviewed this exam and confirm it is ready.</span><span id="confirmation-help" className="mt-1 block text-xs text-slate-500 dark:text-slate-400">Required before the exam can be opened.</span></span>
               </label>
             </div>
@@ -334,16 +334,16 @@ const QuizOpeningConfirmationModal = ({ isOpen, quiz, onClose, onEdit, onOpen }:
             {!isPreparing && <footer className="quiz-opening-footer flex flex-col-reverse gap-3 border-t border-slate-200/70 bg-white/60 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-7 dark:border-white/10 dark:bg-white/[0.03]">
               {showFinalConfirmation ? (
                 <>
-                  <button type="button" onClick={() => setShowFinalConfirmation(false)} className="quiz-secondary-action rounded-xl px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-slate-300 dark:hover:bg-white/10">Go Back</button>
-                  <button ref={continueButtonRef} type="button" onClick={() => setIsPreparing(true)} className="quiz-primary-action inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-indigo-500/20 transition hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Continue<ArrowRightIcon className="h-4 w-4" /></button>
+                  <button type="button" onClick={() => setShowFinalConfirmation(false)} className="quiz-secondary-action rounded-xl px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-slate-300 dark:hover:bg-white/10">Go Back</button>
+                  <button ref={continueButtonRef} type="button" onClick={() => setIsPreparing(true)} className="quiz-primary-action inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary-700 to-primary-800 px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-primary-500/20 transition hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">Continue<ArrowRightIcon className="h-4 w-4" /></button>
                 </>
               ) : (
               <>
-                <button type="button" onClick={onClose} className="quiz-secondary-action rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-slate-300 dark:hover:bg-white/10">Cancel</button>
+                <button type="button" onClick={onClose} className="quiz-secondary-action rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-slate-300 dark:hover:bg-white/10">Cancel</button>
                 <div className="grid grid-cols-1 gap-2 sm:flex">
-                <button type="button" onClick={onEdit} className="quiz-secondary-action inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-white/15 dark:bg-white/[0.06] dark:text-white"><PencilSquareIcon className="h-4 w-4" />Edit Exam</button>
-                <button type="button" onClick={() => setShowQuestions((value) => !value)} aria-expanded={showQuestions} className="quiz-secondary-action inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:border-white/15 dark:bg-white/[0.06] dark:text-white"><EyeIcon className="h-4 w-4" />{showQuestions ? 'Hide Preview' : 'Preview Exam'}</button>
-                <button type="button" onClick={handleOpen} disabled={!confirmed} aria-disabled={!confirmed} className="quiz-primary-action inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-indigo-500/20 transition hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:from-slate-300 disabled:to-slate-300 disabled:text-slate-500 disabled:shadow-none disabled:hover:translate-y-0 dark:disabled:from-slate-800 dark:disabled:to-slate-800 dark:disabled:text-slate-500"><SparklesIcon className="h-4 w-4" />Open Exam<ArrowRightIcon className="h-4 w-4" /></button>
+                <button type="button" onClick={onEdit} className="quiz-secondary-action inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-white/15 dark:bg-white/[0.06] dark:text-white"><PencilSquareIcon className="h-4 w-4" />Edit Exam</button>
+                <button type="button" onClick={() => setShowQuestions((value) => !value)} aria-expanded={showQuestions} className="quiz-secondary-action inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 dark:border-white/15 dark:bg-white/[0.06] dark:text-white"><EyeIcon className="h-4 w-4" />{showQuestions ? 'Hide Preview' : 'Preview Exam'}</button>
+                <button type="button" onClick={handleOpen} disabled={!confirmed} aria-disabled={!confirmed} className="quiz-primary-action inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary-700 to-primary-800 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-primary-500/20 transition hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:from-slate-300 disabled:to-slate-300 disabled:text-slate-500 disabled:shadow-none disabled:hover:translate-y-0 dark:disabled:from-slate-800 dark:disabled:to-slate-800 dark:disabled:text-slate-500"><SparklesIcon className="h-4 w-4" />Open Exam<ArrowRightIcon className="h-4 w-4" /></button>
                 </div>
               </>
               )}

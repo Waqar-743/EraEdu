@@ -189,7 +189,7 @@ const TeacherQuestions = () => {
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
           Add Questions
@@ -206,13 +206,13 @@ const TeacherQuestions = () => {
               placeholder="Search questions..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
           <select
             value={selectedTopic}
             onChange={(e) => setSelectedTopic(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           >
             <option value="all">All Topics</option>
             {topics.map((topic) => (
@@ -224,7 +224,7 @@ const TeacherQuestions = () => {
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           >
             <option value="all">All Difficulties</option>
             <option value="easy">Easy</option>
@@ -239,14 +239,14 @@ const TeacherQuestions = () => {
         {loadError ? (
           <div className="p-8 text-center">
             <p className="text-gray-600 mb-4">{loadError}</p>
-            <button onClick={fetchData} className="text-indigo-600 hover:text-indigo-800 font-medium">
+            <button onClick={fetchData} className="text-primary-600 hover:text-primary-800 font-medium">
               Retry
             </button>
           </div>
         ) : topics.length === 0 && questions.length === 0 && !loading ? (
           <div className="p-8 text-center">
             <p className="text-gray-500 mb-4">You need to create topics before adding questions.</p>
-            <button onClick={startTopicFirstWorkflow} className="text-indigo-600 hover:text-indigo-800 font-medium">
+            <button onClick={startTopicFirstWorkflow} className="text-primary-600 hover:text-primary-800 font-medium">
               Create a topic, then add a question →
             </button>
           </div>
