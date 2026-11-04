@@ -22,7 +22,6 @@ const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const RegisterPage = lazy(() => import('./pages/auth/RegisterPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./pages/auth/ResetPasswordPage'));
-const DashboardPage = lazy(() => import('./pages/dashboard/DashboardPage'));
 
 const CourseDetailPage = lazy(() => import('./pages/courses/CourseDetailPage'));
 const TopicPage = lazy(() => import('./pages/courses/TopicPage'));
@@ -114,6 +113,14 @@ const DashboardRedirect = () => {
   return <Navigate to="/dashboard/student" replace />;
 };
 
+// Shared bookmarks must resolve to reports for the signed-in account's role.
+const AnalyticsRoute = () => {
+  const role = useAuthStore((state) => state.user?.role);
+  if (role === 'admin') return <Navigate to="/dashboard/admin/analytics" replace />;
+  if (role === 'teacher') return <Navigate to="/dashboard/teacher/analytics" replace />;
+  return <AnalyticsPage />;
+};
+
 function App() {
   const { checkAuth, expireSession } = useAuthStore();
   const theme = usePreferencesStore((state) => state.theme);
@@ -158,11 +165,11 @@ function App() {
         </ProtectedRoute>
       }>
         <Route path="/dashboard" element={<DashboardRedirect />} />
-        <Route path="/dashboard-old" element={<DashboardPage />} />
+        <Route path="/dashboard-old" element={<DashboardRedirect />} />
 
         <Route path="/courses/:courseId" element={<CourseDetailPage />} />
         <Route path="/courses/:courseId/topics/:topicId" element={<TopicPage />} />
-        <Route path="/analytics" element={<AnalyticsPage />} />
+        <Route path="/analytics" element={<AnalyticsRoute />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Route>
@@ -201,36 +208,24 @@ function App() {
           <Route path="attempts" element={<AdminAttemptsPage />} />
           <Route path="integrity-events" element={<AdminIntegrityEventsPage />} />
           <Route path="courses/new" element={<CreateCoursePage />} />
-          <Route path="quizzes" element={<TeacherQuizzes />} />
+          <Route path="quizzes" element={<Navigate to="/dashboard/admin/attempts" replace />} />
           <Route path="submissions" element={<AdminLearningActivityPage view="submissions" />} />
           <Route path="analytics" element={<AdminLearningActivityPage view="analytics" />} />
         </Route>
       </Route>
       
-      {/* Quiz Routes (Full Screen) */}
-      <Route path="/quiz/start/:topicId" element={
-        <ProtectedRoute>
-          <QuizStartPage />
-        </ProtectedRoute>
-      } />
-      <Route path="/quiz/:quizId/attempt/:attemptId" element={
-        <ProtectedRoute>
-          <QuizPage />
-        </ProtectedRoute>
-      } />
+      {/* Taking an exam is a student action, including direct/bookmarked URLs. */}
+      <Route element={<ProtectedRoute><StudentRoute /></ProtectedRoute>}>
+        <Route path="/quiz/start/:topicId" element={<QuizStartPage />} />
+        <Route path="/quiz/:quizId/attempt/:attemptId" element={<QuizPage />} />
+        <Route path="/quiz/access-by-code" element={<AccessByCodePage />} />
+        <Route path="/quiz/take/:attemptId" element={<QuizTakePage />} />
+      </Route>
+
+      {/* Reviewing student results remains available to authorized staff. */}
       <Route path="/quiz/results/:attemptId" element={
         <ProtectedRoute>
           <QuizResultsPage />
-        </ProtectedRoute>
-      } />
-      <Route path="/quiz/access-by-code" element={
-        <ProtectedRoute>
-          <AccessByCodePage />
-        </ProtectedRoute>
-      } />
-      <Route path="/quiz/take/:attemptId" element={
-        <ProtectedRoute>
-          <QuizTakePage />
         </ProtectedRoute>
       } />
       <Route path="/quiz/teacher-results/:attemptId" element={

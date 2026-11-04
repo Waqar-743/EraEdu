@@ -3,9 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuiz } from '../../hooks/useQuiz';
 import { CheckCircleIcon, ClockIcon, XCircleIcon } from '@heroicons/react/24/solid';
 import { PostQuizFeedbackModal } from '../../components/shared';
+import { useAuthStore } from '../../store/authStore';
 
 const QuizResultsPage: React.FC = () => {
   const { attemptId } = useParams<{ attemptId: string }>();
+  const isStudent = useAuthStore(state => state.user?.role === 'student');
   const { currentAttempt, loading, error, getAttemptResults } = useQuiz();
 
   useEffect(() => {
@@ -42,19 +44,19 @@ const QuizResultsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-primary-50/60 px-4 py-12 sm:px-6 lg:px-8">
       {/* Teacher-exam feedback is keyed to teacher_quizzes; topic exams have a separate quiz table. */}
-      {!result.isTopicExam && <PostQuizFeedbackModal attemptId={attemptId} />}
+      {isStudent && !result.isTopicExam && <PostQuizFeedbackModal attemptId={attemptId} />}
       <div className="mx-auto max-w-3xl overflow-hidden rounded-3xl border border-primary-900/10 bg-white shadow-soft">
         <div className="bg-gradient-to-br from-primary-800 via-primary-700 to-teal-700 px-6 py-9 text-center text-white sm:px-10">
           <CheckCircleIcon className="mx-auto h-12 w-12 text-primary-200" />
-          <h1 className="mt-3 font-display text-3xl">Exam submitted</h1>
-          <p className="mt-2 text-sm text-white/70">Your answers have been saved securely.</p>
+          <h1 className="mt-3 font-display text-3xl">{isStudent ? 'Exam submitted' : 'Student exam result'}</h1>
+          <p className="mt-2 text-sm text-white/70">{isStudent ? 'Your answers have been saved securely.' : `Student: ${result.studentName || 'Unknown student'}${result.studentEmail ? ` (${result.studentEmail})` : ''} · ${result.quiz?.title || 'Exam'}`}</p>
         </div>
 
         {reviewPending ? (
           <div className="px-6 py-10 text-center sm:px-10">
             <ClockIcon className="mx-auto h-14 w-14 text-amber-500" />
             <h2 className="mt-4 text-2xl font-bold text-ink-900">Awaiting teacher review</h2>
-            <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-ink-500">Your submission was received successfully. Your score will appear here after your teacher reviews it.</p>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-ink-500">{isStudent ? 'Your submission was received successfully. Your score will appear here after your teacher reviews it.' : 'This student submission is awaiting a final teacher grade.'}</p>
             <Link to="/dashboard" className="mt-7 inline-flex rounded-xl bg-primary-700 px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-800">Back to Dashboard</Link>
           </div>
         ) : (
@@ -62,7 +64,7 @@ const QuizResultsPage: React.FC = () => {
             {result.autoSubmitted && <div className="mb-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-medium text-red-800">This exam was auto-submitted due to detected violations.</div>}
             <div className="text-center"><div className="mx-auto inline-flex h-32 w-32 items-center justify-center rounded-full bg-primary-50 ring-8 ring-primary-100"><span className="text-4xl font-bold text-primary-700">{percentage}%</span></div></div>
             <dl className="mt-8 grid gap-4 sm:grid-cols-3"><div className="rounded-2xl bg-primary-50 p-5 text-center"><dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Score</dt><dd className="mt-2 text-2xl font-bold text-ink-900">{score} / {maxScore}</dd></div><div className="rounded-2xl bg-primary-50 p-5 text-center"><dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Questions</dt><dd className="mt-2 text-2xl font-bold text-ink-900">{answers.length}</dd></div><div className="rounded-2xl bg-primary-50 p-5 text-center"><dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Status</dt><dd className="mt-2 text-2xl font-bold capitalize text-ink-900">{result.status || 'Completed'}</dd></div></dl>
-            {answers.length > 0 && <><h2 className="mt-9 text-lg font-bold text-ink-900">Question review</h2><ul className="mt-3 divide-y divide-ink-900/10">{answers.map((answer: any, index: number) => <li key={index} className="flex gap-3 py-4">{answer.isCorrect ? <CheckCircleIcon className="h-6 w-6 shrink-0 text-emerald-500" /> : <XCircleIcon className="h-6 w-6 shrink-0 text-red-500" />}<div><p className="text-sm font-semibold text-ink-900">Question {index + 1}</p><p className="mt-1 text-sm text-ink-500">Your answer: <span className={answer.isCorrect ? 'text-emerald-700' : 'text-red-700'}>{answerLabel(answer)}</span></p></div></li>)}</ul></>}
+            {answers.length > 0 && <><h2 className="mt-9 text-lg font-bold text-ink-900">Question review</h2><ul className="mt-3 divide-y divide-ink-900/10">{answers.map((answer: any, index: number) => <li key={index} className="flex gap-3 py-4">{answer.isCorrect ? <CheckCircleIcon className="h-6 w-6 shrink-0 text-emerald-500" /> : <XCircleIcon className="h-6 w-6 shrink-0 text-red-500" />}<div><p className="text-sm font-semibold text-ink-900">Question {index + 1}</p><p className="mt-1 text-sm text-ink-500">{isStudent ? 'Your answer' : 'Student answer'}: <span className={answer.isCorrect ? 'text-emerald-700' : 'text-red-700'}>{answerLabel(answer)}</span></p></div></li>)}</ul></>}
             <div className="mt-8 text-center"><Link to="/dashboard" className="inline-flex rounded-xl bg-primary-700 px-5 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-800">Back to Dashboard</Link></div>
           </div>
         )}

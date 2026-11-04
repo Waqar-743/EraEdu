@@ -81,7 +81,7 @@ const TopicPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="px-4 py-5 sm:px-6 bg-gray-50 border-t border-gray-200 flex justify-end">
+        {role === 'student' && <div className="px-4 py-5 sm:px-6 bg-gray-50 border-t border-gray-200 flex justify-end">
           <Link
             to={`/quiz/start/${topic._id}`}
             className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
@@ -89,7 +89,7 @@ const TopicPage: React.FC = () => {
             <CheckCircleIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
             Take Exam for this Topic
           </Link>
-        </div>
+        </div>}
       </div>
     </div>
   );

@@ -56,7 +56,7 @@ const adminItems: SidebarItem[] = [
   { label: 'Command Center', href: '/dashboard/admin', icon: <Stroke d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2v-9z" /> },
   { label: 'User Governance', href: '/dashboard/admin/users', icon: <Stroke d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2 M16 3.1a4 4 0 0 1 0 7.8 M22 21v-2a4 4 0 0 0-3-3.9" /> },
   { label: 'Courses', href: '/dashboard/admin/courses', icon: <Stroke d="M4 5a2 2 0 0 1 2-2h11v17H6a2 2 0 0 1-2-2V5z M9 3v17 M17 7H9 M17 11H9" /> },
-  { label: 'Assessments', href: '/dashboard/admin/quizzes', icon: <Stroke d="M9 11l3 3 7-7 M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1 2-2h10" /> },
+  { label: 'Assessments', href: '/dashboard/admin/attempts', icon: <Stroke d="M9 11l3 3 7-7 M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1 2-2h10" /> },
   { label: 'Submissions', href: '/dashboard/admin/submissions', icon: <Stroke d="M5 7h14v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7 M9 12h6 M9 16h4" /> },
   { label: 'Analytics', href: '/dashboard/admin/analytics', icon: <Stroke d="M3 21h18 M6 17V9 M11 17V5 M16 17v-7 M21 17v-3" /> },
 ];

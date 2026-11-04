@@ -4,6 +4,7 @@ import api from '../../services/api';
 import { CheckCircleIcon, XCircleIcon, TrophyIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { PostQuizFeedbackModal } from '../../components/shared';
+import { useAuthStore } from '../../store/authStore';
 
 interface Violation {
   type?: string;
@@ -63,6 +64,10 @@ interface AttemptResult {
 const TeacherQuizResultsPage = () => {
   const { attemptId } = useParams<{ attemptId: string }>();
   const navigate = useNavigate();
+  const role = useAuthStore(state => state.user?.role);
+  const isStudent = role === 'student';
+  const dashboardPath = `/dashboard/${role || 'student'}`;
+  const historyPath = isStudent ? '/dashboard/student/quiz-history' : `${dashboardPath}/submissions`;
   const [result, setResult] = useState<AttemptResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -109,7 +114,7 @@ const TeacherQuizResultsPage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error || 'Results not found'}</p>
-          <Link to="/dashboard/student" className="text-primary-600 hover:text-primary-500">
+          <Link to={dashboardPath} className="text-primary-600 hover:text-primary-500">
             Return to Dashboard
           </Link>
         </div>
@@ -124,17 +129,18 @@ const TeacherQuizResultsPage = () => {
   if (isPendingReview) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
-        <PostQuizFeedbackModal attemptId={attemptId} />
+        {isStudent && <PostQuizFeedbackModal attemptId={attemptId} />}
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-xl shadow-sm border p-8 text-center">
             <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-amber-100 mb-4">
               <ClockIcon className="h-8 w-8 text-amber-600" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Submission Received</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">{isStudent ? 'Submission Received' : 'Awaiting teacher review'}</h1>
             <p className="text-gray-600 mb-6">
-              Your exam has been submitted and sent to your teacher for review.
+              {isStudent ? <>Your exam has been submitted and sent to your teacher for review.
               Completed multiple-choice exams already count toward your dashboard scores.
-              Written-answer grades and question-by-question feedback appear after teacher review.
+              Written-answer grades and question-by-question feedback appear after teacher review.</>
+                : <>Student: {result.studentName || 'Unknown student'}{result.studentEmail ? ` (${result.studentEmail})` : ''}. This submission is awaiting a final teacher grade.</>}
             </p>
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-left mb-6">
               <p className="text-sm text-amber-800">
@@ -147,17 +153,17 @@ const TeacherQuizResultsPage = () => {
             </div>
             <div className="flex justify-center gap-4">
               <button
-                onClick={() => navigate('/dashboard/student')}
+                onClick={() => navigate(dashboardPath)}
                 className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50"
               >
                 <ArrowLeftIcon className="h-5 w-5" />
                 Back to Dashboard
               </button>
               <Link
-                to="/dashboard/student/quiz-history"
+                to={historyPath}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-lg hover:bg-primary-800"
               >
-                View Exam History
+                {isStudent ? 'View Exam History' : 'View Submissions'}
               </Link>
             </div>
           </div>
@@ -168,7 +174,7 @@ const TeacherQuizResultsPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
-      <PostQuizFeedbackModal attemptId={attemptId} />
+      {isStudent && <PostQuizFeedbackModal attemptId={attemptId} />}
       <div className="max-w-3xl mx-auto">
         {/* Success Banner */}
         <div className={`rounded-2xl p-8 text-center mb-6 ${isPassing ? 'bg-green-500' : 'bg-orange-500'} text-white`}>
@@ -176,12 +182,12 @@ const TeacherQuizResultsPage = () => {
             <TrophyIcon className="h-10 w-10" />
           </div>
           <h1 className="text-3xl font-bold mb-2">
-            {isPassing ? 'Congratulations!' : 'Exam Completed!'}
+            {isStudent ? (isPassing ? 'Congratulations!' : 'Exam Completed!') : 'Student exam result'}
           </h1>
           <p className="text-white/90">
-            {isPassing 
+            {isStudent ? (isPassing
               ? 'You passed the exam successfully!'
-              : 'Keep practicing to improve your score!'}
+              : 'Keep practicing to improve your score!') : (isPassing ? 'Passed' : 'Below passing score')}
           </p>
         </div>
 
@@ -309,7 +315,7 @@ const TeacherQuizResultsPage = () => {
                           <span className="ml-2 text-green-600">(Correct)</span>
                         )}
                         {oIndex === selectedIndex && oIndex !== question.correctAnswer && (
-                          <span className="ml-2 text-red-600">(Your answer)</span>
+                          <span className="ml-2 text-red-600">({isStudent ? 'Your answer' : 'Student answer'})</span>
                         )}
                       </div>
                     ))}
@@ -332,17 +338,17 @@ const TeacherQuizResultsPage = () => {
         {/* Actions */}
         <div className="flex justify-center gap-4">
           <button
-            onClick={() => navigate('/dashboard/student')}
+            onClick={() => navigate(dashboardPath)}
             className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50"
           >
             <ArrowLeftIcon className="h-5 w-5" />
             Back to Dashboard
           </button>
           <Link
-            to="/dashboard/student/join-quiz"
+            to={isStudent ? '/dashboard/student/join-quiz' : historyPath}
             className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-lg hover:bg-primary-800"
           >
-            Take Another Exam
+            {isStudent ? 'Take Another Exam' : 'View Submissions'}
           </Link>
         </div>
       </div>
