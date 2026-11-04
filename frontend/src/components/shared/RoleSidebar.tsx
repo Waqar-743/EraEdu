@@ -75,14 +75,11 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role,
         <div
           className="
             relative flex flex-col w-full overflow-hidden
-            rounded-[2rem] bg-gradient-to-b from-primary-900 via-primary-800 to-teal-800
+            era-sidebar-core rounded-[2rem] bg-ink-900
             ring-1 ring-white/10
             shadow-[0_30px_80px_-30px_rgba(5,7,11,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]
           "
-          style={{
-            backgroundImage:
-              'radial-gradient(120% 70% at 0% 0%, rgba(167,243,208,0.20) 0%, transparent 55%), radial-gradient(80% 60% at 100% 100%, rgba(103,232,249,0.14) 0%, transparent 55%), linear-gradient(180deg, #064E3B 0%, #047857 52%, #0F766E 100%)',
-          }}
+
         >
           {/* Mobile close */}
           <div className="flex items-center justify-between px-5 pt-5 lg:hidden">
