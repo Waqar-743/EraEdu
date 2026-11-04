@@ -56,6 +56,7 @@ const AdminOverview = lazy(() => import('./pages/dashboard/admin/AdminOverview')
 const AdminCoursesPage = lazy(() => import('./pages/dashboard/admin/AdminCoursesPage'));
 const AdminAttemptsPage = lazy(() => import('./pages/dashboard/admin/AdminAttemptsPage'));
 const AdminIntegrityEventsPage = lazy(() => import('./pages/dashboard/admin/AdminIntegrityEventsPage'));
+const AdminLearningActivityPage = lazy(() => import('./pages/dashboard/admin/AdminLearningActivityPage'));
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
@@ -201,8 +202,8 @@ function App() {
           <Route path="integrity-events" element={<AdminIntegrityEventsPage />} />
           <Route path="courses/new" element={<CreateCoursePage />} />
           <Route path="quizzes" element={<TeacherQuizzes />} />
-          <Route path="submissions" element={<TeacherSubmissions />} />
-          <Route path="analytics" element={<TeacherAnalytics />} />
+          <Route path="submissions" element={<AdminLearningActivityPage view="submissions" />} />
+          <Route path="analytics" element={<AdminLearningActivityPage view="analytics" />} />
         </Route>
       </Route>
       

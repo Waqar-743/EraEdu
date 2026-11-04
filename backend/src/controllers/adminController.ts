@@ -3,6 +3,11 @@ import { asyncHandler } from '../middleware/errorHandler';
 import { adminService } from '../services/adminService';
 import { feedbackService } from '../services/feedbackService';
 import { courseAssignmentService } from '../services/courseAssignmentService';
+import { adminLearningService } from '../services/adminLearningService';
+
+export const getAdminLearningActivity = asyncHandler(async (_req: Request, res: Response) => {
+  res.json({ success: true, data: await adminLearningService.getActivity() });
+});
 
 export const getAdminOverview = asyncHandler(async (_req: Request, res: Response) => {
   res.json({ success: true, data: await adminService.getOverview() });

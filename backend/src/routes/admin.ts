@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { protect, authorize } from '../middleware/auth';
 import { validateBody } from '../middleware/validate';
 import { assignAdminCourse, createAdminCourse, getAdminAttempts, getAdminCourseOptions, getAdminCourses, getAdminFeedback, getAdminIntegrityEvents, getAdminOverview, getAdminUsers, updateAdminUser } from '../controllers/adminController';
+import { getAdminLearningActivity } from '../controllers/adminController';
 
 const router = express.Router();
 const accountUpdateSchema = z.object({
@@ -13,6 +14,7 @@ const accountUpdateSchema = z.object({
 });
 router.use(protect, authorize('admin'));
 router.get('/overview', getAdminOverview);
+router.get('/learning-activity', getAdminLearningActivity);
 router.get('/attempts', getAdminAttempts);
 router.get('/users', getAdminUsers);
 router.get('/course-options', getAdminCourseOptions);
