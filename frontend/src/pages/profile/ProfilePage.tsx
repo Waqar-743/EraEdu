@@ -78,12 +78,12 @@ const OrganizationCard = () => {
 
   return (
     <section className="mt-6 overflow-hidden rounded-lg bg-white shadow">
-      <div className="border-b border-gray-200 px-4 py-5 sm:px-6">
-        <h3 className="text-lg font-medium text-gray-900">Institution team</h3>
-        <p className="mt-1 text-sm text-gray-500">Create an institution workspace and add registered teachers.</p>
+      <div className="border-b border-ink-200 px-4 py-5 sm:px-6">
+        <h3 className="text-lg font-medium text-ink-900">Institution team</h3>
+        <p className="mt-1 text-sm text-ink-500">Create an institution workspace and add registered teachers.</p>
       </div>
       <div className="space-y-5 px-4 py-5 sm:px-6">
-        {loading ? <p className="text-sm text-gray-500">Loading organization…</p> : organizations.length === 0 ? (
+        {loading ? <p className="text-sm text-ink-500">Loading organization…</p> : organizations.length === 0 ? (
           <form onSubmit={createOrganization} className="flex flex-col gap-3 sm:flex-row">
             <input value={name} onChange={(event) => setName(event.target.value)} required maxLength={255} placeholder="Institution or department name" className="input-field" />
             <button type="submit" className="btn-primary shrink-0">Create team</button>
@@ -91,11 +91,11 @@ const OrganizationCard = () => {
         ) : (
           <>
             <div className="space-y-2">
-              {organizations.map((organization) => <div key={organization.id} className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2 text-sm"><span className="font-medium text-gray-900">{organization.name}</span><span className="capitalize text-gray-500">{organization.role} · {organization.used_seats}/{organization.seat_limit} used · {organization.remaining_seats} remaining</span></div>)}
+              {organizations.map((organization) => <div key={organization.id} className="flex items-center justify-between rounded-lg bg-ink-50 px-3 py-2 text-sm"><span className="font-medium text-ink-900">{organization.name}</span><span className="capitalize text-ink-500">{organization.role} · {organization.used_seats}/{organization.seat_limit} used · {organization.remaining_seats} remaining</span></div>)}
             </div>
-            {ownerOrganization && <div className="rounded-lg border border-gray-100 p-3 text-sm"><p className="mb-2 font-medium text-gray-900">Team members</p>{members.map((member) => <div key={member.user_id} className="flex justify-between py-1"><span>{member.user?.name || 'Unknown member'} <span className="text-gray-500">({member.user?.email || 'No email'})</span></span><span className="capitalize text-gray-500">{member.role}</span></div>)}</div>}
+            {ownerOrganization && <div className="rounded-lg border border-ink-100 p-3 text-sm"><p className="mb-2 font-medium text-ink-900">Team members</p>{members.map((member) => <div key={member.user_id} className="flex justify-between py-1"><span>{member.user?.name || 'Unknown member'} <span className="text-ink-500">({member.user?.email || 'No email'})</span></span><span className="capitalize text-ink-500">{member.role}</span></div>)}</div>}
             {ownerOrganization && (
-              <form onSubmit={addTeacher} className="flex flex-col gap-3 border-t border-gray-100 pt-5 sm:flex-row">
+              <form onSubmit={addTeacher} className="flex flex-col gap-3 border-t border-ink-100 pt-5 sm:flex-row">
                 <input type="email" value={teacherEmail} onChange={(event) => setTeacherEmail(event.target.value)} required placeholder="Registered teacher email" className="input-field" />
                 <button type="submit" className="btn-primary shrink-0">Add teacher</button>
               </form>
@@ -210,11 +210,11 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <Link to={dashboardPath} className="mb-4 inline-block text-sm font-medium text-indigo-600 hover:text-indigo-500">
+      <Link to={dashboardPath} className="mb-4 inline-block text-sm font-medium text-primary-600 hover:text-primary-500">
         &larr; Back to dashboard
       </Link>
       {paymentStatus && (
-        <div className={`mb-4 rounded-lg px-4 py-3 text-sm ${paymentStatus === 'paid' ? 'bg-green-50 text-green-800' : paymentStatus === 'cancelled' ? 'bg-gray-50 text-gray-800' : 'bg-amber-50 text-amber-800'}`}>
+        <div className={`mb-4 rounded-lg px-4 py-3 text-sm ${paymentStatus === 'paid' ? 'bg-green-50 text-green-800' : paymentStatus === 'cancelled' ? 'bg-ink-50 text-ink-800' : 'bg-amber-50 text-amber-800'}`}>
           {paymentStatus === 'paid'
             ? 'Payment confirmed — your Institution plan is active.'
             : paymentStatus === 'cancelled'
@@ -229,25 +229,25 @@ const ProfilePage: React.FC = () => {
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
         <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
           <div>
-            <h3 className="text-lg leading-6 font-medium text-gray-900">User Profile</h3>
-            <p className="mt-1 max-w-2xl text-sm text-gray-500">Personal details and application settings.</p>
+            <h3 className="text-lg leading-6 font-medium text-ink-900">User Profile</h3>
+            <p className="mt-1 max-w-2xl text-sm text-ink-500">Personal details and application settings.</p>
           </div>
           <div className="flex space-x-3">
-            <Link to="/settings" className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">Settings</Link>
+            <Link to="/settings" className="inline-flex items-center rounded-md border border-ink-300 bg-white px-4 py-2 text-sm font-medium text-ink-700 shadow-sm hover:bg-ink-50">Settings</Link>
             {!isEditing ? (
               <button
                 onClick={() => setIsEditing(true)}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex items-center px-4 py-2 border border-ink-300 shadow-sm text-sm font-medium rounded-md text-ink-700 bg-white hover:bg-ink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
               >
-                <PencilIcon className="-ml-1 mr-2 h-5 w-5 text-gray-500" />
+                <PencilIcon className="-ml-1 mr-2 h-5 w-5 text-ink-500" />
                 Edit
               </button>
             ) : (
               <button
                 onClick={() => setIsEditing(false)}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex items-center px-4 py-2 border border-ink-300 shadow-sm text-sm font-medium rounded-md text-ink-700 bg-white hover:bg-ink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
               >
-                <XMarkIcon className="-ml-1 mr-2 h-5 w-5 text-gray-500" />
+                <XMarkIcon className="-ml-1 mr-2 h-5 w-5 text-ink-500" />
                 Cancel
               </button>
             )}
@@ -260,16 +260,16 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+        <div className="border-t border-ink-200 px-4 py-5 sm:p-0">
           {isEditing ? (
             <form onSubmit={handleSubmit(onSubmit)} className="p-4 sm:p-6 space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
+                <label htmlFor="name" className="block text-sm font-medium text-ink-700">Full Name</label>
                 <div className="mt-1">
                   <input
                     type="text"
                     id="name"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                    className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-ink-300 rounded-md p-2 border"
                     {...register('name', { required: 'Name is required' })}
                   />
                   {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message as string}</p>}
@@ -277,25 +277,25 @@ const ProfilePage: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="bio" className="block text-sm font-medium text-gray-700">Bio</label>
+                <label htmlFor="bio" className="block text-sm font-medium text-ink-700">Bio</label>
                 <div className="mt-1">
                   <textarea
                     id="bio"
                     rows={3}
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                    className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-ink-300 rounded-md p-2 border"
                     {...register('bio')}
                   />
                 </div>
-                <p className="mt-2 text-sm text-gray-500">Brief description for your profile.</p>
+                <p className="mt-2 text-sm text-ink-500">Brief description for your profile.</p>
               </div>
 
               <div>
-                <label htmlFor="interests" className="block text-sm font-medium text-gray-700">Interests</label>
+                <label htmlFor="interests" className="block text-sm font-medium text-ink-700">Interests</label>
                 <div className="mt-1">
                   <input
                     type="text"
                     id="interests"
-                    className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                    className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-ink-300 rounded-md p-2 border"
                     placeholder="React, AI, Data Science (comma separated)"
                     {...register('interests')}
                   />
@@ -305,7 +305,7 @@ const ProfilePage: React.FC = () => {
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 >
                   <CheckIcon className="-ml-1 mr-2 h-5 w-5" />
                   Save Changes
@@ -313,41 +313,41 @@ const ProfilePage: React.FC = () => {
               </div>
             </form>
           ) : (
-            <dl className="sm:divide-y sm:divide-gray-200">
+            <dl className="sm:divide-y sm:divide-ink-200">
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Full name</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 flex items-center">
-                  <UserCircleIcon className="h-5 w-5 text-gray-400 mr-2" />
+                <dt className="text-sm font-medium text-ink-500">Full name</dt>
+                <dd className="mt-1 text-sm text-ink-900 sm:mt-0 sm:col-span-2 flex items-center">
+                  <UserCircleIcon className="h-5 w-5 text-ink-400 mr-2" />
                   {user?.name}
                 </dd>
               </div>
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Email address</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{user?.email}</dd>
+                <dt className="text-sm font-medium text-ink-500">Email address</dt>
+                <dd className="mt-1 text-sm text-ink-900 sm:mt-0 sm:col-span-2">{user?.email}</dd>
               </div>
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Role</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 capitalize">{user?.role}</dd>
+                <dt className="text-sm font-medium text-ink-500">Role</dt>
+                <dd className="mt-1 text-sm text-ink-900 sm:mt-0 sm:col-span-2 capitalize">{user?.role}</dd>
               </div>
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Bio</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                  {user?.bio || <span className="text-gray-400 italic">No bio provided</span>}
+                <dt className="text-sm font-medium text-ink-500">Bio</dt>
+                <dd className="mt-1 text-sm text-ink-900 sm:mt-0 sm:col-span-2">
+                  {user?.bio || <span className="text-ink-400 italic">No bio provided</span>}
                 </dd>
               </div>
               <div className="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Interests</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                <dt className="text-sm font-medium text-ink-500">Interests</dt>
+                <dd className="mt-1 text-sm text-ink-900 sm:mt-0 sm:col-span-2">
                   {user?.interests && user.interests.length > 0 ? (
                     <div className="flex flex-wrap gap-2">
                       {user.interests.map((interest, idx) => (
-                        <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                        <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
                           {interest}
                         </span>
                       ))}
                     </div>
                   ) : (
-                    <span className="text-gray-400 italic">No interests listed</span>
+                    <span className="text-ink-400 italic">No interests listed</span>
                   )}
                 </dd>
               </div>
@@ -357,23 +357,23 @@ const ProfilePage: React.FC = () => {
       </div>
       {user?.role === 'teacher' && (
         <section className="mt-6 overflow-hidden rounded-lg bg-white shadow">
-          <div className="flex flex-col gap-3 border-b border-gray-200 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <div className="flex flex-col gap-3 border-b border-ink-200 px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <div>
-              <h3 className="text-lg font-medium text-gray-900">Billing &amp; subscription</h3>
-              <p className="mt-1 text-sm text-gray-500">Your most recent EraEdu Institution plan payment. This covers your institution for one month.</p>
+              <h3 className="text-lg font-medium text-ink-900">Billing &amp; subscription</h3>
+              <p className="mt-1 text-sm text-ink-500">Your most recent EraEdu Institution plan payment. This covers your institution for one month.</p>
             </div>
             {billing?.status === 'paid' && <span className="w-fit rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">Institution plan active</span>}
           </div>
           <div className="px-4 py-5 sm:px-6">
             {billingLoading ? (
-              <p className="text-sm text-gray-500">Checking your billing status…</p>
+              <p className="text-sm text-ink-500">Checking your billing status…</p>
             ) : !billing ? (
-              <p className="text-sm text-gray-500">No Institution plan payment has been recorded yet.</p>
+              <p className="text-sm text-ink-500">No Institution plan payment has been recorded yet.</p>
             ) : (
               <dl className="grid gap-4 sm:grid-cols-3">
-                <div><dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">Plan</dt><dd className="mt-1 text-sm font-medium text-gray-900">Institution — monthly</dd></div>
-                <div><dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">Amount</dt><dd className="mt-1 text-sm font-medium text-gray-900">{billing.currency} {(billing.amount / 100).toLocaleString()}</dd></div>
-                <div><dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">Status</dt><dd className={`mt-1 text-sm font-semibold capitalize ${billing.status === 'paid' ? 'text-emerald-700' : 'text-amber-700'}`}>{billing.status}</dd></div>
+                <div><dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Plan</dt><dd className="mt-1 text-sm font-medium text-ink-900">Institution — monthly</dd></div>
+                <div><dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Amount</dt><dd className="mt-1 text-sm font-medium text-ink-900">{billing.currency} {(billing.amount / 100).toLocaleString()}</dd></div>
+                <div><dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Status</dt><dd className={`mt-1 text-sm font-semibold capitalize ${billing.status === 'paid' ? 'text-emerald-700' : 'text-amber-700'}`}>{billing.status}</dd></div>
               </dl>
             )}
           </div>

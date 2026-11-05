@@ -84,10 +84,10 @@ const RegisterPage = () => {
 
   return (
     <div>
-      <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      <h2 className="mt-6 text-center text-3xl font-extrabold text-ink-900">
         Create your account
       </h2>
-      <p className="mt-2 text-center text-sm text-gray-600">
+      <p className="mt-2 text-center text-sm text-ink-600">
         Or{' '}
         <Link to="/login" className="font-medium text-primary-600 hover:text-primary-500">
           sign in to existing account
@@ -97,7 +97,7 @@ const RegisterPage = () => {
       <div className="mt-8">
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="name" className="block text-sm font-medium text-ink-700">
               Full Name
             </label>
             <div className="mt-1">
@@ -105,7 +105,7 @@ const RegisterPage = () => {
                 id="name"
                 type="text"
                 autoComplete="name"
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                className="appearance-none block w-full px-3 py-2 border border-ink-300 rounded-md shadow-sm placeholder-ink-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 {...register('name', { 
                   required: 'Name is required',
                   minLength: { value: 2, message: 'Name must be at least 2 characters' }
@@ -118,7 +118,7 @@ const RegisterPage = () => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium text-ink-700">
               Email address
             </label>
             <div className="mt-1">
@@ -126,7 +126,7 @@ const RegisterPage = () => {
                 id="email"
                 type="email"
                 autoComplete="email"
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                className="appearance-none block w-full px-3 py-2 border border-ink-300 rounded-md shadow-sm placeholder-ink-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 {...register('email', { 
                   required: 'Email is required',
                   pattern: {
@@ -141,19 +141,19 @@ const RegisterPage = () => {
                 <p className="mt-1 text-sm text-red-600">{errors.email.message as string}</p>
               )}
               {role === 'student' && !errors.email && (
-                <p className="mt-1 text-xs text-gray-500">Student accounts require your @nutech.edu.pk university email.</p>
+                <p className="mt-1 text-xs text-ink-500">Student accounts require your @nutech.edu.pk university email.</p>
               )}
             </div>
           </div>
 
           <div>
-            <label htmlFor="role" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="role" className="block text-sm font-medium text-ink-700">
               I am a
             </label>
             <div className="mt-1">
               <select
                 id="role"
-                className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
+                className="block w-full pl-3 pr-10 py-2 text-base border-ink-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
                 {...register('role')}
               >
                 <option value="student">Student</option>
@@ -163,14 +163,14 @@ const RegisterPage = () => {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-ink-700">
               Password
             </label>
             <div className="mt-1">
               <PasswordInput
                 id="password"
                 autoComplete="new-password"
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                className="appearance-none block w-full px-3 py-2 border border-ink-300 rounded-md shadow-sm placeholder-ink-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 {...register('password', { 
                   required: 'Password is required',
                   minLength: { value: 8, message: 'Password must be at least 8 characters' },
@@ -184,19 +184,19 @@ const RegisterPage = () => {
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password.message as string}</p>
               )}
-              <p className="mt-2 text-xs text-gray-500">Copy and paste are supported. Show your password to check or copy it.</p>
+              <p className="mt-2 text-xs text-ink-500">Copy and paste are supported. Show your password to check or copy it.</p>
             </div>
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-ink-700">
               Confirm Password
             </label>
             <div className="mt-1">
               <PasswordInput
                 id="confirmPassword"
                 autoComplete="new-password"
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
+                className="appearance-none block w-full px-3 py-2 border border-ink-300 rounded-md shadow-sm placeholder-ink-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
                 {...register('confirmPassword', { 
                   required: 'Please confirm your password',
                   validate: value => value === password || 'Passwords do not match'
@@ -210,11 +210,11 @@ const RegisterPage = () => {
 
           {/* Profile Picture Upload — Students Only */}
           {role === 'student' && (
-            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="border border-ink-200 rounded-lg p-4 bg-ink-50">
+              <label className="block text-sm font-medium text-ink-700 mb-2">
                 Upload Profile Picture
               </label>
-              <p className="text-xs text-gray-500 mb-3">Optional profile photo. Accepts JPG or PNG (max 5MB).</p>
+              <p className="text-xs text-ink-500 mb-3">Optional profile photo. Accepts JPG or PNG (max 5MB).</p>
 
               {profilePreview ? (
                 <div className="flex items-center gap-4">
@@ -224,8 +224,8 @@ const RegisterPage = () => {
                     className="h-24 w-24 rounded-full object-cover border-2 border-primary-300 shadow-sm"
                   />
                   <div className="flex flex-col gap-2">
-                    <p className="text-sm text-gray-700 font-medium">{profileFile?.name}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm text-ink-700 font-medium">{profileFile?.name}</p>
+                    <p className="text-xs text-ink-500">
                       {profileFile ? `${(profileFile.size / 1024).toFixed(1)} KB` : ''}
                     </p>
                     <button
@@ -240,11 +240,11 @@ const RegisterPage = () => {
               ) : (
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-400 hover:bg-primary-50 transition-colors"
+                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-ink-300 rounded-lg cursor-pointer hover:border-primary-400 hover:bg-primary-50 transition-colors"
                 >
-                  <CameraIcon className="h-8 w-8 text-gray-400 mb-1" />
-                  <span className="text-sm text-gray-500">Click to upload a photo</span>
-                  <span className="text-xs text-gray-400">JPG or PNG, max 5MB</span>
+                  <CameraIcon className="h-8 w-8 text-ink-400 mb-1" />
+                  <span className="text-sm text-ink-500">Click to upload a photo</span>
+                  <span className="text-xs text-ink-400">JPG or PNG, max 5MB</span>
                 </div>
               )}
 
@@ -266,7 +266,7 @@ const RegisterPage = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
             >
               {isLoading ? 'Creating account...' : 'Create account'}
             </button>

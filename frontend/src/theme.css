@@ -1,0 +1,75 @@
+/* EraEdu brand source of truth. Palette channels support Tailwind opacity modifiers. */
+:root {
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-display: "Clash Display", "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --color-primary-50: 236 254 247;
+  --color-primary-100: 208 251 233;
+  --color-primary-200: 164 244 211;
+  --color-primary-300: 108 232 183;
+  --color-primary-400: 52 211 153;
+  --color-primary-500: 16 185 129;
+  --color-primary-600: 5 150 105;
+  --color-primary-700: 4 120 87;
+  --color-primary-800: 6 95 70;
+  --color-primary-900: 6 78 59;
+  --color-primary-950: 2 44 31;
+  --color-primary-text-600: var(--color-primary-600);
+  --color-primary-text-700: var(--color-primary-700);
+  --color-primary-text-800: var(--color-primary-800);
+  --color-primary-text-900: var(--color-primary-900);
+  --color-primary-text-950: var(--color-primary-950);
+  --color-ink-0: 255 255 255;
+  --color-ink-50: 243 251 247;
+  --color-ink-100: 234 245 239;
+  --color-ink-200: 211 229 219;
+  --color-ink-300: 162 190 177;
+  --color-ink-400: 91 119 108;
+  --color-ink-500: 91 119 108;
+  --color-ink-600: 63 107 93;
+  --color-ink-700: 35 87 70;
+  --color-ink-800: 15 70 53;
+  --color-ink-900: 6 78 59;
+  --color-ink-950: 2 44 31;
+  --color-chart-primary-500: rgb(var(--color-primary-600));
+  --color-chart-primary-600: rgb(var(--color-primary-600));
+  --color-chart-primary-700: rgb(var(--color-primary-700));
+  --color-chart-primary-800: rgb(var(--color-primary-800));
+  --color-surface: rgb(255 255 255 / 0.86);
+  --color-border: rgb(var(--color-primary-700) / 0.14);
+  --color-text: rgb(var(--color-ink-900));
+  --gradient-brand-hero: linear-gradient(135deg, rgb(var(--color-primary-900)), rgb(var(--color-primary-700)) 52%, rgb(var(--color-primary-800)));
+  --gradient-brand-accent: linear-gradient(135deg, rgb(var(--color-primary-300)), rgb(var(--color-primary-400)) 50%, rgb(var(--color-primary-200)));
+  --gradient-brand-text: linear-gradient(135deg, rgb(var(--color-primary-700)), rgb(var(--color-primary-600)) 50%, rgb(var(--color-primary-700)));
+  --gradient-page: radial-gradient(55rem 32rem at 8% -10%, rgb(var(--color-primary-300) / 0.34), transparent 66%), radial-gradient(48rem 28rem at 100% 30%, rgb(var(--color-primary-200) / 0.16), transparent 68%), linear-gradient(145deg, #F3FCF8, #EAF9F3 48%, #F5FCFA);
+}
+
+/* Display preferences affect workspaces, keeping the public landing page stable. */
+:root[data-theme="dark"] .app-workspace {
+  color-scheme: dark;
+  --color-primary-text-600: var(--color-primary-300);
+  --color-primary-text-700: var(--color-primary-300);
+  --color-primary-text-800: var(--color-primary-300);
+  --color-primary-text-900: var(--color-primary-300);
+  --color-primary-text-950: var(--color-primary-300);
+  --color-ink-0: 20 39 34;
+  --color-ink-50: 12 23 21;
+  --color-ink-100: 28 52 44;
+  --color-ink-200: 56 85 74;
+  --color-ink-300: 103 133 120;
+  --color-ink-400: 159 189 177;
+  --color-ink-500: 159 189 177;
+  --color-ink-600: 191 216 207;
+  --color-ink-700: 191 216 207;
+  --color-ink-800: 218 237 229;
+  --color-ink-900: 230 244 239;
+  --color-ink-950: 242 250 246;
+  --color-chart-primary-500: rgb(var(--color-primary-300));
+  --color-chart-primary-600: rgb(var(--color-primary-400));
+  --color-chart-primary-700: rgb(var(--color-primary-200));
+  --color-chart-primary-800: rgb(var(--color-primary-500));
+  --color-surface: #142722;
+  --color-border: #38554A;
+  --color-text: rgb(var(--color-ink-900));
+  --gradient-page: radial-gradient(55rem 32rem at 8% -10%, rgb(var(--color-primary-800) / 0.2), transparent 66%), linear-gradient(145deg, #0C1715, #10211C);
+}

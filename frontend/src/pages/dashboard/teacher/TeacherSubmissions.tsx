@@ -196,8 +196,8 @@ const TeacherSubmissions = () => {
     <div className="space-y-6">
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Student Submissions</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-ink-900">Student Submissions</h1>
+          <p className="text-sm text-ink-500 mt-1">
             Review and grade student exam submissions
           </p>
         </div>
@@ -210,23 +210,23 @@ const TeacherSubmissions = () => {
       </header>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-4">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+            <MagnifyingGlassIcon className="h-5 w-5 text-ink-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by student or exam..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="w-full pl-10 pr-4 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
           <div className="flex gap-2">
             <button
               onClick={() => setFilter('all')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'all' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                filter === 'all' ? 'bg-primary-700 text-white' : 'bg-ink-100 text-ink-600 hover:bg-ink-200'
               }`}
             >
               All
@@ -234,7 +234,7 @@ const TeacherSubmissions = () => {
             <button
               onClick={() => setFilter('pending')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'pending' ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                filter === 'pending' ? 'bg-orange-600 text-white' : 'bg-ink-100 text-ink-600 hover:bg-ink-200'
               }`}
             >
               Pending
@@ -242,7 +242,7 @@ const TeacherSubmissions = () => {
             <button
               onClick={() => setFilter('graded')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                filter === 'graded' ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                filter === 'graded' ? 'bg-green-600 text-white' : 'bg-ink-100 text-ink-600 hover:bg-ink-200'
               }`}
             >
               Graded
@@ -252,7 +252,7 @@ const TeacherSubmissions = () => {
       </div>
 
       {/* Submissions List */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200">
         {loading ? (
           <div className="p-8 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary-500 mx-auto"></div>
@@ -269,38 +269,38 @@ const TeacherSubmissions = () => {
             </button>
           </div>
         ) : filteredSubmissions.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
-            <AcademicCapIcon className="h-12 w-12 mx-auto text-gray-300 mb-4" />
+          <div className="p-8 text-center text-ink-500">
+            <AcademicCapIcon className="h-12 w-12 mx-auto text-ink-300 mb-4" />
             <p>No submissions found</p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-ink-200">
             {filteredSubmissions.map((submission) => (
-              <div key={submission.id} className="p-4 hover:bg-gray-50 transition-colors">
+              <div key={submission.id} className="p-4 hover:bg-ink-50 transition-colors">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center">
                       <UserIcon className="h-5 w-5 text-primary-700" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">{submission.studentName}</p>
-                      <p className="text-sm text-gray-500">{submission.studentEmail}</p>
+                      <p className="font-medium text-ink-900">{submission.studentName}</p>
+                      <p className="text-sm text-ink-500">{submission.studentEmail}</p>
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-6">
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">Exam</p>
-                      <p className="font-medium text-gray-900">{submission.quizTitle}</p>
+                      <p className="text-sm text-ink-500">Exam</p>
+                      <p className="font-medium text-ink-900">{submission.quizTitle}</p>
                     </div>
                     
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">Auto Score</p>
-                      <p className="font-medium text-gray-900">{submission.score}/{submission.maxScore}</p>
+                      <p className="text-sm text-ink-500">Auto Score</p>
+                      <p className="font-medium text-ink-900">{submission.score}/{submission.maxScore}</p>
                     </div>
                     
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">Grade</p>
+                      <p className="text-sm text-ink-500">Grade</p>
                       {hasTeacherGrade(submission.teacherGrade) ? (
                         <p className="font-medium text-green-600">{submission.teacherGrade}%</p>
                       ) : (
@@ -309,15 +309,15 @@ const TeacherSubmissions = () => {
                     </div>
                     
                     <div className="text-center">
-                      <p className="text-sm text-gray-500">Submitted</p>
-                      <p className="font-medium text-gray-900">
+                      <p className="text-sm text-ink-500">Submitted</p>
+                      <p className="font-medium text-ink-900">
                         {new Date(submission.completedAt).toLocaleDateString()}
                       </p>
                     </div>
 
                     {submission.violations && submission.violations.length > 0 && (
                       <div className="text-center">
-                        <p className="text-sm text-gray-500">Violations</p>
+                        <p className="text-sm text-ink-500">Violations</p>
                         <p className="font-medium text-red-600 flex items-center gap-1">
                           <ExclamationTriangleIcon className="h-4 w-4" />
                           {submission.violations.length}
@@ -327,7 +327,7 @@ const TeacherSubmissions = () => {
                     
                     <button
                       onClick={() => openReviewModal(submission)}
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 transition-colors"
                     >
                       <EyeIcon className="h-4 w-4" />
                       Review
@@ -346,12 +346,12 @@ const TeacherSubmissions = () => {
           <div className="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Review Submission</h3>
-                <p className="text-sm text-gray-500">
+                <h3 className="text-lg font-semibold text-ink-900">Review Submission</h3>
+                <p className="text-sm text-ink-500">
                   {selectedSubmission.studentName} - {selectedSubmission.quizTitle}
                 </p>
               </div>
-              <button onClick={closeModal} className="text-gray-400 hover:text-gray-600">
+              <button onClick={closeModal} className="text-ink-400 hover:text-ink-600">
                 <span className="text-2xl">&times;</span>
               </button>
             </div>
@@ -361,26 +361,26 @@ const TeacherSubmissions = () => {
               <div className="grid grid-cols-3 gap-4 mb-6">
                 <div className="bg-primary-50 rounded-lg p-4 text-center">
                   <p className="text-3xl font-bold text-primary-700">{selectedSubmission.percentage}%</p>
-                  <p className="text-sm text-gray-500">Auto Score</p>
+                  <p className="text-sm text-ink-500">Auto Score</p>
                 </div>
                 <div className="bg-green-50 rounded-lg p-4 text-center">
                   <p className="text-3xl font-bold text-green-600">
                     {selectedSubmission.score}/{selectedSubmission.maxScore}
                   </p>
-                  <p className="text-sm text-gray-500">Correct Answers</p>
+                  <p className="text-sm text-ink-500">Correct Answers</p>
                 </div>
                 <div className="bg-primary-50 rounded-lg p-4 text-center">
                   <p className="text-sm font-medium text-primary-700">
                     {new Date(selectedSubmission.completedAt).toLocaleString()}
                   </p>
-                  <p className="text-sm text-gray-500">Submitted At</p>
+                  <p className="text-sm text-ink-500">Submitted At</p>
                 </div>
               </div>
 
               {/* Questions Review */}
               {quizDetails && (
                 <div className="mb-6">
-                  <h4 className="font-medium text-gray-900 mb-4">Questions & Answers</h4>
+                  <h4 className="font-medium text-ink-900 mb-4">Questions & Answers</h4>
                   <div className="space-y-4">
                     {quizDetails.questions.map((question: any, qIndex: number) => {
                       const answer = selectedSubmission.answers.find((a: any) => 
@@ -399,9 +399,9 @@ const TeacherSubmissions = () => {
                               <span className="h-6 w-6 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-sm font-bold">✗</span>
                             )}
                             <div className="flex-1">
-                              <p className="font-medium text-gray-900">Q{qIndex + 1}: {question.text}</p>
+                              <p className="font-medium text-ink-900">Q{qIndex + 1}: {question.text}</p>
                               {isShortAnswer ? (
-                                <div className="mt-2 rounded bg-gray-50 p-2 text-sm text-gray-700">
+                                <div className="mt-2 rounded bg-ink-50 p-2 text-sm text-ink-700">
                                   <span className="font-medium">Student response:</span>{' '}
                                   {typeof answer?.selectedAnswer === 'string' && answer.selectedAnswer.trim()
                                     ? answer.selectedAnswer
@@ -417,7 +417,7 @@ const TeacherSubmissions = () => {
                                         ? 'bg-green-100 text-green-800'
                                         : oIndex === selectedIndex
                                         ? 'bg-red-100 text-red-800'
-                                        : 'bg-gray-50 text-gray-600'
+                                        : 'bg-ink-50 text-ink-600'
                                     }`}
                                   >
                                     {String.fromCharCode(65 + oIndex)}. {opt}
@@ -439,7 +439,7 @@ const TeacherSubmissions = () => {
               {/* Violations Section */}
               <div className="mb-6 border-t pt-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-medium text-gray-900">Security & Rule Violations</h4>
+                  <h4 className="font-medium text-ink-900">Security & Rule Violations</h4>
                   <div className={`px-3 py-1 rounded-full text-sm font-bold ${
                     reviewError || reviewLoading ? 'bg-amber-100 text-amber-900' :
                     (selectedSubmission.violations?.length || 0) >= 100 ? 'bg-red-100 text-red-700' :
@@ -450,7 +450,7 @@ const TeacherSubmissions = () => {
                   </div>
                 </div>
 
-                {reviewLoading ? <p role="status" className="text-sm text-gray-600">Loading review details…</p> : reviewError ? (
+                {reviewLoading ? <p role="status" className="text-sm text-ink-600">Loading review details…</p> : reviewError ? (
                   <div role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
                     <p>{reviewError}</p>
                     <button
@@ -475,14 +475,14 @@ const TeacherSubmissions = () => {
                 )}
 
                     {selectedSubmission.violations && selectedSubmission.violations.length > 0 ? (
-                  <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                    <p className="text-sm font-medium text-gray-500 mb-3">Violation Timeline</p>
+                  <div className="bg-ink-50 rounded-lg p-4 border border-ink-200">
+                    <p className="text-sm font-medium text-ink-500 mb-3">Violation Timeline</p>
                     <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
                       {selectedSubmission.violations.map((v, i) => (
                         <div key={i} className="flex gap-4 relative">
                           {/* Timeline Line */}
                           {i !== (selectedSubmission.violations?.length || 0) - 1 && (
-                            <div className="absolute left-[11px] top-6 bottom-[-12px] w-[2px] bg-gray-200"></div>
+                            <div className="absolute left-[11px] top-6 bottom-[-12px] w-[2px] bg-ink-200"></div>
                           )}
                           
                           <div className={`h-6 w-6 rounded-full flex-shrink-0 z-10 flex items-center justify-center ${
@@ -495,14 +495,14 @@ const TeacherSubmissions = () => {
                           
                           <div className="flex-1 pb-4">
                             <div className="flex items-center justify-between">
-                              <p className="text-sm font-bold text-gray-900">{eventLabel(v)}</p>
-                              <span className="text-xs text-gray-500">
+                              <p className="text-sm font-bold text-ink-900">{eventLabel(v)}</p>
+                              <span className="text-xs text-ink-500">
                                 {new Date(v.timestamp).toLocaleTimeString()}
                               </span>
                             </div>
-                            <p className="text-xs text-gray-600 mt-1">{detailSummary(v.details)}</p>
-                            <p className="text-xs text-gray-500 mt-1">Severity: {v.severity || 'low'} · Detection: {v.detectionMethod || v.detection_method || 'unknown'}</p>
-                            {Boolean(v.details) && <details className="mt-1 text-xs text-gray-500"><summary className="cursor-pointer">Technical event data</summary><pre className="mt-1 whitespace-pre-wrap break-words">{rawDetails(v.details)}</pre></details>}
+                            <p className="text-xs text-ink-600 mt-1">{detailSummary(v.details)}</p>
+                            <p className="text-xs text-ink-500 mt-1">Severity: {v.severity || 'low'} · Detection: {v.detectionMethod || v.detection_method || 'unknown'}</p>
+                            {Boolean(v.details) && <details className="mt-1 text-xs text-ink-500"><summary className="cursor-pointer">Technical event data</summary><pre className="mt-1 whitespace-pre-wrap break-words">{rawDetails(v.details)}</pre></details>}
                           </div>
                         </div>
                       ))}
@@ -520,10 +520,10 @@ const TeacherSubmissions = () => {
 
               {/* Grading Section */}
               <div className="border-t pt-6">
-                <h4 className="font-medium text-gray-900 mb-4">Grade & Feedback Corner</h4>
+                <h4 className="font-medium text-ink-900 mb-4">Grade & Feedback Corner</h4>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-ink-700 mb-1">
                       Final Grade (%)
                     </label>
                     <input
@@ -532,19 +532,19 @@ const TeacherSubmissions = () => {
                       max="100"
                       value={gradeInput}
                       onChange={(e) => setGradeInput(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                       placeholder="Enter grade"
                     />
                   </div>
                   <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-ink-700 mb-1">
                       Feedback for Student
                     </label>
                     <textarea
                       value={feedbackInput}
                       onChange={(e) => setFeedbackInput(e.target.value)}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                       placeholder="Write feedback for the student..."
                     />
                   </div>
@@ -552,17 +552,17 @@ const TeacherSubmissions = () => {
               </div>
             </div>
 
-            <div className="sticky bottom-0 bg-gray-50 border-t px-6 py-4 flex justify-end gap-3">
+            <div className="sticky bottom-0 bg-ink-50 border-t px-6 py-4 flex justify-end gap-3">
               <button
                 onClick={closeModal}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                className="px-4 py-2 text-ink-600 hover:text-ink-800"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSaveGrade}
                 disabled={saving || reviewLoading || !!reviewError || !quizDetails}
-                className="px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 flex items-center gap-2"
+                className="px-6 py-2 bg-primary-700 text-white rounded-lg hover:bg-primary-800 disabled:opacity-50 flex items-center gap-2"
               >
                 {saving ? (
                   <>

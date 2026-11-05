@@ -49,8 +49,8 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
       <div
         className="
           mx-auto flex h-14 w-full items-center gap-2 rounded-full px-2
-          bg-white/75 backdrop-blur-2xl ring-1 ring-ink-900/5
-          shadow-[0_12px_40px_-20px_rgba(5,7,11,0.18)]
+          theme-surface backdrop-blur-2xl ring-1 ring-ink-900/5
+          shadow-[0_12px_40px_-20px_rgb(var(--color-primary-950)/0.18)]
         "
       >
         <button
@@ -97,7 +97,7 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
                 "
                 style={{
                   background:
-                    'linear-gradient(135deg, #047857 0%, #10B981 50%, #06B6D4 100%)',
+                    'var(--gradient-brand-hero)',
                 }}
               >
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
@@ -111,8 +111,8 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
             <div
               className={`
                 absolute right-0 mt-3 w-56 origin-top-right
-                rounded-2xl bg-white p-1.5 ring-1 ring-ink-900/5
-                shadow-[0_24px_60px_-20px_rgba(5,7,11,0.2)]
+                rounded-2xl theme-surface p-1.5 ring-1 ring-ink-900/5
+                shadow-[0_24px_60px_-20px_rgb(var(--color-primary-950)/0.2)]
                 transition-all duration-500 ease-spring
                 ${
                   isProfileOpen

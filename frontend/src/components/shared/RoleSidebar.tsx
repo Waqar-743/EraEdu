@@ -75,13 +75,13 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role,
         <div
           className="
             relative flex flex-col w-full overflow-hidden
-            rounded-[2rem] bg-gradient-to-b from-primary-900 via-primary-800 to-teal-800
+            rounded-[2rem] bg-gradient-to-b from-primary-900 via-primary-800 to-primary-800
             ring-1 ring-white/10
-            shadow-[0_30px_80px_-30px_rgba(5,7,11,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]
+            shadow-[0_30px_80px_-30px_rgb(var(--color-primary-950)/0.6),inset_0_1px_0_rgba(255,255,255,0.06)]
           "
           style={{
             backgroundImage:
-              'radial-gradient(120% 70% at 0% 0%, rgba(167,243,208,0.20) 0%, transparent 55%), radial-gradient(80% 60% at 100% 100%, rgba(103,232,249,0.14) 0%, transparent 55%), linear-gradient(180deg, #064E3B 0%, #047857 52%, #0F766E 100%)',
+              'radial-gradient(120% 70% at 0% 0%, rgb(var(--color-primary-200) / 0.20) 0%, transparent 55%), radial-gradient(80% 60% at 100% 100%, rgb(var(--color-primary-300) / 0.14) 0%, transparent 55%), var(--gradient-brand-hero)',
           }}
         >
           {/* Mobile close */}
@@ -109,7 +109,7 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role,
           {/* Eyebrow role badge */}
           <div className={`px-6 pb-5 ${collapsed ? 'lg:hidden' : ''}`}>
             <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.04] ring-1 ring-white/10 px-3 py-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_8px_rgb(var(--color-primary-400)/0.8)]" />
               <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/70">
                 {roleAccent[role]}
               </span>
@@ -150,7 +150,7 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role,
                       aria-hidden
                       className={`
                         absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r-full
-                        bg-gradient-to-b from-primary-300 via-primary-400 to-accent-400
+                        bg-gradient-to-b from-primary-300 via-primary-400 to-primary-400
                         transition-opacity duration-500
                         ${isActive ? 'opacity-100' : 'opacity-0'}
                       `}
@@ -199,7 +199,7 @@ const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role,
                   className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-display text-sm text-white"
                   style={{
                     background:
-                      'linear-gradient(135deg, #022C1F 0%, #047857 50%, #06B6D4 100%)',
+                      'var(--gradient-brand-hero)',
                     boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
                   }}
                 >

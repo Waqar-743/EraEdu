@@ -14,7 +14,7 @@ const QuizTimer = ({ formattedTime, isWarning, isTimeUp }: QuizTimerProps) => {
         'flex items-center space-x-2 px-4 py-2 rounded-lg font-mono text-lg',
         {
           'bg-red-100 text-red-700': isWarning || isTimeUp,
-          'bg-gray-100 text-gray-700': !isWarning && !isTimeUp
+          'bg-ink-100 text-ink-700': !isWarning && !isTimeUp
         }
       )}
     >

@@ -98,18 +98,18 @@ const TeacherQuizResultsPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      <div className="min-h-screen flex items-center justify-center bg-ink-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
 
   if (error || !result) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-ink-50">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error || 'Results not found'}</p>
-          <Link to="/dashboard/student" className="text-indigo-600 hover:text-indigo-500">
+          <Link to="/dashboard/student" className="text-primary-600 hover:text-primary-500">
             Return to Dashboard
           </Link>
         </div>
@@ -123,15 +123,15 @@ const TeacherQuizResultsPage = () => {
 
   if (isPendingReview) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8 px-4">
+      <div className="min-h-screen theme-page-background py-8 px-4">
         <PostQuizFeedbackModal attemptId={attemptId} />
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-xl shadow-sm border p-8 text-center">
             <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-amber-100 mb-4">
               <ClockIcon className="h-8 w-8 text-amber-600" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Submission Received</h1>
-            <p className="text-gray-600 mb-6">
+            <h1 className="text-2xl font-bold text-ink-900 mb-2">Submission Received</h1>
+            <p className="text-ink-600 mb-6">
               Your exam has been submitted and sent to your teacher for review.
               Completed multiple-choice exams already count toward your dashboard scores.
               Written-answer grades and question-by-question feedback appear after teacher review.
@@ -148,14 +148,14 @@ const TeacherQuizResultsPage = () => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={() => navigate('/dashboard/student')}
-                className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50"
+                className="inline-flex items-center gap-2 px-6 py-3 border border-ink-300 rounded-lg text-ink-700 bg-white hover:bg-ink-50"
               >
                 <ArrowLeftIcon className="h-5 w-5" />
                 Back to Dashboard
               </button>
               <Link
                 to="/dashboard/student/quiz-history"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-lg hover:bg-primary-800"
               >
                 View Exam History
               </Link>
@@ -167,11 +167,11 @@ const TeacherQuizResultsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8 px-4">
+    <div className="min-h-screen theme-page-background py-8 px-4">
       <PostQuizFeedbackModal attemptId={attemptId} />
       <div className="max-w-3xl mx-auto">
         {/* Success Banner */}
-        <div className={`rounded-2xl p-8 text-center mb-6 ${isPassing ? 'bg-green-500' : 'bg-orange-500'} text-white`}>
+        <div className={`rounded-2xl p-8 text-center mb-6 ${isPassing ? 'bg-primary-700' : 'bg-orange-700'} text-white`}>
           <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-white/20 mb-4">
             <TrophyIcon className="h-10 w-10" />
           </div>
@@ -187,31 +187,31 @@ const TeacherQuizResultsPage = () => {
 
         {/* Score Card */}
         <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">{result.quiz.title}</h2>
-          <p className="mb-4 text-sm text-gray-600">Student: {result.studentName || 'Unknown student'}{result.studentEmail ? ` (${result.studentEmail})` : ''} · Assessment: {result.quiz.title}</p>
+          <h2 className="text-xl font-semibold text-ink-900 mb-4">{result.quiz.title}</h2>
+          <p className="mb-4 text-sm text-ink-600">Student: {result.studentName || 'Unknown student'}{result.studentEmail ? ` (${result.studentEmail})` : ''} · Assessment: {result.quiz.title}</p>
           
           <div className="grid grid-cols-4 gap-4 mb-6">
-            <div className="text-center p-4 bg-indigo-50 rounded-lg">
-              <p className="text-4xl font-bold text-indigo-600">{percentage}%</p>
-              <p className="text-sm text-gray-500">Score</p>
+            <div className="text-center p-4 bg-primary-50 rounded-lg">
+              <p className="text-4xl font-bold text-primary-600">{percentage}%</p>
+              <p className="text-sm text-ink-500">Score</p>
             </div>
             <div className="text-center p-4 bg-green-50 rounded-lg">
               <p className="text-4xl font-bold text-green-600">{result.score ?? 0}/{result.maxScore ?? 0}</p>
-              <p className="text-sm text-gray-500">Correct</p>
+              <p className="text-sm text-ink-500">Correct</p>
             </div>
             <div className={`text-center p-4 rounded-lg ${
-              result.violations?.length > 0 ? 'bg-red-50' : 'bg-gray-50'
+              result.violations?.length > 0 ? 'bg-red-50' : 'bg-ink-50'
             }`}>
               <p className={`text-4xl font-bold ${
-                result.violations?.length > 0 ? 'text-red-600' : 'text-gray-400'
+                result.violations?.length > 0 ? 'text-red-600' : 'text-ink-400'
               }`}>{result.violations?.length || 0}</p>
-              <p className="text-sm text-gray-500">Violations</p>
+              <p className="text-sm text-ink-500">Violations</p>
             </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
+            <div className="text-center p-4 bg-primary-50 rounded-lg">
               <div className="flex items-center justify-center gap-1">
-                <ClockIcon className="h-6 w-6 text-purple-600" />
+                <ClockIcon className="h-6 w-6 text-primary-600" />
               </div>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-ink-500 mt-1">
                 {result.completedAt ? new Date(result.completedAt).toLocaleTimeString() : 'N/A'}
               </p>
             </div>
@@ -230,14 +230,14 @@ const TeacherQuizResultsPage = () => {
                     <span className={`px-2 py-1 text-xs font-medium rounded ${
                       v.type === 'tab_switch' ? 'bg-orange-100 text-orange-700' :
                       v.type === 'copy_attempt' ? 'bg-red-100 text-red-700' :
-                      v.type === 'paste_attempt' ? 'bg-purple-100 text-purple-700' :
-                      'bg-gray-100 text-gray-700'
+                      v.type === 'paste_attempt' ? 'bg-amber-100 text-amber-800' :
+                      'bg-ink-100 text-ink-700'
                     }`}>
                       {eventLabel(v)}
                     </span>
-                    <span className="text-xs text-gray-500">{new Date(v.timestamp).toLocaleString()} · {v.severity || 'low'} · {v.detectionMethod || v.detection_method || 'unknown'}</span>
-                    <p className="mt-1 text-xs text-gray-600">{detailsText(v.details)}</p>
-                    {Boolean(v.details) && <details className="mt-1 text-xs text-gray-500"><summary className="cursor-pointer">Technical event data</summary><pre className="mt-1 whitespace-pre-wrap break-words">{typeof v.details === 'string' ? v.details : JSON.stringify(v.details, null, 2)}</pre></details>}
+                    <span className="text-xs text-ink-500">{new Date(v.timestamp).toLocaleString()} · {v.severity || 'low'} · {v.detectionMethod || v.detection_method || 'unknown'}</span>
+                    <p className="mt-1 text-xs text-ink-600">{detailsText(v.details)}</p>
+                    {Boolean(v.details) && <details className="mt-1 text-xs text-ink-500"><summary className="cursor-pointer">Technical event data</summary><pre className="mt-1 whitespace-pre-wrap break-words">{typeof v.details === 'string' ? v.details : JSON.stringify(v.details, null, 2)}</pre></details>}
                   </div>
                 ))}
               </div>
@@ -246,11 +246,11 @@ const TeacherQuizResultsPage = () => {
 
           {/* Teacher Feedback */}
           {result.teacherFeedback && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <h3 className="font-medium text-blue-900 mb-2">Teacher Feedback</h3>
-              <p className="text-blue-800">{result.teacherFeedback}</p>
+            <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
+              <h3 className="font-medium text-primary-900 mb-2">Teacher Feedback</h3>
+              <p className="text-primary-800">{result.teacherFeedback}</p>
               {result.teacherGrade !== undefined && (
-                <p className="mt-2 text-sm text-blue-700">
+                <p className="mt-2 text-sm text-primary-700">
                   Grade: <span className="font-bold">{result.teacherGrade}%</span>
                 </p>
               )}
@@ -258,7 +258,7 @@ const TeacherQuizResultsPage = () => {
           )}
 
           {/* Question Review */}
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Question Review</h3>
+          <h3 className="text-lg font-semibold text-ink-900 mb-4">Question Review</h3>
           <div className="space-y-4">
             {result.quiz.questions.map((question, qIndex) => {
               const userAnswer = result.answers.find(
@@ -278,13 +278,13 @@ const TeacherQuizResultsPage = () => {
                       <XCircleIcon className="h-6 w-6 text-red-500 flex-shrink-0" />
                     )}
                     <div>
-                      <p className="font-medium text-gray-900">Question {qIndex + 1}</p>
-                      <p className="text-gray-700">{question.text}</p>
+                      <p className="font-medium text-ink-900">Question {qIndex + 1}</p>
+                      <p className="text-ink-700">{question.text}</p>
                     </div>
                   </div>
 
                   {isShortAnswer ? (
-                    <div className="ml-9 rounded-lg bg-gray-50 p-3 text-sm text-gray-700">
+                    <div className="ml-9 rounded-lg bg-ink-50 p-3 text-sm text-ink-700">
                       <span className="font-medium">Student response:</span>{' '}
                       {typeof userAnswer?.selectedAnswer === 'string' && userAnswer.selectedAnswer.trim()
                         ? userAnswer.selectedAnswer
@@ -300,7 +300,7 @@ const TeacherQuizResultsPage = () => {
                             ? 'bg-green-100 text-green-800 border border-green-300'
                             : oIndex === selectedIndex && !isCorrect
                             ? 'bg-red-100 text-red-800 border border-red-300'
-                            : 'bg-gray-50 text-gray-600'
+                            : 'bg-ink-50 text-ink-600'
                         }`}
                       >
                         <span className="font-medium mr-2">{String.fromCharCode(65 + oIndex)}.</span>
@@ -317,8 +317,8 @@ const TeacherQuizResultsPage = () => {
                   )}
 
                   {question.explanation && (
-                    <div className="ml-9 mt-3 p-3 bg-blue-50 rounded-lg">
-                      <p className="text-sm text-blue-800">
+                    <div className="ml-9 mt-3 p-3 bg-primary-50 rounded-lg">
+                      <p className="text-sm text-primary-800">
                         <span className="font-medium">Explanation:</span> {question.explanation}
                       </p>
                     </div>
@@ -333,14 +333,14 @@ const TeacherQuizResultsPage = () => {
         <div className="flex justify-center gap-4">
           <button
             onClick={() => navigate('/dashboard/student')}
-            className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-ink-300 rounded-lg text-ink-700 bg-white hover:bg-ink-50"
           >
             <ArrowLeftIcon className="h-5 w-5" />
             Back to Dashboard
           </button>
           <Link
             to="/dashboard/student/join-quiz"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-lg hover:bg-primary-800"
           >
             Take Another Exam
           </Link>

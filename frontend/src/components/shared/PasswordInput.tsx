@@ -14,7 +14,7 @@ const PasswordInput = forwardRef<HTMLInputElement, InputHTMLAttributes<HTMLInput
           aria-label={visible ? 'Hide password' : 'Show password'}
           aria-controls={id}
           aria-pressed={visible}
-          className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-md text-gray-500 hover:text-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-600"
+          className="absolute inset-y-0 right-0 flex w-11 items-center justify-center rounded-r-md text-ink-500 hover:text-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary-600"
         >
           {visible ? <EyeSlashIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
         </button>

@@ -90,15 +90,15 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
   return (
     <div className="fixed bottom-5 left-5 z-40">
       {isOpen && (
-        <div className="mb-3 w-[22rem] max-w-[90vw] rounded-2xl border border-gray-200 bg-white shadow-xl">
-          <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
+        <div className="mb-3 w-[22rem] max-w-[90vw] rounded-2xl border border-ink-200 theme-surface shadow-xl">
+          <div className="flex items-center justify-between border-b border-ink-100 px-4 py-3">
             <div>
-              <p className="text-sm font-semibold text-gray-900">EraEdu {isTeacher ? 'Teacher' : 'Student'} Assistant</p>
-              <p className="text-xs text-gray-500">{isTeacher ? 'Teaching tools, assessment guidance, and navigation' : 'Rules, navigation, and safe guidance'}</p>
+              <p className="text-sm font-semibold text-ink-900">EraEdu {isTeacher ? 'Teacher' : 'Student'} Assistant</p>
+              <p className="text-xs text-ink-500">{isTeacher ? 'Teaching tools, assessment guidance, and navigation' : 'Rules, navigation, and safe guidance'}</p>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="rounded-full p-2 text-gray-500 transition hover:bg-gray-100"
+              className="rounded-full p-2 text-ink-500 transition hover:bg-ink-100"
               aria-label="Close assistant"
             >
               <FiX className="h-4 w-4" />
@@ -111,8 +111,8 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
                 key={`${message.role}-${index}`}
                 className={
                   message.role === 'user'
-                    ? 'ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-primary-600 px-3 py-2 text-sm text-white'
-                    : 'w-fit max-w-[85%] rounded-2xl rounded-bl-sm bg-gray-100 px-3 py-2 text-sm text-gray-700'
+                    ? 'ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-primary-700 px-3 py-2 text-sm text-white'
+                    : 'w-fit max-w-[85%] rounded-2xl rounded-bl-sm bg-ink-100 px-3 py-2 text-sm text-ink-700'
                 }
               >
                 {message.content}
@@ -120,7 +120,7 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
             ))}
 
             {loading && (
-              <div className="w-fit max-w-[85%] rounded-2xl rounded-bl-sm bg-gray-100 px-3 py-2 text-sm text-gray-500">
+              <div className="w-fit max-w-[85%] rounded-2xl rounded-bl-sm bg-ink-100 px-3 py-2 text-sm text-ink-500">
                 Thinking...
               </div>
             )}
@@ -137,7 +137,7 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
             )}
           </div>
 
-          <div className="border-t border-gray-100 p-3">
+          <div className="border-t border-ink-100 p-3">
             <div className="flex items-end gap-2">
               <textarea
                 value={input}
@@ -145,7 +145,7 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
                 onKeyDown={handleKeyDown}
                 rows={2}
                 placeholder={isTeacher ? 'Ask about teaching or dashboard tools...' : 'Ask about rules or navigation...'}
-                className="flex-1 resize-none rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+                className="flex-1 resize-none rounded-xl border border-ink-200 px-3 py-2 text-sm text-ink-700 shadow-sm focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
               />
               <button
                 onClick={sendMessage}
@@ -156,7 +156,7 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
                 <FiSend className="h-4 w-4" />
               </button>
             </div>
-            <p className="mt-2 text-[11px] text-gray-400">
+            <p className="mt-2 text-[11px] text-ink-400">
               This assistant will not help with cheating or bypassing rules.
             </p>
           </div>
@@ -165,7 +165,7 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
 
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-600 text-white shadow-lg transition hover:bg-primary-700"
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-700 text-white shadow-lg transition hover:bg-primary-800"
         aria-label="Open assistant"
       >
         <FiMessageCircle className="h-5 w-5" />

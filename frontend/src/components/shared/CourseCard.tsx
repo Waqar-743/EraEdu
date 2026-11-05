@@ -33,16 +33,16 @@ const CourseCard: React.FC<CourseCardProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 animate-pulse">
-        <div className="h-4 bg-gray-200 rounded w-3/4 mb-3"></div>
-        <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
-        <div className="h-3 bg-gray-200 rounded w-2/3 mb-4"></div>
+      <div className="theme-surface rounded-xl shadow-sm border border-ink-100 p-5 animate-pulse">
+        <div className="h-4 bg-ink-200 rounded w-3/4 mb-3"></div>
+        <div className="h-3 bg-ink-200 rounded w-full mb-2"></div>
+        <div className="h-3 bg-ink-200 rounded w-2/3 mb-4"></div>
         <div className="flex space-x-2 mb-4">
-          <div className="h-6 bg-gray-200 rounded w-16"></div>
-          <div className="h-6 bg-gray-200 rounded w-20"></div>
+          <div className="h-6 bg-ink-200 rounded w-16"></div>
+          <div className="h-6 bg-ink-200 rounded w-20"></div>
         </div>
-        <div className="h-2 bg-gray-200 rounded w-full mb-4"></div>
-        <div className="h-9 bg-gray-200 rounded w-full"></div>
+        <div className="h-2 bg-ink-200 rounded w-full mb-4"></div>
+        <div className="h-9 bg-ink-200 rounded w-full"></div>
       </div>
     );
   }
@@ -50,20 +50,20 @@ const CourseCard: React.FC<CourseCardProps> = ({
   const difficulty = course.difficulty || course.difficultyLevel || 'Beginner';
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-shadow">
+    <div className="theme-surface rounded-xl shadow-sm border border-ink-100 p-5 hover:shadow-md transition-shadow">
       {/* Title */}
-      <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
+      <h3 className="text-lg font-semibold text-ink-900 mb-2 line-clamp-1">
         {course.title}
       </h3>
 
       {/* Description */}
-      <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+      <p className="text-sm text-ink-500 mb-3 line-clamp-2">
         {course.description}
       </p>
 
       {/* Tags */}
       <div className="flex flex-wrap gap-2 mb-4">
-        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-ink-100 text-ink-800">
           {course.category}
         </span>
         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${difficultyColors[difficulty as keyof typeof difficultyColors]}`}>
@@ -72,7 +72,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
       </div>
 
       {/* Stats */}
-      <div className="flex items-center text-sm text-gray-500 mb-4 space-x-4">
+      <div className="flex items-center text-sm text-ink-500 mb-4 space-x-4">
         <span className="flex items-center">
           <BookOpenIcon className="h-4 w-4 mr-1" />
           {course.topicsCount ?? course.topics?.length ?? 0} topics
@@ -88,13 +88,13 @@ const CourseCard: React.FC<CourseCardProps> = ({
       {/* Progress bar (student variant) */}
       {variant === 'student' && (
         <div className="mb-4">
-          <div className="flex justify-between text-xs text-gray-500 mb-1">
+          <div className="flex justify-between text-xs text-ink-500 mb-1">
             <span>Progress</span>
             <span>{progress}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-ink-200 rounded-full h-2">
             <div
-              className="bg-primary-600 h-2 rounded-full transition-all duration-300"
+              className="bg-primary-700 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             ></div>
           </div>
@@ -106,7 +106,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
         {variant === 'student' && onContinue && (
           <button
             onClick={onContinue}
-            className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700"
+            className="flex-1 inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-700 hover:bg-primary-800"
           >
             <AcademicCapIcon className="h-4 w-4 mr-1" />
             Continue
@@ -117,7 +117,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             {onView && (
               <button
                 onClick={onView}
-                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50"
+                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-ink-300 text-sm font-medium rounded-lg text-ink-700 bg-white hover:bg-ink-50"
               >
                 View
               </button>
@@ -125,7 +125,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             {onEdit && (
               <button
                 onClick={onEdit}
-                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50"
+                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-ink-300 text-sm font-medium rounded-lg text-ink-700 bg-white hover:bg-ink-50"
               >
                 Edit
               </button>
@@ -133,7 +133,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
             {onManageTopics && (
               <button
                 onClick={onManageTopics}
-                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700"
+                className="flex-1 inline-flex justify-center items-center px-3 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-primary-700 hover:bg-primary-800"
               >
                 Topics
               </button>

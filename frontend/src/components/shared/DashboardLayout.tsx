@@ -130,7 +130,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
   };
 
   return (
-    <div className="app-workspace dashboard-teal flex min-h-[100dvh] bg-ink-50 overflow-hidden relative">
+    <div className="app-theme app-workspace theme-page-background flex min-h-[100dvh] overflow-hidden relative">
       <a href="#dashboard-content" className="skip-link">Skip to dashboard content</a>
       {/* Subtle ambient mesh */}
       <div
@@ -138,7 +138,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
         className="pointer-events-none fixed inset-0 opacity-[0.5]"
         style={{
           background:
-            'radial-gradient(60% 40% at 80% 0%, rgba(16,185,129,0.06) 0%, transparent 60%), radial-gradient(40% 30% at 0% 100%, rgba(6,182,212,0.05) 0%, transparent 60%)',
+            'radial-gradient(60% 40% at 80% 0%, rgb(var(--color-primary-500) / 0.06) 0%, transparent 60%), radial-gradient(40% 30% at 0% 100%, rgb(var(--color-primary-600) / 0.05) 0%, transparent 60%)',
         }}
       />
       <div aria-hidden="true" className="dashboard-learning-flow" />
@@ -162,8 +162,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
           <div
             className="
               mx-auto flex h-14 w-full items-center gap-2 rounded-full px-2
-              bg-white/75 backdrop-blur-2xl ring-1 ring-ink-900/5
-              shadow-[0_12px_40px_-20px_rgba(5,7,11,0.15)]
+              theme-surface backdrop-blur-2xl ring-1 ring-ink-900/5
+              shadow-[0_12px_40px_-20px_rgb(var(--color-primary-950)/0.15)]
             "
           >
             <button
@@ -226,7 +226,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                   className={`
                     absolute right-0 mt-3 w-[22rem] origin-top-right
                     rounded-3xl p-1.5 bg-ink-900/[0.04] ring-1 ring-ink-900/5
-                    shadow-[0_30px_80px_-20px_rgba(5,7,11,0.25)]
+                    shadow-[0_30px_80px_-20px_rgb(var(--color-primary-950)/0.25)]
                     transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                     ${
                       showNotifications
@@ -235,7 +235,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                     }
                   `}
                 >
-                  <div className="rounded-[calc(1.5rem-0.375rem)] bg-white overflow-hidden">
+                  <div className="rounded-[calc(1.5rem-0.375rem)] theme-surface overflow-hidden">
                     <div className="flex items-center justify-between border-b border-ink-900/5 px-4 py-3">
                       <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-400">
                         Notifications
@@ -268,7 +268,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                           >
                             <div className="flex items-start gap-2.5">
                               {!notif.is_read && (
-                                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
+                                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary-500 shadow-[0_0_6px_rgb(var(--color-primary-500)/0.7)]" />
                               )}
                               <div className="min-w-0 flex-1">
                                 <p className="text-sm font-semibold text-ink-900">{notif.title}</p>
@@ -314,7 +314,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                   <span
                     className="flex h-8 w-8 items-center justify-center rounded-full font-display text-sm text-white"
                     style={{
-                      background: 'linear-gradient(135deg, #047857 0%, #10B981 50%, #06B6D4 100%)',
+                      background: 'var(--gradient-brand-hero)',
                       boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
                     }}
                   >
@@ -327,8 +327,8 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                 <div
                   className={`
                     absolute right-0 mt-3 w-60 origin-top-right
-                    rounded-2xl bg-white p-1.5 ring-1 ring-ink-900/5
-                    shadow-[0_24px_60px_-20px_rgba(5,7,11,0.2)]
+                    rounded-2xl theme-surface p-1.5 ring-1 ring-ink-900/5
+                    shadow-[0_24px_60px_-20px_rgb(var(--color-primary-950)/0.2)]
                     transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                     ${
                       showUserMenu

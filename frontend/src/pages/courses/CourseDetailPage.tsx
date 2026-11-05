@@ -26,7 +26,7 @@ const CourseDetailPage: React.FC = () => {
   if ((loading && !currentCourse) || (id && !currentCourse && !error)) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -59,8 +59,8 @@ const CourseDetailPage: React.FC = () => {
         <div className="px-4 py-5 sm:px-6">
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{currentCourse.title}</h1>
-              <p className="mt-1 max-w-2xl text-sm text-gray-500">{currentCourse.category} • {currentCourse.difficulty}</p>
+              <h1 className="text-3xl font-bold text-ink-900">{currentCourse.title}</h1>
+              <p className="mt-1 max-w-2xl text-sm text-ink-500">{currentCourse.category} • {currentCourse.difficulty}</p>
             </div>
             {role === 'student' && (currentCourse.isEnrolled ? (
               <span className="inline-flex items-center rounded-md bg-green-50 px-4 py-2 text-sm font-medium text-green-800">Enrolled</span>
@@ -68,18 +68,18 @@ const CourseDetailPage: React.FC = () => {
               <button
                 onClick={() => id && enrollInCourse(id)}
                 disabled={enrolling}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 disabled:cursor-wait disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-700 hover:bg-primary-800 disabled:cursor-wait disabled:opacity-60 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
               >
                 {enrolling ? 'Enrolling...' : 'Enroll Now'}
               </button>
             ))}
           </div>
         </div>
-        <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <div className="border-t border-ink-200 px-4 py-5 sm:px-6">
           <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
             <div className="sm:col-span-2">
-              <dt className="text-sm font-medium text-gray-500">Description</dt>
-              <dd className="mt-1 text-sm text-gray-900">{currentCourse.description}</dd>
+              <dt className="text-sm font-medium text-ink-500">Description</dt>
+              <dd className="mt-1 text-sm text-ink-900">{currentCourse.description}</dd>
             </div>
           </dl>
         </div>
@@ -88,36 +88,36 @@ const CourseDetailPage: React.FC = () => {
       {/* Topics List */}
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
         <div className="px-4 py-5 sm:px-6">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Course Topics</h3>
-          <p className="mt-1 max-w-2xl text-sm text-gray-500">Master these topics to complete the course.</p>
+          <h3 className="text-lg leading-6 font-medium text-ink-900">Course Topics</h3>
+          <p className="mt-1 max-w-2xl text-sm text-ink-500">Master these topics to complete the course.</p>
         </div>
-        <div className="border-t border-gray-200">
-          {!topics.length && <p className="px-6 py-5 text-sm text-gray-500">{currentCourse.canViewTopics ? 'Your teacher has not added topics yet. New topics appear here automatically.' : 'Topics are available after you enroll in this course.'}</p>}
-          <ul role="list" className="divide-y divide-gray-200">
+        <div className="border-t border-ink-200">
+          {!topics.length && <p className="px-6 py-5 text-sm text-ink-500">{currentCourse.canViewTopics ? 'Your teacher has not added topics yet. New topics appear here automatically.' : 'Topics are available after you enroll in this course.'}</p>}
+          <ul role="list" className="divide-y divide-ink-200">
             {topics.map((topic, index) => (
               <li key={topic._id}>
-                <div className="px-4 py-4 sm:px-6 hover:bg-gray-50">
+                <div className="px-4 py-4 sm:px-6 hover:bg-ink-50">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-bold">
                         {index + 1}
                       </div>
                       <div className="ml-4">
-                        <h4 className="text-lg font-medium text-gray-900">{topic.title}</h4>
-                        <p className="text-sm text-gray-500">{topic.description}</p>
+                        <h4 className="text-lg font-medium text-ink-900">{topic.title}</h4>
+                        <p className="text-sm text-ink-500">{topic.description}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-4">
                       <Link
                         to={`/courses/${id}/topics/${topic._id}`}
-                        className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="inline-flex items-center px-3 py-1.5 border border-ink-300 shadow-sm text-xs font-medium rounded text-ink-700 bg-white hover:bg-ink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                       >
-                        <BookOpenIcon className="-ml-0.5 mr-2 h-4 w-4 text-gray-500" aria-hidden="true" />
+                        <BookOpenIcon className="-ml-0.5 mr-2 h-4 w-4 text-ink-500" aria-hidden="true" />
                         Study
                       </Link>
                       <Link
                         to={`/quiz/start/${topic._id}`}
-                        className="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-xs font-medium rounded text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        className="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-xs font-medium rounded text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                       >
                         <CheckCircleIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
                         Take Exam

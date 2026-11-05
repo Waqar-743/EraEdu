@@ -141,12 +141,12 @@ const TeacherTopics = () => {
       header: 'Topic',
       render: (topic: TopicWithCourse) => (
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-indigo-100 rounded-lg">
-            <FolderIcon className="h-5 w-5 text-indigo-600" />
+          <div className="p-2 bg-primary-100 rounded-lg">
+            <FolderIcon className="h-5 w-5 text-primary-600" />
           </div>
           <div>
-            <p className="font-medium text-gray-900">{topic.title}</p>
-            <p className="text-sm text-gray-500 line-clamp-1">{topic.description}</p>
+            <p className="font-medium text-ink-900">{topic.title}</p>
+            <p className="text-sm text-ink-500 line-clamp-1">{topic.description}</p>
           </div>
         </div>
       ),
@@ -155,14 +155,14 @@ const TeacherTopics = () => {
       key: 'courseName' as keyof TopicWithCourse,
       header: 'Course',
       render: (topic: TopicWithCourse) => (
-        <span className="text-gray-600">{topic.courseName || 'N/A'}</span>
+        <span className="text-ink-600">{topic.courseName || 'N/A'}</span>
       ),
     },
     {
       key: 'order' as keyof TopicWithCourse,
       header: 'Order',
       render: (topic: TopicWithCourse) => (
-        <span className="inline-flex items-center justify-center w-8 h-8 bg-gray-100 rounded-full text-gray-600 font-medium">
+        <span className="inline-flex items-center justify-center w-8 h-8 bg-ink-100 rounded-full text-ink-600 font-medium">
           {topic.order}
         </span>
       ),
@@ -171,7 +171,7 @@ const TeacherTopics = () => {
       key: 'questionCount' as keyof TopicWithCourse,
       header: 'Questions',
       render: (topic: TopicWithCourse) => (
-        <span className="text-gray-600">{topic.questionCount || 0}</span>
+        <span className="text-ink-600">{topic.questionCount || 0}</span>
       ),
     },
     {
@@ -181,14 +181,14 @@ const TeacherTopics = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => handleOpenModal(topic)}
-            className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="p-1.5 text-ink-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
             title="Edit"
           >
             <PencilIcon className="h-5 w-5" />
           </button>
           <button
             onClick={() => handleDelete(topic)}
-            className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-1.5 text-ink-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             title="Delete"
           >
             <TrashIcon className="h-5 w-5" />
@@ -203,12 +203,12 @@ const TeacherTopics = () => {
       {/* Header */}
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Topics</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage topics for your courses</p>
+          <h1 className="text-2xl font-bold text-ink-900">Topics</h1>
+          <p className="text-sm text-ink-500 mt-1">Manage topics for your courses</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
           Add Topic
@@ -216,22 +216,22 @@ const TeacherTopics = () => {
       </header>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-4">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+            <MagnifyingGlassIcon className="h-5 w-5 text-ink-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search topics..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full pl-10 pr-4 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
           <select
             value={selectedCourse}
             onChange={(e) => setSelectedCourse(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="border border-ink-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           >
             <option value="all">All Courses</option>
             {courses.map((course) => (
@@ -244,18 +244,18 @@ const TeacherTopics = () => {
       </div>
 
       {/* Topics Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200">
         {loadError ? (
           <div className="p-8 text-center">
-            <p className="text-gray-600 mb-4">{loadError}</p>
-            <button onClick={fetchData} className="text-indigo-600 hover:text-indigo-800 font-medium">
+            <p className="text-ink-600 mb-4">{loadError}</p>
+            <button onClick={fetchData} className="text-primary-600 hover:text-primary-800 font-medium">
               Retry
             </button>
           </div>
         ) : courses.length === 0 && !loading ? (
           <div className="p-8 text-center">
-            <p className="text-gray-500 mb-4">You need to create a course before adding topics.</p>
-            <a href="/dashboard/teacher/courses/new" className="text-indigo-600 hover:text-indigo-800 font-medium">
+            <p className="text-ink-500 mb-4">You need to create a course before adding topics.</p>
+            <a href="/dashboard/teacher/courses/new" className="text-primary-600 hover:text-primary-800 font-medium">
               Create your first course →
             </a>
           </div>
@@ -273,36 +273,36 @@ const TeacherTopics = () => {
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl p-6 max-w-lg w-full mx-4">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <h3 className="text-lg font-semibold text-ink-900 mb-4">
               {editingTopic ? 'Edit Topic' : 'Add Topic'}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                <label className="block text-sm font-medium text-ink-700 mb-1">Title</label>
                 <input
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-ink-700 mb-1">Description</label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
+                <label className="block text-sm font-medium text-ink-700 mb-1">Course</label>
                 <select
                   value={formData.courseId}
                   onChange={(e) => setFormData({ ...formData, courseId: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   required
                 >
                   <option value="">Select a course</option>
@@ -314,13 +314,13 @@ const TeacherTopics = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Order</label>
+                <label className="block text-sm font-medium text-ink-700 mb-1">Order</label>
                 <input
                   type="number"
                   min="1"
                   value={formData.order}
                   onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   required
                 />
               </div>
@@ -328,13 +328,13 @@ const TeacherTopics = () => {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
+                  className="px-4 py-2 text-ink-600 hover:text-ink-800 font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700"
+                  className="px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800"
                 >
                   {editingTopic ? 'Update' : 'Create'}
                 </button>

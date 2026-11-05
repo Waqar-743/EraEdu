@@ -38,7 +38,7 @@ const Brand = ({
           className="relative flex h-full w-full items-center justify-center rounded-[12px] overflow-hidden"
           style={{
             background:
-              'linear-gradient(135deg, #022C1F 0%, #047857 45%, #06B6D4 100%)',
+              'var(--gradient-brand-hero)',
             boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
           }}
         >
@@ -48,7 +48,7 @@ const Brand = ({
             className="absolute inset-0 opacity-70"
             style={{
               background:
-                'radial-gradient(120% 80% at 30% 0%, rgba(108,232,183,0.55) 0%, transparent 60%)',
+                'radial-gradient(120% 80% at 30% 0%, rgb(var(--color-primary-300) / 0.55) 0%, transparent 60%)',
             }}
           />
           {/* EraEdu mark: an open book with a rising horizon */}

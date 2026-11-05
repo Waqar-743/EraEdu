@@ -428,8 +428,8 @@ const TeacherQuizzes = () => {
       header: 'Exam',
       render: (quiz: Quiz) => (
         <div>
-          <p className="font-medium text-gray-900">{quiz.title}</p>
-          <p className="text-sm text-gray-500 line-clamp-1">{quiz.description}</p>
+          <p className="font-medium text-ink-900">{quiz.title}</p>
+          <p className="text-sm text-ink-500 line-clamp-1">{quiz.description}</p>
         </div>
       ),
     },
@@ -438,12 +438,12 @@ const TeacherQuizzes = () => {
       header: 'Access Code',
       render: (quiz: Quiz) => (
         <div className="flex items-center gap-2">
-          <span className="font-mono font-bold text-lg text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg">
+          <span className="font-mono font-bold text-lg text-primary-600 bg-primary-50 px-3 py-1 rounded-lg">
             {quiz.accessCode}
           </span>
           <button
             onClick={(event) => { event.stopPropagation(); copyToClipboard(quiz.accessCode); }}
-            className="p-1 text-gray-400 hover:text-indigo-600 transition-colors"
+            className="p-1 text-ink-400 hover:text-primary-600 transition-colors"
             title="Copy code"
           >
             <ClipboardDocumentIcon className="h-4 w-4" />
@@ -455,21 +455,21 @@ const TeacherQuizzes = () => {
       key: 'courseTitle' as keyof Quiz,
       header: 'Course',
       render: (quiz: Quiz) => (
-        <span className="text-gray-700">{quiz.courseTitle || 'General'}</span>
+        <span className="text-ink-700">{quiz.courseTitle || 'General'}</span>
       ),
     },
     {
       key: 'questions' as keyof Quiz,
       header: 'Questions',
       render: (quiz: Quiz) => (
-        <span className="text-gray-600">{quiz.questions?.length || 0} questions</span>
+        <span className="text-ink-600">{quiz.questions?.length || 0} questions</span>
       ),
     },
     {
       key: 'timeLimit' as keyof Quiz,
       header: 'Time',
       render: (quiz: Quiz) => (
-        <span className="text-gray-600">{quiz.timeLimit || 30} min</span>
+        <span className="text-ink-600">{quiz.timeLimit || 30} min</span>
       ),
     },
     {
@@ -477,11 +477,11 @@ const TeacherQuizzes = () => {
       header: 'Scheduled',
       render: (quiz: Quiz) => (
         quiz.scheduledStart ? (
-          <span className="text-indigo-600 text-sm">
+          <span className="text-primary-600 text-sm">
             {new Date(quiz.scheduledStart).toLocaleString()}
           </span>
         ) : (
-          <span className="text-gray-400 text-sm">Anytime</span>
+          <span className="text-ink-400 text-sm">Anytime</span>
         )
       ),
     },
@@ -492,14 +492,14 @@ const TeacherQuizzes = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={(event) => { event.stopPropagation(); requestQuizOpen(quiz); }}
-            className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="p-1.5 text-ink-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
             title="Edit"
           >
             <PencilIcon className="h-5 w-5" />
           </button>
           <button
             onClick={(event) => { event.stopPropagation(); handleDelete(quiz); }}
-            className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-1.5 text-ink-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             title="Delete"
           >
             <TrashIcon className="h-5 w-5" />
@@ -513,32 +513,32 @@ const TeacherQuizzes = () => {
     <div className="space-y-6">
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Exams</h1>
-          <p className="text-sm text-gray-500 mt-1">Create exams and share them with students via code</p>
+          <h1 className="text-2xl font-bold text-ink-900">My Exams</h1>
+          <p className="text-sm text-ink-500 mt-1">Create exams and share them with students via code</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
           Create Exam
         </button>
       </header>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-4">
         <div className="relative">
-          <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+          <MagnifyingGlassIcon className="h-5 w-5 text-ink-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search exams..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full pl-10 pr-4 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           />
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200">
         <DataTable
           columns={columns}
           data={filteredQuizzes}
@@ -579,18 +579,18 @@ const TeacherQuizzes = () => {
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
           <div className="bg-white rounded-xl p-6 max-w-3xl w-full mx-4 my-8 max-h-[90vh] overflow-y-auto">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+            <h3 className="text-lg font-semibold text-ink-900 mb-4">
               {editingQuiz ? 'Edit Exam' : 'Create'}
             </h3>
 
             {!editingQuiz && (
-              <div className="mb-4 inline-flex rounded-lg border border-gray-300 p-1">
+              <div className="mb-4 inline-flex rounded-lg border border-ink-300 p-1">
                 <button
                   type="button"
                   onClick={() => setFormMode('quiz')}
                   disabled={saving}
                   className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                    formMode === 'quiz' ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100'
+                    formMode === 'quiz' ? 'bg-primary-700 text-white' : 'text-ink-600 hover:bg-ink-100'
                   }`}
                 >
                   Exam
@@ -600,7 +600,7 @@ const TeacherQuizzes = () => {
                   disabled={saving}
                   onClick={() => setFormMode('question')}
                   className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                    formMode === 'question' ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100'
+                    formMode === 'question' ? 'bg-primary-700 text-white' : 'text-ink-600 hover:bg-ink-100'
                   }`}
                 >
                   Question
@@ -614,22 +614,22 @@ const TeacherQuizzes = () => {
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Exam Title</label>
+                      <label className="block text-sm font-medium text-ink-700 mb-1">Exam Title</label>
                       <input
                         type="text"
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                         placeholder="Enter exam title"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
+                      <label className="block text-sm font-medium text-ink-700 mb-1">Course</label>
                       <select
                         value={formData.courseId}
                         onChange={(e) => selectCourse(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                         required
                       >
                         <option value="">Select a course</option>
@@ -645,15 +645,15 @@ const TeacherQuizzes = () => {
                       {creatingCourse && <div className="mt-2 flex gap-2"><input value={newCourseTitle} onChange={(event) => setNewCourseTitle(event.target.value)} placeholder="New course name" className="min-w-0 flex-1 rounded-lg border border-primary-200 px-3 py-2 text-sm focus:border-primary-500 focus:ring-primary-500" /><button type="button" onClick={createCourseInline} disabled={creatingCourseLoading} className="rounded-lg bg-primary-700 px-3 py-2 text-xs font-semibold text-white hover:bg-primary-800 disabled:opacity-60">{creatingCourseLoading ? 'Creating…' : 'Create'}</button></div>}
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Total Time (minutes)</label>
-                      <div className="w-full px-3 py-2 border border-gray-200 bg-gray-50 text-gray-500 rounded-lg">
+                      <label className="block text-sm font-medium text-ink-700 mb-1">Total Time (minutes)</label>
+                      <div className="w-full px-3 py-2 border border-ink-200 bg-ink-50 text-ink-500 rounded-lg">
                         {formData.timeLimit} minutes (calculated from questions)
                       </div>
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-ink-700 mb-1">
                       Scheduled Start Time (Optional)
                     </label>
                     <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1.5fr_0.7fr_0.7fr_0.7fr]">
@@ -662,46 +662,46 @@ const TeacherQuizzes = () => {
                         value={formData.scheduledDate}
                         onChange={(e) => setFormData({ ...formData, scheduledDate: e.target.value })}
                         aria-label="Scheduled start date"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                        className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                       />
-                      <select value={formData.scheduledHour} onChange={(e) => setFormData({ ...formData, scheduledHour: e.target.value })} aria-label="Scheduled start hour" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                      <select value={formData.scheduledHour} onChange={(e) => setFormData({ ...formData, scheduledHour: e.target.value })} aria-label="Scheduled start hour" className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                         {Array.from({ length: 12 }, (_, index) => index + 1).map((hour) => <option key={hour} value={hour}>{hour}</option>)}
                       </select>
-                      <select value={formData.scheduledMinute} onChange={(e) => setFormData({ ...formData, scheduledMinute: e.target.value })} aria-label="Scheduled start minute" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                      <select value={formData.scheduledMinute} onChange={(e) => setFormData({ ...formData, scheduledMinute: e.target.value })} aria-label="Scheduled start minute" className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                         {Array.from({ length: 60 }, (_, minute) => String(minute).padStart(2, '0')).map((minute) => <option key={minute} value={minute}>:{minute}</option>)}
                       </select>
-                      <select value={formData.scheduledPeriod} onChange={(e) => setFormData({ ...formData, scheduledPeriod: e.target.value as 'AM' | 'PM' })} aria-label="Scheduled start AM or PM" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                      <select value={formData.scheduledPeriod} onChange={(e) => setFormData({ ...formData, scheduledPeriod: e.target.value as 'AM' | 'PM' })} aria-label="Scheduled start AM or PM" className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
                         <option value="AM">AM</option>
                         <option value="PM">PM</option>
                       </select>
                     </div>
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-ink-500">
                       Choose a date to schedule the exam. Time uses 1–12 with AM/PM.
                     </p>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <label className="block text-sm font-medium text-ink-700 mb-1">Description</label>
                     <textarea
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                       placeholder="Brief description of the exam"
                     />
                   </div>
 
-                  <div className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                  <div className="flex items-start gap-3 p-3 border border-ink-200 rounded-lg bg-ink-50">
                     <input
                       id="cameraMonitoring"
                       type="checkbox"
                       checked={formData.cameraMonitoring}
                       onChange={(e) => setFormData({ ...formData, cameraMonitoring: e.target.checked })}
-                      className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 rounded"
+                      className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 rounded"
                     />
-                    <label htmlFor="cameraMonitoring" className="text-sm text-gray-700 cursor-pointer">
+                    <label htmlFor="cameraMonitoring" className="text-sm text-ink-700 cursor-pointer">
                       <span className="font-medium">Require camera monitoring</span>
-                      <p className="text-xs text-gray-500 mt-0.5">
+                      <p className="text-xs text-ink-500 mt-0.5">
                         When ON, students must enable their webcam to take this exam. When OFF, no camera is required.
                       </p>
                     </label>
@@ -717,7 +717,7 @@ const TeacherQuizzes = () => {
                         step="1"
                         value={formData.violationLimit}
                         onChange={(e) => setFormData({ ...formData, violationLimit: Math.min(100, Math.max(1, Number(e.target.value) || 1)) })}
-                        className="w-28 rounded-lg border border-red-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 focus:border-red-500 focus:ring-2 focus:ring-red-500"
+                        className="w-28 rounded-lg border border-red-300 bg-white px-3 py-2 text-sm font-semibold text-ink-900 focus:border-red-500 focus:ring-2 focus:ring-red-500"
                         required
                       />
                       <span className="text-sm text-red-800">violations</span>
@@ -730,11 +730,11 @@ const TeacherQuizzes = () => {
               {formMode === 'question' && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Course</label>
+                    <label className="block text-sm font-medium text-ink-700 mb-1">Course</label>
                     <select
                       value={formData.courseId}
                       onChange={(e) => selectCourse(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                       required
                     >
                       <option value="">Select a course</option>
@@ -746,39 +746,39 @@ const TeacherQuizzes = () => {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Question Title</label>
+                    <label className="block text-sm font-medium text-ink-700 mb-1">Question Title</label>
                     <input
                       type="text"
                       value={formData.questionTitle}
                       onChange={(e) => setFormData({ ...formData, questionTitle: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                       placeholder="Enter question title"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Scheduled Start Time (Optional)</label>
+                    <label className="block text-sm font-medium text-ink-700 mb-1">Scheduled Start Time (Optional)</label>
                     <input
                       type="datetime-local"
                       value={formData.questionScheduledStart}
                       onChange={(e) => setFormData({ ...formData, questionScheduledStart: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                      className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                     />
-                    <p className="mt-1 text-xs text-gray-500">
+                    <p className="mt-1 text-xs text-ink-500">
                       If set, students cannot start the question before this time
                     </p>
                   </div>
-                  <div className="md:col-span-3 flex items-start gap-3 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                  <div className="md:col-span-3 flex items-start gap-3 p-3 border border-ink-200 rounded-lg bg-ink-50">
                     <input
                       id="cameraMonitoringQ"
                       type="checkbox"
                       checked={formData.cameraMonitoring}
                       onChange={(e) => setFormData({ ...formData, cameraMonitoring: e.target.checked })}
-                      className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 rounded"
+                      className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 rounded"
                     />
-                    <label htmlFor="cameraMonitoringQ" className="text-sm text-gray-700 cursor-pointer">
+                    <label htmlFor="cameraMonitoringQ" className="text-sm text-ink-700 cursor-pointer">
                       <span className="font-medium">Require camera monitoring</span>
-                      <p className="text-xs text-gray-500 mt-0.5">
+                      <p className="text-xs text-ink-500 mt-0.5">
                         When ON, students must enable their webcam. When OFF, no camera is required.
                       </p>
                     </label>
@@ -788,11 +788,11 @@ const TeacherQuizzes = () => {
 
               <div className="border-t pt-4">
                 <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-md font-semibold text-gray-900">Questions</h4>
+                  <h4 className="text-md font-semibold text-ink-900">Questions</h4>
                   <button
                     type="button"
                     onClick={addQuestion}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 text-sm bg-primary-100 text-primary-700 rounded-lg hover:bg-primary-200 transition-colors"
                   >
                     <PlusIcon className="h-4 w-4" />
                     Add Question
@@ -800,39 +800,39 @@ const TeacherQuizzes = () => {
                 </div>
 
                 {!editingQuiz && (
-                  <div className="mb-5 rounded-lg border border-gray-200 p-4">
+                  <div className="mb-5 rounded-lg border border-ink-200 p-4">
                     <div className="mb-2 flex items-center justify-between gap-3">
-                      <h5 className="text-sm font-semibold text-gray-900">Add from question bank</h5>
-                      <button type="button" onClick={fetchBankQuestions} className="text-xs font-medium text-indigo-700 hover:text-indigo-900">Refresh bank</button>
+                      <h5 className="text-sm font-semibold text-ink-900">Add from question bank</h5>
+                      <button type="button" onClick={fetchBankQuestions} className="text-xs font-medium text-primary-700 hover:text-primary-900">Refresh bank</button>
                     </div>
                     {!formData.courseId ? (
-                      <p className="text-sm text-gray-500">Select a course to see its bank questions.</p>
+                      <p className="text-sm text-ink-500">Select a course to see its bank questions.</p>
                     ) : bankLoading ? (
-                      <p className="text-sm text-gray-500">Loading question bank…</p>
+                      <p className="text-sm text-ink-500">Loading question bank…</p>
                     ) : bankError ? (
                       <p role="alert" className="text-sm text-red-700">{bankError}</p>
                     ) : (
                       <>
-                        <label htmlFor="bank-topic" className="block text-xs font-medium text-gray-600">Topic</label>
-                        <select id="bank-topic" value={bankTopicId} onChange={(event) => setBankTopicId(event.target.value)} className="mt-1 mb-3 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+                        <label htmlFor="bank-topic" className="block text-xs font-medium text-ink-600">Topic</label>
+                        <select id="bank-topic" value={bankTopicId} onChange={(event) => setBankTopicId(event.target.value)} className="mt-1 mb-3 w-full rounded-lg border border-ink-300 px-3 py-2 text-sm">
                           <option value="all">All topics</option>
                           {[...new Map(courseBankQuestions.map((question) => [question.topicId, question.topicName])).entries()].map(([id, name]) => (
                             <option key={id} value={id || ''}>{name}</option>
                           ))}
                         </select>
                         {visibleBankQuestions.length === 0 ? (
-                          <p className="text-sm text-gray-500">No bank questions in this course/topic yet. You can still write questions below.</p>
+                          <p className="text-sm text-ink-500">No bank questions in this course/topic yet. You can still write questions below.</p>
                         ) : (
                           <div className="max-h-48 space-y-2 overflow-y-auto">
                             {visibleBankQuestions.map((question) => (
-                              <label key={question._id} className="flex items-start gap-2 rounded border border-gray-200 p-2 text-sm">
+                              <label key={question._id} className="flex items-start gap-2 rounded border border-ink-200 p-2 text-sm">
                                 <input type="checkbox" checked={selectedBankIds.includes(question._id)} onChange={() => toggleBankQuestion(question._id)} disabled={!['multipleChoice', 'shortAnswer'].includes(question.questionType)} className="mt-1" />
-                                <span><span className="font-medium">{question.text}</span><span className="block text-xs text-gray-500">{question.topicName} · {question.questionType === 'shortAnswer' ? 'Short answer' : question.questionType === 'multipleChoice' ? 'Multiple choice' : 'Unsupported type'} · {question.timeLimit || 60} seconds</span></span>
+                                <span><span className="font-medium">{question.text}</span><span className="block text-xs text-ink-500">{question.topicName} · {question.questionType === 'shortAnswer' ? 'Short answer' : question.questionType === 'multipleChoice' ? 'Multiple choice' : 'Unsupported type'} · {question.timeLimit || 60} seconds</span></span>
                               </label>
                             ))}
                           </div>
                         )}
-                        {selectedBankIds.length > 0 && <p className="mt-2 text-xs text-indigo-700">{selectedBankIds.length} bank question{selectedBankIds.length === 1 ? '' : 's'} selected. Their question types and answers are kept when you save.</p>}
+                        {selectedBankIds.length > 0 && <p className="mt-2 text-xs text-primary-700">{selectedBankIds.length} bank question{selectedBankIds.length === 1 ? '' : 's'} selected. Their question types and answers are kept when you save.</p>}
                       </>
                     )}
                   </div>
@@ -840,13 +840,13 @@ const TeacherQuizzes = () => {
 
                 <div className="space-y-6">
                   {formData.questions.map((question, qIndex) => (
-                    <div key={qIndex} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                    <div key={qIndex} className="border border-ink-200 rounded-lg p-4 bg-ink-50">
                       <div className="flex items-center justify-between mb-3">
-                        <span className="font-medium text-gray-700">Question {qIndex + 1}</span>
+                        <span className="font-medium text-ink-700">Question {qIndex + 1}</span>
                         <div className="flex items-center gap-3">
                           {/* Time Section */}
-                          <div className="flex items-center gap-2 bg-white px-2 py-1 border border-gray-300 rounded-lg">
-                            <ClockIcon className="h-4 w-4 text-gray-400" />
+                          <div className="flex items-center gap-2 bg-white px-2 py-1 border border-ink-300 rounded-lg">
+                            <ClockIcon className="h-4 w-4 text-ink-400" />
                             <input
                               type="number"
                               min="30"
@@ -857,14 +857,14 @@ const TeacherQuizzes = () => {
                               className="w-16 text-sm border-none focus:ring-0 p-0"
                               placeholder="60"
                             />
-                            <span className="text-[10px] font-bold text-gray-400 uppercase">sec</span>
+                            <span className="text-[10px] font-bold text-ink-400 uppercase">sec</span>
                           </div>
 
                           {/* Difficulty Section */}
                           <select
                             value={question.difficulty}
                             onChange={(e) => updateQuestion(qIndex, 'difficulty', e.target.value)}
-                            className="text-sm px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                            className="text-sm px-2 py-1 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500"
                           >
                             <option value="Easy">Easy</option>
                             <option value="Medium">Medium</option>
@@ -887,7 +887,7 @@ const TeacherQuizzes = () => {
                         value={question.text}
                         onChange={(e) => updateQuestion(qIndex, 'text', e.target.value)}
                         rows={2}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 mb-3"
+                        className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 mb-3"
                         placeholder="Enter question text"
                         required
                       />
@@ -901,13 +901,13 @@ const TeacherQuizzes = () => {
                                 name={`correct-${qIndex}`}
                                 checked={question.correctAnswer === oIndex}
                                 onChange={() => updateQuestion(qIndex, 'correctAnswer', oIndex)}
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
+                                className="h-4 w-4 text-primary-600 focus:ring-primary-500"
                               />
                               <input
                                 type="text"
                                 value={option}
                                 onChange={(e) => updateOption(qIndex, oIndex, e.target.value)}
-                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                className="flex-1 px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                                 placeholder={`Option ${oIndex + 1}`}
                                 required
                               />
@@ -918,7 +918,7 @@ const TeacherQuizzes = () => {
                           ))}
                         </div>
                       ) : (
-                        <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-700">
+                        <div className="mb-3 p-3 bg-primary-50 border border-primary-200 rounded-lg text-xs text-primary-700">
                           Students will type their own answer. You will grade their submissions manually from the Submissions page.
                         </div>
                       )}
@@ -927,7 +927,7 @@ const TeacherQuizzes = () => {
                         type="text"
                         value={question.explanation || ''}
                         onChange={(e) => updateQuestion(qIndex, 'explanation', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        className="w-full px-3 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                         placeholder="Explanation (optional)"
                       />
                     </div>
@@ -939,14 +939,14 @@ const TeacherQuizzes = () => {
                 <button
                   type="button"
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
+                  className="px-4 py-2 text-ink-600 hover:text-ink-800 font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:cursor-wait disabled:opacity-60"
+                  className="px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 disabled:cursor-wait disabled:opacity-60"
                 >
                   {saving ? 'Saving…' : editingQuiz ? 'Update Exam' : formMode === 'quiz' ? 'Create Exam' : 'Create Question'}
                 </button>

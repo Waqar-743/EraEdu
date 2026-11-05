@@ -87,15 +87,15 @@ const StudentCourses = () => {
       {/* Header */}
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Courses</h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-ink-900">My Courses</h1>
+          <p className="text-sm text-ink-500 mt-1">
             {enrolledCourses.length} course{enrolledCourses.length !== 1 ? 's' : ''} enrolled
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowJoinModal(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 transition-colors shadow-sm"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white text-sm font-medium rounded-lg hover:bg-primary-800 transition-colors shadow-sm"
           >
             <PlusIcon className="h-5 w-5" />
             Join Course
@@ -105,24 +105,24 @@ const StudentCourses = () => {
       </header>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-4">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+            <MagnifyingGlassIcon className="h-5 w-5 text-ink-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search enrolled courses..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="w-full pl-10 pr-4 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
           <div className="flex items-center gap-2">
-            <AdjustmentsHorizontalIcon className="h-5 w-5 text-gray-400" />
+            <AdjustmentsHorizontalIcon className="h-5 w-5 text-ink-400" />
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value as 'all' | 'in-progress' | 'completed')}
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="border border-ink-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             >
               <option value="all">All Courses</option>
               <option value="in-progress">In Progress</option>
@@ -141,7 +141,7 @@ const StudentCourses = () => {
 
       {/* Enrolled Courses heading */}
       <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Enrolled Courses</h2>
+        <h2 className="text-lg font-semibold text-ink-900 mb-4">Enrolled Courses</h2>
       </div>
 
       {/* Course Grid */}
@@ -157,18 +157,18 @@ const StudentCourses = () => {
           ))}
         </div>
       ) : enrolledCourses.length === 0 ? (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-          <BookOpenIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No Courses Yet</h3>
-          <p className="text-gray-500 mb-4">
+        <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-12 text-center">
+          <BookOpenIcon className="h-12 w-12 text-ink-300 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-ink-900 mb-2">No Courses Yet</h3>
+          <p className="text-ink-500 mb-4">
             Ask your teacher for a course code, then select Join Course above to get started.
           </p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-          <MagnifyingGlassIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">No courses found</h3>
-          <p className="text-gray-500">Try adjusting your search or filter criteria.</p>
+        <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-12 text-center">
+          <MagnifyingGlassIcon className="h-12 w-12 text-ink-300 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-ink-900 mb-2">No courses found</h3>
+          <p className="text-ink-500">Try adjusting your search or filter criteria.</p>
         </div>
       )}
 
@@ -177,16 +177,16 @@ const StudentCourses = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden">
             {/* Modal header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-ink-100">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-primary-100 rounded-lg">
                   <AcademicCapIcon className="h-5 w-5 text-primary-700" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">Join Course</h3>
+                <h3 className="text-lg font-semibold text-ink-900">Join Course</h3>
               </div>
               <button
                 onClick={() => { setShowJoinModal(false); setCourseCode(''); }}
-                className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-1.5 text-ink-400 hover:text-ink-600 hover:bg-ink-100 rounded-lg transition-colors"
               >
                 <XMarkIcon className="h-5 w-5" />
               </button>
@@ -194,18 +194,18 @@ const StudentCourses = () => {
 
             {/* Modal body */}
             <div className="px-6 py-5 space-y-4">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-ink-600">
                 Enter the 6-character course code provided by your teacher to enroll in the course.
               </p>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Course Code</label>
+                <label className="block text-sm font-medium text-ink-700 mb-1.5">Course Code</label>
                 <input
                   type="text"
                   value={courseCode}
                   onChange={(e) => setCourseCode(e.target.value.toUpperCase().slice(0, 6))}
                   placeholder="e.g. AB3K7X"
                   maxLength={6}
-                  className="w-full px-4 py-3 text-center text-2xl font-mono font-bold tracking-[0.3em] border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 placeholder:text-gray-300 placeholder:tracking-[0.3em] placeholder:text-lg uppercase"
+                  className="w-full px-4 py-3 text-center text-2xl font-mono font-bold tracking-[0.3em] border-2 border-ink-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 placeholder:text-ink-300 placeholder:tracking-[0.3em] placeholder:text-lg uppercase"
                   autoFocus
                   onKeyDown={(e) => { if (e.key === 'Enter' && courseCode.length === 6) handleJoinCourse(); }}
                 />
@@ -213,17 +213,17 @@ const StudentCourses = () => {
             </div>
 
             {/* Modal footer */}
-            <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+            <div className="px-6 py-4 bg-ink-50 border-t border-ink-100 flex justify-end gap-3">
               <button
                 onClick={() => { setShowJoinModal(false); setCourseCode(''); }}
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+                className="px-4 py-2 text-sm font-medium text-ink-700 hover:text-ink-900"
               >
                 Cancel
               </button>
               <button
                 onClick={handleJoinCourse}
                 disabled={joining || courseCode.length < 6}
-                className="px-6 py-2 bg-primary-600 text-white rounded-lg font-medium text-sm hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
+                className="px-6 py-2 bg-primary-700 text-white rounded-lg font-medium text-sm hover:bg-primary-800 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-colors"
               >
                 {joining ? (
                   <>

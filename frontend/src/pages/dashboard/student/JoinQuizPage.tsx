@@ -200,13 +200,13 @@ const JoinQuizPage = () => {
   return (
     <div className="max-w-2xl mx-auto">
       <header className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Join Exam</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <h1 className="text-2xl font-bold text-ink-900">Join Exam</h1>
+        <p className="text-sm text-ink-500 mt-1">
           Enter the exam code provided by your teacher to start an exam
         </p>
       </header>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-8">
         {error && (
           <div role="alert" className="mb-5 rounded-lg bg-red-50 p-4 flex items-start gap-3">
             <ExclamationCircleIcon className="h-5 w-5 text-red-400 mt-0.5" />
@@ -223,7 +223,7 @@ const JoinQuizPage = () => {
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2 text-center">
+                <label htmlFor="code" className="block text-sm font-medium text-ink-700 mb-2 text-center">
                   Enter Exam Code
                 </label>
                 <input
@@ -234,11 +234,11 @@ const JoinQuizPage = () => {
                   value={code}
                   onChange={handleCodeChange}
                   placeholder="1234"
-                  className="w-full rounded-xl border border-gray-300 px-4 py-4 text-center font-mono text-4xl tracking-[0.5em] focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
+                  className="w-full rounded-xl border border-ink-300 px-4 py-4 text-center font-mono text-4xl tracking-[0.5em] focus:border-primary-500 focus:ring-2 focus:ring-primary-500"
                   maxLength={4}
                   autoComplete="off"
                 />
-                <p className="mt-2 text-sm text-gray-500 text-center">
+                <p className="mt-2 text-sm text-ink-500 text-center">
                   {code.length}/4 digits
                 </p>
               </div>
@@ -246,7 +246,7 @@ const JoinQuizPage = () => {
               <button
                 type="submit"
                 disabled={loading || code.length !== 4}
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl text-base font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl text-base font-medium text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {loading ? (
                   <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
@@ -259,9 +259,9 @@ const JoinQuizPage = () => {
               </button>
             </form>
 
-            <div className="mt-8 pt-6 border-t border-gray-200">
-              <h4 className="text-sm font-medium text-gray-700 mb-3">How it works:</h4>
-              <ul className="space-y-2 text-sm text-gray-500">
+            <div className="mt-8 pt-6 border-t border-ink-200">
+              <h4 className="text-sm font-medium text-ink-700 mb-3">How it works:</h4>
+              <ul className="space-y-2 text-sm text-ink-500">
                 <li className="flex items-start gap-2">
                   <span className="inline-flex items-center justify-center h-5 w-5 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">1</span>
                   Get the 4-digit code from your teacher
@@ -283,29 +283,29 @@ const JoinQuizPage = () => {
               <div className="inline-flex items-center justify-center h-16 w-16 bg-green-100 rounded-full mb-4">
                 <DocumentTextIcon className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900">Exam Found!</h3>
+              <h3 className="text-xl font-semibold text-ink-900">Exam Found!</h3>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+            <div className="bg-ink-50 rounded-lg p-4 space-y-3">
               <div>
-                <p className="text-sm text-gray-500">Exam Title</p>
-                <p className="font-medium text-gray-900">{quizDetails.quiz?.title || 'Untitled Exam'}</p>
+                <p className="text-sm text-ink-500">Exam Title</p>
+                <p className="font-medium text-ink-900">{quizDetails.quiz?.title || 'Untitled Exam'}</p>
               </div>
               {quizDetails.quiz?.description && (
                 <div>
-                  <p className="text-sm text-gray-500">Description</p>
-                  <p className="text-gray-700">{quizDetails.quiz.description}</p>
+                  <p className="text-sm text-ink-500">Description</p>
+                  <p className="text-ink-700">{quizDetails.quiz.description}</p>
                 </div>
               )}
               <div className="flex flex-wrap items-center gap-4">
                 {quizDetails.quiz?.timeLimit && (
-                  <div className="flex items-center gap-2 text-gray-600">
+                  <div className="flex items-center gap-2 text-ink-600">
                     <ClockIcon className="h-5 w-5" />
                     <span>{quizDetails.quiz.timeLimit} minutes</span>
                   </div>
                 )}
                 {quizDetails.quiz?.questionCount && (
-                  <div className="flex items-center gap-2 text-gray-600">
+                  <div className="flex items-center gap-2 text-ink-600">
                     <DocumentTextIcon className="h-5 w-5" />
                     <span>{quizDetails.quiz.questionCount} questions</span>
                   </div>
@@ -366,7 +366,7 @@ const JoinQuizPage = () => {
               <button
                 onClick={handleTryAnother}
                 disabled={starting}
-                className="flex-1 py-3 px-4 border border-gray-300 rounded-xl text-base font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50"
+                className="flex-1 py-3 px-4 border border-ink-300 rounded-xl text-base font-medium text-ink-700 bg-white hover:bg-ink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors disabled:opacity-50"
               >
                 Try Another Code
               </button>
@@ -375,8 +375,8 @@ const JoinQuizPage = () => {
                 disabled={!canStart || starting || isExpired}
                 className={`flex-1 py-3 px-4 border border-transparent rounded-xl text-base font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                   isExpired 
-                    ? 'bg-gray-400 cursor-not-allowed' 
-                    : 'bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
+                    ? 'bg-ink-400 cursor-not-allowed'
+                    : 'bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
                 }`}
               >
                 {starting ? (
@@ -403,15 +403,15 @@ const JoinQuizPage = () => {
           <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-primary-900/10">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-amber-100 text-amber-700"><ExclamationCircleIcon className="h-6 w-6" /></div>
             <h2 className="mt-4 text-xl font-semibold text-primary-950">Before you start</h2>
-            <p className="mt-2 text-sm leading-relaxed text-gray-600">This assessment records integrity events to help your teacher review the session fairly.</p>
+            <p className="mt-2 text-sm leading-relaxed text-ink-600">This assessment records integrity events to help your teacher review the session fairly.</p>
             <ul className="mt-4 space-y-2 rounded-xl bg-primary-50 p-4 text-sm text-primary-950">
               <li>• Stay on the exam tab and avoid switching windows.</li>
               <li>• Do not copy, paste, or use unauthorised assistance.</li>
               <li>• Follow your teacher’s exam rules and instructions.</li>
               <li>• Repeated violations may be recorded and can lead to automatic submission.</li>
             </ul>
-            <label className="mt-5 flex cursor-pointer items-start gap-3 text-sm text-gray-700">
-              <input type="checkbox" checked={rulesAcknowledged} onChange={(event) => setRulesAcknowledged(event.target.checked)} className="mt-0.5 h-4 w-4 rounded border-gray-300 text-primary-700 focus:ring-primary-600" />
+            <label className="mt-5 flex cursor-pointer items-start gap-3 text-sm text-ink-700">
+              <input type="checkbox" checked={rulesAcknowledged} onChange={(event) => setRulesAcknowledged(event.target.checked)} className="mt-0.5 h-4 w-4 rounded border-ink-300 text-primary-700 focus:ring-primary-600" />
               <span>I understand the exam rules and want to continue.</span>
             </label>
             <div className="mt-6 flex gap-3">

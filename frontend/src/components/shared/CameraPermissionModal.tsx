@@ -125,23 +125,23 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle, showAwayL
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
 
         {/* Modal */}
-        <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-5">
+        <div className="relative theme-surface rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-5">
           {/* Header */}
           <div className="text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 mb-3">
-              <ShieldCheckIcon className="h-7 w-7 text-blue-600" />
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary-100 mb-3">
+              <ShieldCheckIcon className="h-7 w-7 text-primary-600" />
             </div>
-            <h3 className="text-lg font-bold text-gray-900">Camera Required for Exam</h3>
+            <h3 className="text-lg font-bold text-ink-900">Camera Required for Exam</h3>
             {quizTitle && (
-              <p className="text-sm text-gray-500 mt-1">"{quizTitle}"</p>
+              <p className="text-sm text-ink-500 mt-1">"{quizTitle}"</p>
             )}
-            <p className="text-sm text-gray-600 mt-2">
+            <p className="text-sm text-ink-600 mt-2">
               This exam uses <strong>face detection proctoring</strong>. Your camera must be enabled to start.
             </p>
           </div>
 
           {/* Camera Preview Area */}
-          <div className="relative rounded-xl overflow-hidden border-2 border-gray-200 bg-black mx-auto" style={{ maxWidth: 320 }}>
+          <div className="relative rounded-xl overflow-hidden border-2 border-ink-200 bg-black mx-auto" style={{ maxWidth: 320 }}>
             <video
               ref={videoRef}
               autoPlay
@@ -156,7 +156,7 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle, showAwayL
               <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center text-white gap-3">
                 <div className="animate-spin h-8 w-8 border-3 border-white border-t-transparent rounded-full" />
                 <p className="text-sm font-medium">Requesting camera access…</p>
-                <p className="text-xs text-gray-300">Please click "Allow" in the browser popup</p>
+                <p className="text-xs text-white/75">Please click "Allow" in the browser popup</p>
               </div>
             )}
 
@@ -173,7 +173,7 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle, showAwayL
               <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white gap-3 px-4 text-center">
                 <VideoCameraSlashIcon className="h-10 w-10 text-red-400" />
                 <p className="font-semibold text-red-300">Camera Access Blocked</p>
-                <div className="text-xs text-gray-300 space-y-1">
+                <div className="text-xs text-white/75 space-y-1">
                   <p>Your browser blocked camera access. To fix:</p>
                   <p>1. Click the <strong>🔒 lock icon</strong> in the address bar</p>
                   <p>2. Find <strong>Camera</strong> → change to <strong>Allow</strong></p>
@@ -187,7 +187,7 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle, showAwayL
               <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white gap-3 px-4 text-center">
                 <ExclamationTriangleIcon className="h-10 w-10 text-yellow-400" />
                 <p className="font-semibold">Camera Error</p>
-                <p className="text-xs text-gray-300">
+                <p className="text-xs text-white/75">
                   No camera found or it's being used by another app. Close other apps and try again.
                 </p>
               </div>
@@ -215,7 +215,7 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle, showAwayL
           <div className="flex gap-3">
             <button
               onClick={handleCancel}
-              className="flex-1 py-2.5 px-4 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+              className="flex-1 py-2.5 px-4 border border-ink-300 rounded-xl text-sm font-medium text-ink-700 bg-white hover:bg-ink-50 transition-colors"
             >
               Cancel
             </button>
@@ -232,7 +232,7 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle, showAwayL
               <button
                 onClick={requestCamera}
                 disabled={retrying}
-                className="flex-1 py-2.5 px-4 border border-transparent rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                className="flex-1 py-2.5 px-4 border border-transparent rounded-xl text-sm font-bold text-white bg-primary-700 hover:bg-primary-800 transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 {retrying ? (
                   <>

@@ -4,8 +4,8 @@
   <defs>
     <linearGradient id="brand" x1="28" y1="22" x2="181" y2="193" gradientUnits="userSpaceOnUse">
       <stop stop-color="#064E3B"/>
-      <stop offset="0.52" stop-color="#059669"/>
-      <stop offset="1" stop-color="#06B6D4"/>
+      <stop offset="0.52" stop-color="#047857"/>
+      <stop offset="1" stop-color="#065F46"/>
     </linearGradient>
     <linearGradient id="glow" x1="69" y1="40" x2="146" y2="176" gradientUnits="userSpaceOnUse">
       <stop stop-color="#D1FAE5" stop-opacity="0.68"/>
@@ -23,6 +23,6 @@
     <path d="M110 49V62M84 56L92 65M136 56L128 65" stroke="#D1FAE5" stroke-width="7" stroke-linecap="round"/>
     <path d="M42 36H178V145C178 174 154 190 126 190H94C65 190 42 174 42 145V36Z" fill="url(#glow)" opacity="0.45"/>
   </g>
-  <text x="242" y="105" fill="#0F172A" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="800" letter-spacing="3">ERA<tspan fill="#10B981">EDU</tspan></text>
-  <text x="246" y="148" fill="#64748B" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="6">ASSESSMENT INTELLIGENCE</text>
+  <text x="242" y="105" fill="#064E3B" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="800" letter-spacing="3">ERA<tspan fill="#10B981">EDU</tspan></text>
+  <text x="246" y="148" fill="#5B776C" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" letter-spacing="6">ASSESSMENT INTELLIGENCE</text>
 </svg>

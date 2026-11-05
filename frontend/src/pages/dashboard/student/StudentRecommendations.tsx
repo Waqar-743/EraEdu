@@ -103,7 +103,7 @@ const StudentRecommendations = () => {
       case 'suggestion':
         return <div className="p-2 bg-primary-100 rounded-lg"><LightBulbIcon className="h-5 w-5 text-primary-700" /></div>;
       default:
-        return <div className="p-2 bg-gray-100 rounded-lg"><SparklesIcon className="h-5 w-5 text-gray-600" /></div>;
+        return <div className="p-2 bg-ink-100 rounded-lg"><SparklesIcon className="h-5 w-5 text-ink-600" /></div>;
     }
   };
 
@@ -118,7 +118,7 @@ const StudentRecommendations = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <header className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-xl p-6 text-white">
+      <header className="bg-gradient-to-r from-primary-700 to-primary-800 rounded-xl p-6 text-white">
         <div className="flex items-center gap-3 mb-2">
           <SparklesIcon className="h-8 w-8" />
           <h1 className="text-2xl font-bold">Learning Recommendations</h1>
@@ -138,7 +138,7 @@ const StudentRecommendations = () => {
       )}
 
       {unavailable && !error && (
-        <div role="status" className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
+        <div role="status" className="rounded-xl border border-primary-200 bg-primary-50 p-4 text-sm text-primary-900">
           Personalized recommendations and insights are not available yet. No exam scores or study plans are being inferred.
         </div>
       )}
@@ -146,34 +146,29 @@ const StudentRecommendations = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Recommendations */}
         <div className="lg:col-span-2 space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Recommended for You</h2>
+          <h2 className="text-lg font-semibold text-ink-900">Recommended for You</h2>
           
           {recommendations.length > 0 ? (
             recommendations.map((rec) => (
               <div
                 key={rec.id}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow"
+                className="bg-white rounded-xl shadow-sm border border-ink-200 p-5 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-start gap-4">
-                  <div className={`p-2 rounded-lg ${
-                    rec.type === 'topic' ? 'bg-blue-100 text-blue-600' :
-                    rec.type === 'quiz' ? 'bg-yellow-100 text-yellow-600' :
-                    rec.type === 'course' ? 'bg-green-100 text-green-600' :
-                    'bg-primary-100 text-primary-700'
-                  }`}>
+                  <div className="p-2 rounded-lg bg-primary-100 text-primary-700">
                     {getTypeIcon(rec.type)}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-gray-900">{rec.title}</h3>
+                          <h3 className="font-semibold text-ink-900">{rec.title}</h3>
                           {getPriorityBadge(rec.priority)}
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">{rec.description}</p>
-                        <p className="text-sm text-gray-500 italic">"{rec.reason}"</p>
+                        <p className="text-sm text-ink-600 mb-2">{rec.description}</p>
+                        <p className="text-sm text-ink-500 italic">"{rec.reason}"</p>
                         {rec.metadata && (
-                          <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                          <div className="flex items-center gap-3 mt-2 text-xs text-ink-500">
                             {rec.metadata.difficulty && (
                               <span className="capitalize">{rec.metadata.difficulty}</span>
                             )}
@@ -186,7 +181,7 @@ const StudentRecommendations = () => {
                       {rec.actionUrl && (
                         <Link
                           to={rec.actionUrl}
-                          className="flex-shrink-0 inline-flex items-center gap-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
+                          className="flex-shrink-0 inline-flex items-center gap-1 rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-800"
                         >
                           {rec.actionLabel || 'Start'}
                           <ArrowRightIcon className="h-4 w-4" />
@@ -198,10 +193,10 @@ const StudentRecommendations = () => {
               </div>
             ))
           ) : (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-              <SparklesIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">{error ? 'Recommendations unavailable' : 'No recommendations yet'}</h3>
-              <p className="text-gray-500">
+            <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-12 text-center">
+              <SparklesIcon className="h-12 w-12 text-ink-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-ink-900 mb-2">{error ? 'Recommendations unavailable' : 'No recommendations yet'}</h3>
+              <p className="text-ink-500">
                 {error ? 'Recommendations could not be loaded.' : unavailable ? 'Personalized recommendations are not available yet.' : 'No recommendations are available for your account yet.'}
               </p>
             </div>
@@ -210,25 +205,25 @@ const StudentRecommendations = () => {
 
         {/* Learning Insights Sidebar */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-gray-900">Learning Insights</h2>
+          <h2 className="text-lg font-semibold text-ink-900">Learning Insights</h2>
           
           {insights.length > 0 ? (
             insights.map((insight, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-sm border border-gray-200 p-4"
+                className="bg-white rounded-xl shadow-sm border border-ink-200 p-4"
               >
                 <div className="flex items-start gap-3">
                   {getInsightIcon(insight.type)}
                   <div>
-                    <h4 className="font-medium text-gray-900 text-sm">{insight.title}</h4>
-                    <p className="text-xs text-gray-500 mt-1">{insight.description}</p>
+                    <h4 className="font-medium text-ink-900 text-sm">{insight.title}</h4>
+                    <p className="text-xs text-ink-500 mt-1">{insight.description}</p>
                     {insight.topics && insight.topics.length > 0 && (
                       <div className="flex flex-wrap gap-1 mt-2">
                         {insight.topics.map((topic, i) => (
                           <span
                             key={i}
-                            className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full"
+                            className="px-2 py-0.5 bg-ink-100 text-ink-600 text-xs rounded-full"
                           >
                             {topic}
                           </span>
@@ -240,31 +235,31 @@ const StudentRecommendations = () => {
               </div>
             ))
           ) : (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center">
-              <LightBulbIcon className="h-8 w-8 text-gray-300 mx-auto mb-2" />
-              <p className="text-sm text-gray-500">
+            <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-6 text-center">
+              <LightBulbIcon className="h-8 w-8 text-ink-300 mx-auto mb-2" />
+              <p className="text-sm text-ink-500">
                 {error ? 'Learning insights could not be loaded.' : unavailable ? 'Personalized insights are not available yet.' : 'No learning insights are available for your account yet.'}
               </p>
             </div>
           )}
 
           {/* Quick Actions */}
-          <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl border border-primary-100 p-4">
-            <h4 className="font-medium text-gray-900 mb-3">Quick Actions</h4>
+          <div className="bg-gradient-to-br from-primary-50 dark:from-ink-100 to-primary-100 dark:to-ink-50 rounded-xl border border-primary-100 p-4">
+            <h4 className="font-medium text-ink-900 mb-3">Quick Actions</h4>
             <div className="space-y-2">
               <Link
                 to="/courses"
-                className="flex items-center gap-2 p-2 bg-white rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 p-2 bg-white rounded-lg hover:bg-ink-50 transition-colors"
               >
                 <BookOpenIcon className="h-5 w-5 text-primary-700" />
-                <span className="text-sm font-medium text-gray-700">Browse Courses</span>
+                <span className="text-sm font-medium text-ink-700">Browse Courses</span>
               </Link>
               <Link
                 to="/dashboard/student/quiz-history"
-                className="flex items-center gap-2 p-2 bg-white rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 p-2 bg-white rounded-lg hover:bg-ink-50 transition-colors"
               >
-                <AcademicCapIcon className="h-5 w-5 text-green-600" />
-                <span className="text-sm font-medium text-gray-700">View Exam History</span>
+                <AcademicCapIcon className="h-5 w-5 text-primary-700" />
+                <span className="text-sm font-medium text-ink-700">View Exam History</span>
               </Link>
             </div>
           </div>

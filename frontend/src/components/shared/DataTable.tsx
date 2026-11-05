@@ -24,13 +24,13 @@ function DataTable<T extends { _id?: string; id?: string }>({
 }: DataTableProps<T>) {
   if (isLoading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="theme-surface rounded-xl shadow-sm border border-ink-100 overflow-hidden">
         <div className="animate-pulse">
-          <div className="h-12 bg-gray-100 border-b"></div>
+          <div className="h-12 bg-ink-100 border-b"></div>
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-16 border-b border-gray-100 flex items-center px-6 space-x-4">
+            <div key={i} className="h-16 border-b border-ink-100 flex items-center px-6 space-x-4">
               {columns.map((_, idx) => (
-                <div key={idx} className="h-4 bg-gray-200 rounded flex-1"></div>
+                <div key={idx} className="h-4 bg-ink-200 rounded flex-1"></div>
               ))}
             </div>
           ))}
@@ -41,8 +41,8 @@ function DataTable<T extends { _id?: string; id?: string }>({
 
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center">
-        <p className="text-gray-500">{emptyMessage}</p>
+      <div className="theme-surface rounded-xl shadow-sm border border-ink-100 p-8 text-center">
+        <p className="text-ink-500">{emptyMessage}</p>
       </div>
     );
   }
@@ -57,26 +57,26 @@ function DataTable<T extends { _id?: string; id?: string }>({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="theme-surface rounded-xl shadow-sm border border-ink-100 overflow-hidden">
       <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-ink-200">
+          <thead className="bg-ink-50">
             <tr>
               {columns.map((column) => (
                 <th
                   key={String(column.key)}
-                  className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${column.className || ''}`}
+                  className={`px-6 py-3 text-left text-xs font-medium text-ink-500 uppercase tracking-wider ${column.className || ''}`}
                 >
                   {column.header}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-transparent divide-y divide-ink-200">
             {data.map((item, index) => (
               <tr
                 key={item._id || item.id || index}
-                className={`${onRowClick ? 'cursor-pointer hover:bg-gray-50' : ''}`}
+                className={`${onRowClick ? 'cursor-pointer hover:bg-ink-50' : ''}`}
                 onClick={() => onRowClick?.(item)}
                 role={onRowClick ? 'button' : undefined}
                 tabIndex={onRowClick ? 0 : undefined}
@@ -92,7 +92,7 @@ function DataTable<T extends { _id?: string; id?: string }>({
                 {columns.map((column) => (
                   <td
                     key={String(column.key)}
-                    className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${column.className || ''}`}
+                    className={`px-6 py-4 whitespace-nowrap text-sm text-ink-900 ${column.className || ''}`}
                   >
                     {column.render
                       ? column.render(item)

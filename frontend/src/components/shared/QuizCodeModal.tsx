@@ -93,34 +93,34 @@ const QuizCodeModal = ({ isOpen, onClose, quizId, courseId, quizTitle }: QuizCod
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-screen items-center justify-center px-4 pt-4 pb-20">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75" onClick={onClose} />
+        <div className="fixed inset-0 bg-ink-500 bg-opacity-75" onClick={onClose} />
 
-        <div className="relative bg-white rounded-lg shadow-xl max-w-lg w-full p-6">
+        <div className="relative theme-surface rounded-lg shadow-xl max-w-lg w-full p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium text-gray-900">Share Exam: {quizTitle}</h3>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-500">
+            <h3 className="text-lg font-medium text-ink-900">Share Exam: {quizTitle}</h3>
+            <button onClick={onClose} className="text-ink-400 hover:text-ink-500">
               <FiX className="h-5 w-5" />
             </button>
           </div>
 
           {/* Generate new code */}
-          <div className="bg-gray-50 rounded-lg p-4 mb-4">
-            <h4 className="text-sm font-medium text-gray-700 mb-3">Generate New Code</h4>
+          <div className="bg-ink-50 rounded-lg p-4 mb-4">
+            <h4 className="text-sm font-medium text-ink-700 mb-3">Generate New Code</h4>
             <div className="flex items-end space-x-3">
               <div className="flex-1">
-                <label className="block text-xs text-gray-500 mb-1">Max Attempts (optional)</label>
+                <label className="block text-xs text-ink-500 mb-1">Max Attempts (optional)</label>
                 <input
                   type="number"
                   value={maxAttempts}
                   onChange={(e) => setMaxAttempts(e.target.value)}
                   placeholder="Unlimited"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-ink-300 rounded-md text-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                 />
               </div>
               <button
                 onClick={handleGenerateCode}
                 disabled={generating}
-                className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50 flex items-center text-sm"
+                className="px-4 py-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 disabled:opacity-50 flex items-center text-sm"
               >
                 {generating ? (
                   <FiRefreshCw className="animate-spin mr-2 h-4 w-4" />
@@ -132,19 +132,19 @@ const QuizCodeModal = ({ isOpen, onClose, quizId, courseId, quizTitle }: QuizCod
 
           {/* Existing codes */}
           <div>
-            <h4 className="text-sm font-medium text-gray-700 mb-3">Existing Codes</h4>
+            <h4 className="text-sm font-medium text-ink-700 mb-3">Existing Codes</h4>
             {loading ? (
               <div className="text-center py-4">
                 <div className="animate-spin h-6 w-6 border-2 border-primary-600 border-t-transparent rounded-full mx-auto" />
               </div>
             ) : codes.length === 0 ? (
-              <p className="text-sm text-gray-500 text-center py-4">No codes generated yet</p>
+              <p className="text-sm text-ink-500 text-center py-4">No codes generated yet</p>
             ) : (
               <div className="space-y-3 max-h-64 overflow-y-auto">
                 {codes.map((codeItem) => (
                   <div
                     key={codeItem.code}
-                    className={`border rounded-lg p-3 ${codeItem.isActive ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50'}`}
+                    className={`border rounded-lg p-3 ${codeItem.isActive ? 'border-green-200 bg-green-50' : 'border-ink-200 bg-ink-50'}`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
@@ -153,7 +153,7 @@ const QuizCodeModal = ({ isOpen, onClose, quizId, courseId, quizTitle }: QuizCod
                         </span>
                         <button
                           onClick={() => handleCopyCode(codeItem.code)}
-                          className="p-1 text-gray-400 hover:text-gray-600"
+                          className="p-1 text-ink-400 hover:text-ink-600"
                           title="Copy code"
                         >
                           <FiCopy className="h-4 w-4" />
@@ -162,7 +162,7 @@ const QuizCodeModal = ({ isOpen, onClose, quizId, courseId, quizTitle }: QuizCod
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => handleToggleCode(codeItem.code, codeItem.isActive)}
-                          className={`p-1 ${codeItem.isActive ? 'text-green-600' : 'text-gray-400'}`}
+                          className={`p-1 ${codeItem.isActive ? 'text-green-600' : 'text-ink-400'}`}
                           title={codeItem.isActive ? 'Deactivate' : 'Activate'}
                         >
                           {codeItem.isActive ? (
@@ -180,7 +180,7 @@ const QuizCodeModal = ({ isOpen, onClose, quizId, courseId, quizTitle }: QuizCod
                         </button>
                       </div>
                     </div>
-                    <div className="mt-2 flex items-center text-xs text-gray-500 space-x-4">
+                    <div className="mt-2 flex items-center text-xs text-ink-500 space-x-4">
                       <span>Used: {codeItem.accessCount} times</span>
                       {codeItem.maxAttempts && (
                         <span>Max: {codeItem.maxAttempts}</span>

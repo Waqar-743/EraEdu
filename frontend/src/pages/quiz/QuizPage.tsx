@@ -83,21 +83,21 @@ const QuizPage: React.FC = () => {
 
   if (loading && !currentQuestion) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      <div className="flex justify-center items-center h-screen bg-ink-100">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="flex justify-center items-center h-screen bg-ink-100">
         <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
           <h2 className="text-red-600 text-xl font-bold mb-4">Error</h2>
-          <p className="text-gray-700 mb-6">{error}</p>
+          <p className="text-ink-700 mb-6">{error}</p>
           <button 
             onClick={() => navigate('/dashboard')}
-            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+            className="bg-primary-700 text-white px-4 py-2 rounded hover:bg-primary-800"
           >
             Return to Dashboard
           </button>
@@ -108,16 +108,16 @@ const QuizPage: React.FC = () => {
 
   if (!currentQuestion) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
+      <div className="flex justify-center items-center h-screen bg-ink-100">
         <div className="text-center">
-          <p className="text-gray-500">Loading question...</p>
+          <p className="text-ink-500">Loading question...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-ink-100 py-12 px-4 sm:px-6 lg:px-8">
       <Suspense fallback={<p role="status">Starting exam camera monitoring…</p>}>
         <FaceDetectionCamera enabled={!!currentQuestion && !error} onViolation={monitoring.reportViolation} showAwayLimit={false} />
       </Suspense>
@@ -127,26 +127,26 @@ const QuizPage: React.FC = () => {
       <div className="max-w-3xl mx-auto">
         {/* Progress / Header */}
         <div className="mb-8 flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-900">Exam Session</h2>
+          <h2 className="text-2xl font-bold text-ink-900">Exam Session</h2>
           <div className="flex items-center gap-4">
             <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-mono font-bold ${
-              timeLeft < 10 ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-indigo-100 text-indigo-700'
+              timeLeft < 10 ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-primary-100 text-primary-700'
             }`}>
               <ClockIcon className="h-4 w-4" />
               {formatTime(timeLeft)}
             </div>
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
               {currentQuestion.difficulty}
             </span>
           </div>
         </div>
-        <p role="status" className="mb-4 text-sm text-slate-700">Camera and browser monitoring is enabled. Three recorded violations submit this topic exam automatically.
+        <p role="status" className="mb-4 text-sm text-ink-700">Camera and browser monitoring is enabled. Three recorded violations submit this topic exam automatically.
           {monitoring.violationCount > 0 && ` Recorded violations: ${monitoring.violationCount}.`}</p>
 
         {/* Question Card */}
         <div className="bg-white shadow sm:rounded-lg overflow-hidden">
           <div className="px-4 py-5 sm:p-6">
-            <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+            <h3 className="text-lg leading-6 font-medium text-ink-900 mb-4">
               {currentQuestion.content}
             </h3>
 
@@ -157,27 +157,27 @@ const QuizPage: React.FC = () => {
                   onClick={() => handleOptionSelect(idx)}
                   className={`relative border rounded-lg p-4 cursor-pointer flex items-center transition-colors
                     ${selectedAnswer === idx
-                      ? 'border-indigo-500 ring-2 ring-indigo-500 bg-indigo-50' 
-                      : 'border-gray-300 hover:border-indigo-400 hover:bg-gray-50'
+                      ? 'border-primary-500 ring-2 ring-primary-500 bg-primary-50'
+                      : 'border-ink-300 hover:border-primary-400 hover:bg-ink-50'
                     }`}
                 >
                   <div className={`h-4 w-4 rounded-full border flex items-center justify-center mr-3
-                    ${selectedAnswer === idx ? 'border-indigo-600' : 'border-gray-400'}`}>
+                    ${selectedAnswer === idx ? 'border-primary-600' : 'border-ink-400'}`}>
                     {selectedAnswer === idx && (
-                      <div className="h-2 w-2 rounded-full bg-indigo-600" />
+                      <div className="h-2 w-2 rounded-full bg-primary-700" />
                     )}
                   </div>
-                  <span className="text-gray-900">{option}</span>
+                  <span className="text-ink-900">{option}</span>
                 </div>
               ))}
             </div>
           </div>
           
-          <div className="bg-gray-50 px-4 py-4 sm:px-6 flex justify-between items-center">
+          <div className="bg-ink-50 px-4 py-4 sm:px-6 flex justify-between items-center">
             <button
               type="button"
               onClick={handleRequestHint}
-              className="inline-flex items-center text-sm text-gray-500 hover:text-indigo-600"
+              className="inline-flex items-center text-sm text-ink-500 hover:text-primary-600"
             >
               <LightBulbIcon className="h-5 w-5 mr-1" />
               Need a hint?
@@ -188,7 +188,7 @@ const QuizPage: React.FC = () => {
               onClick={() => handleSubmit()}
               disabled={selectedAnswer === null || loading}
               className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white 
-                ${selectedAnswer === null || loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}`}
+                ${selectedAnswer === null || loading ? 'bg-ink-400 cursor-not-allowed' : 'bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'}`}
             >
               {loading ? 'Submitting...' : 'Submit Answer'}
             </button>

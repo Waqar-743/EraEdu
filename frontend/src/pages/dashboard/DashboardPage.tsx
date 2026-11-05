@@ -23,7 +23,7 @@ const DashboardPage: React.FC = () => {
   if (statsLoading || coursesLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -31,8 +31,8 @@ const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-3xl font-bold text-gray-900">Welcome back, {user?.name}!</h1>
-        <p className="mt-1 text-sm text-gray-500">Here's what's happening with your learning journey.</p>
+        <h1 className="text-3xl font-bold text-ink-900">Welcome back, {user?.name}!</h1>
+        <p className="mt-1 text-sm text-ink-500">Here's what's happening with your learning journey.</p>
       </header>
 
       {/* Stats Grid */}
@@ -41,12 +41,12 @@ const DashboardPage: React.FC = () => {
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <BookOpenIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
+                <BookOpenIcon className="h-6 w-6 text-ink-400" aria-hidden="true" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Courses Enrolled</dt>
-                  <dd className="text-lg font-medium text-gray-900">{stats?.coursesEnrolled || 0}</dd>
+                  <dt className="text-sm font-medium text-ink-500 truncate">Courses Enrolled</dt>
+                  <dd className="text-lg font-medium text-ink-900">{stats?.coursesEnrolled || 0}</dd>
                 </dl>
               </div>
             </div>
@@ -57,12 +57,12 @@ const DashboardPage: React.FC = () => {
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <AcademicCapIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
+                <AcademicCapIcon className="h-6 w-6 text-ink-400" aria-hidden="true" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Exams Completed</dt>
-                  <dd className="text-lg font-medium text-gray-900">{stats?.quizzesCompleted || 0}</dd>
+                  <dt className="text-sm font-medium text-ink-500 truncate">Exams Completed</dt>
+                  <dd className="text-lg font-medium text-ink-900">{stats?.quizzesCompleted || 0}</dd>
                 </dl>
               </div>
             </div>
@@ -73,12 +73,12 @@ const DashboardPage: React.FC = () => {
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <ChartBarIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
+                <ChartBarIcon className="h-6 w-6 text-ink-400" aria-hidden="true" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Average Score</dt>
-                  <dd className="text-lg font-medium text-gray-900">{stats?.averageScore != null ? `${stats.averageScore.toFixed(1)}%` : 'No released results'}</dd>
+                  <dt className="text-sm font-medium text-ink-500 truncate">Average Score</dt>
+                  <dd className="text-lg font-medium text-ink-900">{stats?.averageScore != null ? `${stats.averageScore.toFixed(1)}%` : 'No released results'}</dd>
                 </dl>
               </div>
             </div>
@@ -89,12 +89,12 @@ const DashboardPage: React.FC = () => {
           <div className="p-5">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <ClockIcon className="h-6 w-6 text-gray-400" aria-hidden="true" />
+                <ClockIcon className="h-6 w-6 text-ink-400" aria-hidden="true" />
               </div>
               <div className="ml-5 w-0 flex-1">
                 <dl>
-                  <dt className="text-sm font-medium text-gray-500 truncate">Learning Streak</dt>
-                  <dd className="text-lg font-medium text-gray-900">{stats?.streakDays || 0} Days</dd>
+                  <dt className="text-sm font-medium text-ink-500 truncate">Learning Streak</dt>
+                  <dd className="text-lg font-medium text-ink-900">{stats?.streakDays || 0} Days</dd>
                 </dl>
               </div>
             </div>
@@ -105,20 +105,20 @@ const DashboardPage: React.FC = () => {
       {/* Recent Courses */}
       <div className="bg-white shadow sm:rounded-lg">
         <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">My Courses</h3>
-          <Link to="/courses" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+          <h3 className="text-lg leading-6 font-medium text-ink-900">My Courses</h3>
+          <Link to="/courses" className="text-sm font-medium text-primary-600 hover:text-primary-500">
             View all
           </Link>
         </div>
-        <div className="border-t border-gray-200">
+        <div className="border-t border-ink-200">
           {enrolledCourses.length > 0 ? (
-            <ul role="list" className="divide-y divide-gray-200">
+            <ul role="list" className="divide-y divide-ink-200">
               {enrolledCourses.slice(0, 5).map((course) => (
                 <li key={course._id}>
-                  <Link to={`/courses/${course._id}`} className="block hover:bg-gray-50">
+                  <Link to={`/courses/${course._id}`} className="block hover:bg-ink-50">
                     <div className="px-4 py-4 sm:px-6">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-indigo-600 truncate">{course.title}</p>
+                        <p className="text-sm font-medium text-primary-600 truncate">{course.title}</p>
                         <div className="ml-2 flex-shrink-0 flex">
                           <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                             {course.difficulty}
@@ -127,7 +127,7 @@ const DashboardPage: React.FC = () => {
                       </div>
                       <div className="mt-2 sm:flex sm:justify-between">
                         <div className="sm:flex">
-                          <p className="flex items-center text-sm text-gray-500">
+                          <p className="flex items-center text-sm text-ink-500">
                             {course.description.substring(0, 100)}...
                           </p>
                         </div>
@@ -138,9 +138,9 @@ const DashboardPage: React.FC = () => {
               ))}
             </ul>
           ) : (
-            <div className="p-6 text-center text-gray-500">
+            <div className="p-6 text-center text-ink-500">
               You haven't enrolled in any courses yet. 
-              <Link to="/courses" className="ml-1 text-indigo-600 hover:text-indigo-500">Browse courses</Link>
+              <Link to="/courses" className="ml-1 text-primary-600 hover:text-primary-500">Browse courses</Link>
             </div>
           )}
         </div>

@@ -10,43 +10,21 @@ interface StatCardProps {
   isLoading?: boolean;
 }
 
+const primaryTone = {
+  ring: 'ring-primary-200/70',
+  bg: 'bg-gradient-to-br from-primary-50 to-white dark:from-ink-100 dark:to-ink-50',
+  fg: 'text-primary-700',
+  glow: 'rgb(var(--color-primary-500) / 0.18)',
+};
+
 const tones: Record<string, { ring: string; bg: string; fg: string; glow: string }> = {
-  primary: {
-    ring: 'ring-primary-200/70',
-    bg: 'bg-gradient-to-br from-primary-50 to-white',
-    fg: 'text-primary-700',
-    glow: 'rgba(16,185,129,0.18)',
-  },
-  green: {
-    ring: 'ring-primary-200/70',
-    bg: 'bg-gradient-to-br from-primary-50 to-white',
-    fg: 'text-primary-700',
-    glow: 'rgba(16,185,129,0.18)',
-  },
-  success: {
-    ring: 'ring-primary-200/70',
-    bg: 'bg-gradient-to-br from-primary-50 to-white',
-    fg: 'text-primary-700',
-    glow: 'rgba(16,185,129,0.18)',
-  },
-  blue: {
-    ring: 'ring-accent-200/70',
-    bg: 'bg-gradient-to-br from-accent-50 to-white',
-    fg: 'text-accent-700',
-    glow: 'rgba(6,182,212,0.18)',
-  },
-  info: {
-    ring: 'ring-accent-200/70',
-    bg: 'bg-gradient-to-br from-accent-50 to-white',
-    fg: 'text-accent-700',
-    glow: 'rgba(6,182,212,0.18)',
-  },
-  purple: {
-    ring: 'ring-secondary-200/70',
-    bg: 'bg-gradient-to-br from-secondary-50 to-white',
-    fg: 'text-secondary-700',
-    glow: 'rgba(124,58,237,0.18)',
-  },
+  primary: primaryTone,
+  green: primaryTone,
+  success: primaryTone,
+  // Keep legacy prop values compatible while all informational stats use the brand.
+  blue: primaryTone,
+  info: primaryTone,
+  purple: primaryTone,
   orange: {
     ring: 'ring-amber-200/70',
     bg: 'bg-gradient-to-br from-amber-50 to-white',
@@ -87,7 +65,7 @@ const StatCard: React.FC<StatCardProps> = ({
   if (isLoading) {
     return (
       <div className="rounded-[1.5rem] p-1.5 bg-ink-900/[0.03] ring-1 ring-ink-900/5">
-        <div className="rounded-[calc(1.5rem-0.375rem)] bg-white p-6 animate-pulse">
+        <div className="rounded-[calc(1.5rem-0.375rem)] theme-surface p-6 animate-pulse">
           <div className="flex items-center justify-between">
             <div className="space-y-3 flex-1">
               <div className="h-3 bg-ink-100 rounded-full w-24"></div>
@@ -111,10 +89,10 @@ const StatCard: React.FC<StatCardProps> = ({
     >
       <div
         className="
-          relative overflow-hidden rounded-[calc(1.5rem-0.375rem)] bg-white p-5
-          shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_1px_2px_rgba(15,23,42,0.04),0_8px_24px_-12px_rgba(15,23,42,0.08)]
+          relative overflow-hidden rounded-[calc(1.5rem-0.375rem)] theme-surface p-5
+          shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_1px_2px_rgb(var(--color-primary-950)/0.04),0_8px_24px_-12px_rgb(var(--color-primary-950)/0.08)]
           transition-all duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]
-          group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_6px_rgba(15,23,42,0.06),0_24px_60px_-20px_rgba(15,23,42,0.18)]
+          group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.6),0_2px_6px_rgb(var(--color-primary-950)/0.06),0_24px_60px_-20px_rgb(var(--color-primary-950)/0.18)]
         "
       >
         {/* Soft glow accent */}

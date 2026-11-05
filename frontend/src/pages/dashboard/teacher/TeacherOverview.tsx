@@ -174,9 +174,9 @@ const TeacherOverview = () => {
   }, []);
 
   const difficultyDistribution = [
-    { name: 'Beginner', value: 35, color: '#10B981' },
-    { name: 'Intermediate', value: 45, color: '#06B6D4' },
-    { name: 'Advanced', value: 20, color: '#7C3AED' },
+    { name: 'Beginner', value: 35, color: 'var(--color-chart-primary-600)' },
+    { name: 'Intermediate', value: 45, color: 'var(--color-chart-primary-700)' },
+    { name: 'Advanced', value: 20, color: 'var(--color-chart-primary-800)' },
   ];
 
   const fetchActivity = useCallback(async () => {
@@ -242,26 +242,23 @@ const TeacherOverview = () => {
       >
         <div
           className="
-            relative overflow-hidden rounded-[calc(2rem-0.375rem)] bg-gradient-to-br from-primary-800 via-primary-700 to-teal-700
+            relative overflow-hidden rounded-[calc(2rem-0.375rem)] bg-gradient-to-br from-primary-800 via-primary-700 to-primary-700
             px-6 py-8 sm:px-10 sm:py-10
             shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
           "
-          style={{
-            backgroundImage:
-              'radial-gradient(60% 80% at 0% 0%, rgba(167,243,208,0.24) 0%, transparent 55%), radial-gradient(50% 60% at 100% 100%, rgba(103,232,249,0.20) 0%, transparent 55%), linear-gradient(135deg, #065F46 0%, #047857 52%, #0F766E 100%)',
-          }}
+          style={{ backgroundImage: 'var(--gradient-brand-hero)' }}
         >
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-3 py-1">
-                <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_8px_rgb(var(--color-primary-400)/0.8)]" />
                 <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/70">
                   Educator Console
                 </span>
               </div>
               <h1 className="mt-4 font-display text-[36px] sm:text-[44px] leading-[1.05] tracking-tightest text-white">
                 Welcome,{' '}
-                <span className="bg-gradient-to-r from-primary-300 via-primary-200 to-accent-300 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-primary-300 via-primary-200 to-primary-300 bg-clip-text text-transparent">
                   {user?.name}
                 </span>
               </h1>
@@ -278,16 +275,16 @@ const TeacherOverview = () => {
                 className="
                   group inline-flex items-center gap-2 rounded-full
                   bg-gradient-to-r from-primary-400 to-primary-500 pl-5 pr-1.5 py-1.5
-                  text-[13px] font-semibold text-ink-950
+                  text-[13px] font-semibold text-on-accent
                   transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                  hover:from-primary-300 hover:to-accent-300 active:scale-[0.98] disabled:opacity-60
-                  shadow-[0_8px_30px_-10px_rgba(16,185,129,0.8)]
+                  hover:from-primary-300 hover:to-primary-300 active:scale-[0.98] disabled:opacity-60
+                  shadow-[0_8px_30px_-10px_rgb(var(--color-primary-500)/0.8)]
                 "
               >
                 <span>{checkoutLoading ? 'Opening Safepay…' : 'Institution plan · PKR 4,999/month'}</span>
                 <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-950/10 ring-1 ring-primary-950/10 transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-[1px]">
                   {checkoutLoading ? (
-                    <span className="h-3.5 w-3.5 animate-spin rounded-full border border-ink-900/40 border-t-ink-900" />
+                    <span className="h-3.5 w-3.5 animate-spin rounded-full border border-primary-950/40 border-t-primary-950" />
                   ) : (
                     <Stroke d="M5 12h14 M13 6l6 6-6 6" size={13} />
                   )}
@@ -330,7 +327,7 @@ const TeacherOverview = () => {
                   text-[13px] font-semibold text-ink-900
                   transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                   hover:bg-primary-50 active:scale-[0.98]
-                  shadow-[0_8px_30px_-10px_rgba(16,185,129,0.6)]
+                  shadow-[0_8px_30px_-10px_rgb(var(--color-primary-500)/0.6)]
                 "
               >
                 New Exam
@@ -378,26 +375,26 @@ const TeacherOverview = () => {
           icon={<Stroke d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M22 21v-2a4 4 0 0 0-3-3.9 M16 3.1a4 4 0 0 1 0 7.8" />}
           label="Total Students"
           value={stats.totalStudents}
-          color="blue"
+          color="primary"
         />
         <StatCard
           icon={<Stroke d="M9 9a3 3 0 1 1 4.3 2.7c-.8.4-1.3 1-1.3 2V14 M12 18h.01 M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0z" />}
           label="Questions Created"
           value={stats?.totalQuestions || 0}
-          color="purple"
+          color="primary"
         />
         <StatCard
           icon={<Stroke d="M3 21h18 M6 17V9 M11 17V5 M16 17v-7 M21 17v-3" />}
           label="Avg. Student Score"
           value={stats.avgStudentScore == null ? 'Pending' : `${stats.avgStudentScore}%`}
-          color="orange"
+          color="primary"
           trend={stats.avgStudentScore == null ? undefined : stats.avgStudentScore >= 70 ? 'up' : 'down'}
         />
         <StatCard
           icon={<Stroke d="m9 12 2 2 4-4 M3 12a9 9 0 1 1 18 0 9 9 0 0 1-18 0z" />}
           label="Pass Rate"
           value={stats.passRate == null ? 'Pending' : `${stats.passRate}%`}
-          color="green"
+          color="primary"
           trend={stats.passRate == null ? undefined : stats.passRate >= 60 ? 'up' : 'down'}
         />
       </section>
@@ -419,37 +416,39 @@ const TeacherOverview = () => {
               </div>
               <span className="hidden sm:inline-flex items-center gap-3 text-[11px] text-ink-500">
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-primary-500" /> Avg Score
+                  <span className="h-2 w-2 rounded-full bg-[var(--color-chart-primary-600)]" /> Avg Score
                 </span>
                 <span className="inline-flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-accent-500" /> Completion
+                  <span className="h-2 w-2 rounded-full bg-[var(--color-chart-primary-800)]" /> Completion
                 </span>
               </span>
             </div>
             <div className="h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={coursePerformance} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="#EFF1F3" />
-                  <XAxis type="number" domain={[0, 100]} stroke="#7E8896" fontSize={11} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
+                  <XAxis type="number" domain={[0, 100]} stroke="rgb(var(--color-ink-500))" fontSize={11} />
                   <YAxis
                     type="category"
                     dataKey="courseName"
-                    stroke="#7E8896"
+                    stroke="rgb(var(--color-ink-500))"
                     fontSize={11}
                     width={130}
-                    tick={{ fill: '#3A434F' }}
+                    tick={{ fill: 'var(--color-text)' }}
                   />
                   <Tooltip
+                    itemStyle={{ color: 'var(--color-text)' }}
                     contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid rgba(15,23,42,0.06)',
+                      backgroundColor: 'var(--color-surface)',
+                      color: 'var(--color-text)',
+                      border: '1px solid var(--color-border)',
                       borderRadius: '14px',
-                      boxShadow: '0 24px 60px -20px rgba(15,23,42,0.18)',
+                      boxShadow: '0 24px 60px -20px rgb(var(--color-ink-900) / 0.18)',
                       fontSize: 12,
                     }}
                   />
-                  <Bar dataKey="avgScore" fill="#10B981" name="Avg Score %" radius={[0, 8, 8, 0]} />
-                  <Bar dataKey="completionRate" fill="#06B6D4" name="Completion %" radius={[0, 8, 8, 0]} />
+                  <Bar dataKey="avgScore" fill="var(--color-chart-primary-600)" name="Avg Score %" radius={[0, 8, 8, 0]} />
+                  <Bar dataKey="completionRate" fill="var(--color-chart-primary-800)" name="Completion %" radius={[0, 8, 8, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -476,7 +475,7 @@ const TeacherOverview = () => {
                     outerRadius={84}
                     paddingAngle={3}
                     dataKey="value"
-                    stroke="#fff"
+                    stroke="var(--color-surface)"
                     strokeWidth={3}
                   >
                     {difficultyDistribution.map((entry, index) => (
@@ -484,14 +483,16 @@ const TeacherOverview = () => {
                     ))}
                   </Pie>
                   <Tooltip
+                    itemStyle={{ color: 'var(--color-text)' }}
                     contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid rgba(15,23,42,0.06)',
+                      backgroundColor: 'var(--color-surface)',
+                      color: 'var(--color-text)',
+                      border: '1px solid var(--color-border)',
                       borderRadius: '14px',
                       fontSize: 12,
                     }}
                   />
-                  <Legend iconType="circle" wrapperStyle={{ fontSize: 11 }} />
+                  <Legend iconType="circle" wrapperStyle={{ fontSize: 11 }} formatter={(value) => <span style={{ color: 'var(--color-text)' }}>{value}</span>} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -573,7 +574,7 @@ const TeacherOverview = () => {
                     group flex items-center gap-4 rounded-2xl
                     bg-ink-50/60 ring-1 ring-ink-900/[0.04] px-4 py-3.5
                     transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                    hover:bg-white hover:ring-primary-200 hover:shadow-[0_24px_60px_-30px_rgba(16,185,129,0.4)]
+                    hover:bg-white hover:ring-primary-200 hover:shadow-[0_24px_60px_-30px_rgb(var(--color-primary-500)/0.4)]
                     active:scale-[0.99]
                   "
                 >

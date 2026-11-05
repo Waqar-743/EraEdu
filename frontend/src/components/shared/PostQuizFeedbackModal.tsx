@@ -111,8 +111,8 @@ const PostQuizFeedbackModal = ({ attemptId }: Props) => {
   };
 
   return <AnimatePresence>{open && <motion.div className="fixed inset-0 z-[120] flex items-center justify-center p-3 sm:p-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-    <div aria-hidden="true" className="absolute inset-0 bg-ink-950/70 backdrop-blur-sm" onClick={() => setOpen(false)} />
-    <motion.div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="feedback-title" aria-describedby="feedback-description" initial={{ opacity: 0, y: 24, scale: .96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 16, scale: .97 }} className="relative max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl overflow-y-auto rounded-2xl border border-ink-900/10 bg-white p-5 text-ink-900 shadow-[0_30px_100px_-20px_rgba(5,7,11,.65)] sm:rounded-[2rem] sm:p-8">
+    <div aria-hidden="true" className="absolute inset-0 bg-primary-950/70 backdrop-blur-sm" onClick={() => setOpen(false)} />
+    <motion.div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="feedback-title" aria-describedby="feedback-description" initial={{ opacity: 0, y: 24, scale: .96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 16, scale: .97 }} className="relative max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl overflow-y-auto rounded-2xl border border-ink-900/10 theme-surface p-5 text-ink-900 shadow-[0_30px_100px_-20px_rgb(var(--color-primary-950)/.65)] sm:rounded-[2rem] sm:p-8">
       <button ref={closeRef} type="button" onClick={() => setOpen(false)} aria-label="Close feedback form" className={`absolute right-4 top-4 rounded-full p-2 text-ink-700 transition hover:bg-ink-100 ${focusRing}`}><XMarkIcon className="h-5 w-5" /></button>
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-700 text-white"><SparklesIcon className="h-6 w-6" /></div>
       <h2 id="feedback-title" className="mt-5 pr-8 font-display text-2xl text-ink-950">Rate your EraEdu experience</h2>

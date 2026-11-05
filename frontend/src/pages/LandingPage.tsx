@@ -46,24 +46,24 @@ const FaceScanArtwork = ({ dark = false }: { dark?: boolean }) => (
     aria-hidden="true"
     className={`relative aspect-[1.42] w-full overflow-hidden rounded-[1.5rem] ring-1 ${
       dark
-        ? 'bg-gradient-to-br from-emerald-400/20 via-teal-500/10 to-slate-950/30 ring-white/15'
-        : 'bg-gradient-to-br from-emerald-50 via-white to-cyan-50 ring-emerald-900/10 shadow-[0_20px_45px_-32px_rgba(4,120,87,0.55)]'
+        ? 'bg-gradient-to-br from-primary-400/20 via-primary-500/10 to-ink-950/30 ring-white/15'
+        : 'bg-gradient-to-br from-primary-50 via-white to-primary-50 ring-primary-900/10 shadow-[0_20px_45px_-32px_rgb(var(--color-primary-700)/0.55)]'
     }`}
   >
-    <div className={`absolute inset-0 opacity-50 ${dark ? 'bg-[radial-gradient(circle_at_50%_30%,rgba(45,212,191,.32),transparent_38%)]' : 'bg-[radial-gradient(circle_at_50%_30%,rgba(52,211,153,.25),transparent_38%)]'}`} />
-    <div className={`absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-bold tracking-[0.14em] ${dark ? 'bg-emerald-300/10 text-emerald-100 ring-1 ring-emerald-200/20' : 'bg-white/80 text-emerald-700 ring-1 ring-emerald-200'}`}>
-      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,.9)]" />
+    <div className={`absolute inset-0 opacity-50 ${dark ? 'bg-[radial-gradient(circle_at_50%_30%,rgb(var(--color-primary-400)/.32),transparent_38%)]' : 'bg-[radial-gradient(circle_at_50%_30%,rgb(var(--color-primary-400)/.25),transparent_38%)]'}`} />
+    <div className={`absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-bold tracking-[0.14em] ${dark ? 'bg-primary-300/10 text-primary-100 ring-1 ring-primary-200/20' : 'bg-white/80 text-primary-700 ring-1 ring-primary-200'}`}>
+      <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_10px_rgb(var(--color-primary-400)/.9)]" />
       FACE VERIFIED
     </div>
-    <span className={`absolute right-3 top-3 font-mono text-[8px] tracking-[0.16em] ${dark ? 'text-white/45' : 'text-emerald-800/45'}`}>ON-DEVICE</span>
+    <span className={`absolute right-3 top-3 font-mono text-[8px] tracking-[0.16em] ${dark ? 'text-white/45' : 'text-primary-800/45'}`}>ON-DEVICE</span>
 
     <div className="absolute inset-x-0 bottom-0 top-8 flex items-end justify-center">
       <svg viewBox="0 0 220 160" className="h-[94%] w-[94%]" fill="none">
-        <path d="M42 152c7-38 30-56 68-56s61 18 68 56" fill={dark ? 'rgba(45,212,191,.28)' : 'rgba(16,185,129,.20)'} />
-        <ellipse cx="110" cy="70" rx="34" ry="42" fill={dark ? 'rgba(153,246,228,.55)' : 'rgba(209,250,229,.9)'} />
-        <path d="M89 67c5 4 11 4 16 0M116 67c5 4 11 4 16 0M101 88c6 4 12 4 18 0" stroke={dark ? 'rgba(236,253,245,.82)' : 'rgba(4,120,87,.55)'} strokeWidth="2" strokeLinecap="round" />
-        <path d="M61 39h18M61 39v18M159 39h-18M159 39v18M61 117h18M61 117V99M159 117h-18M159 117V99" stroke={dark ? 'rgba(110,231,183,.9)' : 'rgba(5,150,105,.75)'} strokeWidth="3" strokeLinecap="round" />
-        <rect x="70" y="25" width="80" height="106" rx="35" stroke={dark ? 'rgba(94,234,212,.55)' : 'rgba(16,185,129,.42)'} strokeWidth="1.5" strokeDasharray="4 4" />
+        <path d="M42 152c7-38 30-56 68-56s61 18 68 56" fill={dark ? 'rgb(var(--color-primary-400) / .28)' : 'rgb(var(--color-primary-500) / .20)'} />
+        <ellipse cx="110" cy="70" rx="34" ry="42" fill={dark ? 'rgb(var(--color-primary-200) / .55)' : 'rgb(var(--color-primary-100) / .9)'} />
+        <path d="M89 67c5 4 11 4 16 0M116 67c5 4 11 4 16 0M101 88c6 4 12 4 18 0" stroke={dark ? 'rgb(var(--color-primary-50) / .82)' : 'rgb(var(--color-primary-700) / .55)'} strokeWidth="2" strokeLinecap="round" />
+        <path d="M61 39h18M61 39v18M159 39h-18M159 39v18M61 117h18M61 117V99M159 117h-18M159 117V99" stroke={dark ? 'rgb(var(--color-primary-300) / .9)' : 'rgb(var(--color-primary-600) / .75)'} strokeWidth="3" strokeLinecap="round" />
+        <rect x="70" y="25" width="80" height="106" rx="35" stroke={dark ? 'rgb(var(--color-primary-300) / .55)' : 'rgb(var(--color-primary-500) / .42)'} strokeWidth="1.5" strokeDasharray="4 4" />
       </svg>
     </div>
   </div>
@@ -95,7 +95,7 @@ const NavIsland = () => {
           className="
             landing-nav flex w-full max-w-6xl items-center gap-2 rounded-full p-1.5
             bg-white/90 backdrop-blur-2xl ring-1 ring-ink-900/5
-            shadow-[0_20px_60px_-30px_rgba(5,7,11,0.25)]
+            shadow-[0_20px_60px_-30px_rgb(var(--color-primary-950)/0.25)]
           "
         >
           <div className="pl-3 pr-2">
@@ -148,12 +148,12 @@ const NavIsland = () => {
               "
             >
               <span
-                className={`absolute h-[1.5px] w-4 bg-ink-900 transition-all duration-500 ease-spring ${
+                className={`absolute h-[1.5px] w-4 bg-primary-700 transition-all duration-500 ease-spring ${
                   open ? 'rotate-45 translate-y-0' : '-translate-y-1.5'
                 }`}
               />
               <span
-                className={`absolute h-[1.5px] w-4 bg-ink-900 transition-all duration-500 ease-spring ${
+                className={`absolute h-[1.5px] w-4 bg-primary-700 transition-all duration-500 ease-spring ${
                   open ? '-rotate-45 translate-y-0' : 'translate-y-1.5'
                 }`}
               />
@@ -245,7 +245,7 @@ const Hero = () => (
               className="bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  'linear-gradient(135deg, #047857 0%, #10B981 40%, #06B6D4 100%)',
+                  'var(--gradient-brand-text)',
               }}
             >
               modern classrooms
@@ -309,7 +309,7 @@ const Hero = () => (
                     <li
                       key={s}
                       className={`flex items-center justify-between rounded-xl px-3 py-2 ${
-                        i === 0 ? 'bg-ink-900 text-white' : 'hover:bg-ink-50'
+                        i === 0 ? 'bg-primary-700 text-white' : 'hover:bg-ink-50'
                       }`}
                     >
                       <span>{s}</span>
@@ -387,9 +387,9 @@ const Hero = () => (
 const AnimatedQuoteBackground = () => {
   const [revealed, setRevealed] = useState(false);
   const words = [
-    { value: 'Better', color: '#047857' }, { value: 'learning', color: '#059669' },
-    { value: 'begins', color: '#0F766E' }, { value: 'with', color: '#0891B2' },
-    { value: 'better', color: '#10B981' }, { value: 'tools.', color: '#0E7490' },
+    { value: 'Better', color: 'rgb(var(--color-primary-700))' }, { value: 'learning', color: 'rgb(var(--color-primary-600))' },
+    { value: 'begins', color: 'rgb(var(--color-primary-800))' }, { value: 'with', color: 'rgb(var(--color-primary-700))' },
+    { value: 'better', color: 'rgb(var(--color-primary-500))' }, { value: 'tools.', color: 'rgb(var(--color-primary-800))' },
   ];
 
   useEffect(() => {
@@ -441,16 +441,11 @@ type Feat = {
   copy: string;
   span: string;
   visual: React.ReactNode;
-  accent?: 'emerald' | 'cyan' | 'violet';
+  label: string;
 };
 
-const FeatureCard = ({ title, copy, span, visual, accent = 'emerald' }: Feat) => {
-  const tag =
-    accent === 'cyan'
-      ? 'text-accent-700 bg-accent-50 ring-accent-200'
-      : accent === 'violet'
-      ? 'text-secondary-700 bg-secondary-50 ring-secondary-200'
-      : 'text-primary-700 bg-primary-50 ring-primary-200';
+const FeatureCard = ({ title, copy, span, visual, label }: Feat) => {
+  const tag = 'text-primary-700 bg-primary-50 ring-primary-200';
   return (
     <div className={`reveal bezel ${span} transition-transform duration-500 ease-spring hover:-translate-y-1`}>
       <div className="bezel-core flex h-full flex-col justify-between gap-6 p-7">
@@ -458,7 +453,7 @@ const FeatureCard = ({ title, copy, span, visual, accent = 'emerald' }: Feat) =>
           {visual}
         </div>
         <div>
-          <span className={`eyebrow ring-1 ${tag}`}>{accent}</span>
+          <span className={`eyebrow ring-1 ${tag}`}>{label}</span>
           <h3 className="mt-3 font-display text-2xl tracking-tightest text-ink-900">
             {title}
           </h3>
@@ -488,14 +483,14 @@ const FeaturesBento = () => (
           span="md:col-span-7 md:row-span-2"
           title="AI Face-Presence Proctoring"
           copy="Continuously verifies the student is present, alone, and focused — using an on-device face-detection pipeline. Zero footage uploaded."
-          accent="emerald"
+          label="Monitoring"
           visual={
             <div className="relative flex h-full items-center justify-center p-5 sm:p-7">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary-100/70 via-white/20 to-accent-100/50" />
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-100/70 via-white/20 to-primary-100/50" />
               <div className="relative w-full max-w-[18rem]">
                 <FaceScanArtwork />
-                <div className="absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-white/90 px-3 py-1.5 text-[9px] font-semibold text-emerald-800 shadow-[0_10px_22px_-14px_rgba(4,120,87,.5)] ring-1 ring-emerald-100 backdrop-blur-xl">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                <div className="absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-white/90 px-3 py-1.5 text-[9px] font-semibold text-primary-800 shadow-[0_10px_22px_-14px_rgb(var(--color-primary-700)/.5)] ring-1 ring-primary-100 backdrop-blur-xl">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary-500" />
                   PRIVATE · ON-DEVICE ANALYSIS
                 </div>
               </div>
@@ -506,9 +501,9 @@ const FeaturesBento = () => (
           span="md:col-span-5"
           title="Tab-Switch Sentinel"
           copy="Detects every blur, alt-tab, and split-screen attempt. Counts toward a configurable strike system."
-          accent="cyan"
+          label="Focus"
           visual={
-            <div className="relative flex h-full items-center justify-center bg-ink-900">
+            <div className="relative flex h-full items-center justify-center bg-primary-700">
               <div className="absolute inset-0 bg-grid-faint [background-size:24px_24px] opacity-30" />
               <div className="relative grid grid-cols-3 gap-2">
                 {[0, 1, 2, 3, 4, 5].map((i) => (
@@ -529,7 +524,7 @@ const FeaturesBento = () => (
           span="md:col-span-5"
           title="Copy-Paste Guard"
           copy="Disables copy, paste, right-click, and DevTools shortcuts inside live sessions."
-          accent="violet"
+          label="Security"
           visual={
             <div className="relative flex h-full items-center justify-center">
               <div className="font-mono text-[11px] text-ink-300 select-none">
@@ -545,7 +540,7 @@ const FeaturesBento = () => (
           span="md:col-span-4"
           title="Adaptive Question Flow"
           copy="Difficulty self-tunes to each student's signal — keeping the cohort in challenge state."
-          accent="emerald"
+          label="Adaptive"
           visual={
             <div className="relative flex h-full items-end justify-around p-4">
               {[40, 65, 50, 80, 60, 90, 75].map((h, i) => (
@@ -562,7 +557,7 @@ const FeaturesBento = () => (
           span="md:col-span-4"
           title="Live Cohort Heatmap"
           copy="Educators see attention, accuracy, and risk in a single ambient grid."
-          accent="cyan"
+          label="Live"
           visual={
             <div className="grid h-full grid-cols-6 gap-1 p-3">
               {Array.from({ length: 30 }).map((_, i) => {
@@ -572,7 +567,7 @@ const FeaturesBento = () => (
                     key={i}
                     className="rounded-md"
                     style={{
-                      background: `rgba(16,185,129,${0.15 + intensity * 0.7})`,
+                      background: `rgb(var(--color-primary-500) / ${0.15 + intensity * 0.7})`,
                     }}
                   />
                 );
@@ -584,14 +579,14 @@ const FeaturesBento = () => (
           span="md:col-span-4"
           title="Forensic Analytics"
           copy="Per-student timelines, violation receipts, and exportable academic reports."
-          accent="violet"
+          label="Reports"
           visual={
             <div className="relative h-full p-4">
               <svg viewBox="0 0 200 100" className="h-full w-full">
                 <path
                   d="M0 80 C 30 60, 60 30, 90 50 S 150 90, 200 30"
                   fill="none"
-                  stroke="#7C3AED"
+                  stroke="rgb(var(--color-primary-700))"
                   strokeWidth="1.5"
                 />
                 <path
@@ -601,8 +596,8 @@ const FeaturesBento = () => (
                 />
                 <defs>
                   <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#A78BFA" />
-                    <stop offset="100%" stopColor="#A78BFA" stopOpacity="0" />
+                    <stop offset="0%" stopColor="rgb(var(--color-primary-400))" />
+                    <stop offset="100%" stopColor="rgb(var(--color-primary-400))" stopOpacity="0" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -667,7 +662,7 @@ const HowItWorks = () => {
                 <li key={s.n} className={`reveal reveal-delay-${i + 1}`}>
                   <div className="bezel">
                     <div className="bezel-core flex gap-5 p-6">
-                      <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-ink-900 text-white font-display text-lg ring-4 ring-white">
+                      <div className="relative flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary-700 text-white font-display text-lg ring-4 ring-white">
                         {s.n}
                       </div>
                       <div className="flex-1">
@@ -695,7 +690,7 @@ const HowItWorks = () => {
 const IntegritySpotlight = () => (
   <section
     id="integrity"
-    className="relative overflow-hidden bg-gradient-to-br from-primary-950 via-primary-900 to-teal-900 py-32 text-white"
+    className="relative overflow-hidden bg-gradient-to-br from-primary-950 via-primary-900 to-primary-900 py-32 text-white"
   >
     <div
       aria-hidden
@@ -716,7 +711,7 @@ const IntegritySpotlight = () => (
               className="bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  'linear-gradient(135deg, #6CE8B7 0%, #22D3EE 100%)',
+                  'var(--gradient-brand-accent)',
               }}
             >
               students.
@@ -751,7 +746,7 @@ const IntegritySpotlight = () => (
             <div className="bezel-core-dark relative aspect-[4/5] overflow-hidden p-8">
               <div
                 aria-hidden
-                className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-transparent to-accent-500/10"
+                className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-transparent to-primary-500/10"
               />
 
               <div className="relative flex h-full flex-col">
@@ -767,8 +762,8 @@ const IntegritySpotlight = () => (
 
                 <div className="relative mx-auto my-auto w-full max-w-[19rem] py-7">
                   <FaceScanArtwork dark />
-                  <div className="absolute -bottom-1 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-300/10 px-3 py-1 text-[9px] font-semibold tracking-[0.12em] text-emerald-100 ring-1 ring-emerald-200/20 backdrop-blur-xl">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,.9)]" />
+                  <div className="absolute -bottom-1 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-primary-300/10 px-3 py-1 text-[9px] font-semibold tracking-[0.12em] text-primary-100 ring-1 ring-primary-200/20 backdrop-blur-xl">
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary-300 shadow-[0_0_10px_rgb(var(--color-primary-300)/.9)]" />
                     PRESENCE CONFIRMED
                   </div>
                 </div>
@@ -854,7 +849,7 @@ const Pricing = () => {
 
         <div className="mx-auto mt-16 grid max-w-6xl gap-5 lg:grid-cols-3 lg:items-stretch">
           {plans.map((plan, i) => (
-            <article key={plan.name} className={`reveal reveal-delay-${i + 1} relative rounded-[2rem] p-1.5 ring-1 transition-transform duration-500 ease-spring hover:-translate-y-1 ${plan.featured ? 'bg-gradient-to-br from-primary-400 via-primary-500 to-accent-400 ring-primary-400/30 shadow-glow-emerald' : 'bg-ink-900/[0.04] ring-ink-900/5'}`}>
+            <article key={plan.name} className={`reveal reveal-delay-${i + 1} relative rounded-[2rem] p-1.5 ring-1 transition-transform duration-500 ease-spring hover:-translate-y-1 ${plan.featured ? 'bg-gradient-to-br from-primary-400 via-primary-500 to-primary-400 ring-primary-400/30 shadow-glow-emerald' : 'bg-ink-900/[0.04] ring-ink-900/5'}`}>
               {plan.featured && <span className="absolute -top-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-primary-800 px-3 py-1 text-[10px] font-semibold uppercase tracking-eyebrow text-white shadow-soft">Most popular</span>}
               <div className="flex h-full flex-col rounded-[calc(2rem-0.375rem)] bg-white p-7 sm:p-8">
                 <p className="text-[10px] font-semibold uppercase tracking-eyebrow text-primary-700">{plan.name}</p>
@@ -918,7 +913,7 @@ const Testimonials = () => {
                   {qq.q}
                 </p>
                 <figcaption className="mt-auto flex items-center gap-3 border-t border-ink-900/5 pt-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-accent-400 font-display text-white">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-primary-400 font-display text-white">
                     {qq.a.split(' ').slice(-1)[0][0]}
                   </span>
                   <div>
@@ -955,7 +950,7 @@ const FAQ = () => {
         </div>
         <div className="mt-12 space-y-3">
           {questions.map(([question, answer], index) => (
-            <div key={question} className={`rounded-2xl bg-white/80 px-5 ring-1 ring-ink-900/5 transition-all ${openQuestion === index ? 'shadow-[0_16px_35px_-30px_rgba(4,120,87,.5)]' : ''}`}>
+            <div key={question} className={`rounded-2xl bg-white/80 px-5 ring-1 ring-ink-900/5 transition-all ${openQuestion === index ? 'shadow-[0_16px_35px_-30px_rgb(var(--color-primary-700)/.5)]' : ''}`}>
               <button
                 type="button"
                 onClick={() => setOpenQuestion((current) => current === index ? null : index)}
@@ -982,7 +977,7 @@ const FinalCTA = () => (
   <section className="relative px-4 py-32">
     <div className="reveal mx-auto max-w-6xl">
       <div className="relative rounded-[2rem] bg-primary-700/30 p-1.5 ring-1 ring-primary-500/40 shadow-glow-emerald">
-        <div className="relative overflow-hidden rounded-[calc(2rem-0.375rem)] bg-gradient-to-br from-primary-950 via-primary-900 to-teal-900 px-8 py-24 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] sm:px-16">
+        <div className="relative overflow-hidden rounded-[calc(2rem-0.375rem)] bg-gradient-to-br from-primary-950 via-primary-900 to-primary-900 px-8 py-24 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] sm:px-16">
           <div
             aria-hidden
             className="absolute inset-0 -z-10 bg-mesh-emerald opacity-80"
@@ -994,7 +989,7 @@ const FinalCTA = () => (
               className="bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  'linear-gradient(135deg, #6CE8B7 0%, #22D3EE 100%)',
+                  'var(--gradient-brand-accent)',
               }}
             >
               every assessment.
@@ -1098,7 +1093,7 @@ const LandingPage = () => {
   useReveal();
 
   return (
-    <div data-reveal-root className="landing-teal min-h-[100dvh] bg-[#f4fbf8] text-primary-950 grain-fixed">
+    <div data-reveal-root className="app-theme theme-page-background min-h-[100dvh] text-primary-950 grain-fixed">
       <a href="#main-content" className="skip-link">Skip to content</a>
       <AnimatedQuoteBackground />
       <NavIsland />

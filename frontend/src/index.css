@@ -1,3 +1,5 @@
+@import "./theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -18,14 +20,14 @@
     font-feature-settings: "ss01", "ss02", "cv11";
   }
   ::selection {
-    background: rgba(16, 185, 129, 0.25);
-    color: #022C1F;
+    background: rgb(var(--color-primary-500) / 0.25);
+    color: rgb(var(--color-primary-950));
   }
-  h1, h2, h3, h4 {
+  h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tightest;
   }
   :focus-visible {
-    outline: 3px solid #10B981;
+    outline: 3px solid rgb(var(--color-primary-500));
     outline-offset: 3px;
   }
   @media (prefers-reduced-motion: reduce) {
@@ -43,6 +45,19 @@
   .skip-link {
     @apply fixed left-4 top-4 z-[70] -translate-y-20 rounded-full bg-primary-700 px-4 py-2 text-sm font-semibold text-white shadow-lift transition-transform duration-200 focus:translate-y-0;
   }
+  /* Explicit shared surfaces replace class-substring colour remapping. */
+  .app-theme { @apply font-sans text-ink-900; }
+  .theme-page-background { background: var(--gradient-page); }
+  .theme-surface {
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    backdrop-filter: blur(16px) saturate(1.1);
+    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  }
+  .landing-nav {
+    background: var(--color-surface);
+    box-shadow: 0 18px 45px -28px rgb(var(--color-primary-700) / 0.32), inset 0 1px 0 rgb(255 255 255 / 0.94);
+  }
   /* ───── Bezel architecture (Doppelrand) ───── */
   .bezel {
     @apply relative rounded-[2rem] p-1.5 ring-1 ring-ink-900/5 bg-ink-900/[0.04];
@@ -51,7 +66,7 @@
     @apply relative rounded-[2rem] p-1.5 ring-1 ring-white/10 bg-white/[0.04];
   }
   .bezel-core {
-    @apply rounded-[calc(2rem-0.375rem)] bg-white shadow-[inset_0_1px_0_rgba(255,255,255,0.6)];
+    @apply theme-surface rounded-[calc(2rem-0.375rem)] shadow-[inset_0_1px_0_rgba(255,255,255,0.6)];
   }
   .bezel-core-dark {
     @apply rounded-[calc(2rem-0.375rem)] bg-ink-900 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)];
@@ -71,14 +86,14 @@
   /* ───── Buttons (Island + nested icon) ───── */
   .btn-island {
     @apply relative inline-flex items-center gap-3 rounded-full pl-6 pr-1.5 py-1.5 text-sm font-semibold
-           transition-all duration-500 ease-spring active:scale-[0.98] focus:outline-none;
+           transition-all duration-500 ease-spring active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500;
   }
   .btn-island-primary {
-    @apply btn-island bg-primary-700 text-white hover:bg-primary-800 shadow-[0_12px_30px_-12px_rgba(4,120,87,0.55)];
+    @apply btn-island bg-primary-700 text-white hover:bg-primary-800 shadow-[0_12px_30px_-12px_rgb(var(--color-primary-700)/0.55)];
   }
   .btn-island-emerald {
     @apply btn-island text-ink-950 shadow-glow-emerald;
-    background: linear-gradient(135deg, #6CE8B7 0%, #34D399 50%, #22D3EE 100%);
+    background: var(--gradient-brand-accent);
   }
   .btn-island-ghost {
     @apply btn-island bg-transparent text-ink-900 ring-1 ring-ink-900/10 hover:bg-ink-900/[0.04];
@@ -103,11 +118,11 @@
   /* ───── Legacy fallbacks (so existing pages don't shatter) ───── */
   .btn {
     @apply inline-flex items-center justify-center px-5 py-2.5 rounded-full font-semibold text-sm
-           transition-all duration-500 ease-spring active:scale-[0.98] focus:outline-none
+           transition-all duration-500 ease-spring active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500
            disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-primary {
-    @apply btn bg-primary-700 text-white hover:bg-primary-800 shadow-[0_12px_30px_-12px_rgba(4,120,87,0.55)];
+    @apply btn bg-primary-700 text-white hover:bg-primary-800 shadow-[0_12px_30px_-12px_rgb(var(--color-primary-700)/0.55)];
   }
   .btn-secondary {
     @apply btn bg-white text-ink-900 ring-1 ring-ink-900/10 hover:bg-ink-50;
@@ -122,7 +137,7 @@
            focus:ring-2 focus:ring-primary-500 focus:bg-white;
   }
   .card {
-    @apply bg-white rounded-2xl shadow-soft ring-1 ring-ink-900/5 overflow-hidden;
+    @apply theme-surface rounded-2xl shadow-soft ring-1 ring-ink-900/5 overflow-hidden;
   }
 
   /* ───── Hairlines ───── */
@@ -135,41 +150,6 @@
 }
 
 @layer utilities {
-  /* Landing page palette: keep every dark ink accent in the teal family. */
-  .landing-teal .text-ink-900,
-  .landing-teal .text-ink-950 { color: #064E3B !important; }
-  .landing-teal .bg-ink-900,
-  .landing-teal .bg-ink-950 { background-color: #047857 !important; }
-  .landing-teal [class*="ring-ink-900"],
-  .landing-teal [class*="border-ink-900"] {
-    --tw-ring-color: rgba(4, 120, 87, 0.14) !important;
-    border-color: rgba(4, 120, 87, 0.12) !important;
-  }
-  .landing-teal {
-    background:
-      radial-gradient(55rem 32rem at 8% -10%, rgba(110, 231, 183, 0.34), transparent 66%),
-      radial-gradient(48rem 28rem at 100% 30%, rgba(103, 232, 249, 0.16), transparent 68%),
-      linear-gradient(145deg, #F3FCF8 0%, #EAF9F3 48%, #F5FCFA 100%) !important;
-  }
-  .landing-teal .bezel {
-    background: rgba(255, 255, 255, 0.30) !important;
-    border-color: rgba(255, 255, 255, 0.62) !important;
-    box-shadow: 0 24px 70px -42px rgba(4, 120, 87, 0.30);
-    backdrop-filter: blur(18px) saturate(1.15);
-    -webkit-backdrop-filter: blur(18px) saturate(1.15);
-  }
-  .landing-teal .bezel-core,
-  .landing-teal .bg-white {
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(241, 253, 248, 0.66)) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92), 0 18px 42px -35px rgba(4, 120, 87, 0.38);
-    backdrop-filter: blur(16px) saturate(1.1);
-    -webkit-backdrop-filter: blur(16px) saturate(1.1);
-  }
-  .landing-teal .landing-nav {
-    background: rgba(255, 255, 255, 0.88) !important;
-    border: 1px solid rgba(255, 255, 255, 0.75);
-    box-shadow: 0 18px 45px -28px rgba(4, 120, 87, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.94);
-  }
   .landing-scroll-quote {
     pointer-events: none;
     position: fixed;
@@ -180,7 +160,7 @@
     justify-content: center;
     padding: 2rem;
     overflow: hidden;
-    background: radial-gradient(ellipse at center, rgba(110, 231, 183, 0.10) 0%, rgba(103, 232, 249, 0.045) 30%, transparent 64%);
+    background: radial-gradient(ellipse at center, rgb(var(--color-primary-300) / 0.10) 0%, rgb(var(--color-primary-200) / 0.045) 30%, transparent 64%);
   }
   .landing-scroll-quote-line {
     display: flex;
@@ -196,7 +176,7 @@
     text-align: center;
     white-space: nowrap;
     opacity: 0.11;
-    filter: drop-shadow(0 18px 28px rgba(4, 120, 87, 0.10));
+    filter: drop-shadow(0 18px 28px rgb(var(--color-primary-700) / 0.10));
     transform: translateY(-28vh);
   }
   .landing-scroll-quote-word,
@@ -207,7 +187,7 @@
     filter: blur(5px);
     transform-origin: 50% 100%;
   }
-  .landing-scroll-quote-mark { color: rgba(16, 185, 129, 0.72); }
+  .landing-scroll-quote-mark { color: rgb(var(--color-primary-500) / 0.72); }
   .landing-scroll-quote.is-revealed .landing-scroll-quote-word,
   .landing-scroll-quote.is-revealed .landing-scroll-quote-mark {
     animation: landing-quote-word-reveal 900ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -225,129 +205,6 @@
     .landing-scroll-quote-line { transform: translateY(-18vh); }
   }
 
-  /* Student dashboard uses the same calm teal system as the landing page. */
-  .student-teal .text-ink-900,
-  .student-teal .text-ink-950 { color: #064E3B !important; }
-  .student-teal .bg-ink-900,
-  .student-teal .bg-ink-950 { background-color: #047857 !important; }
-  .student-teal [class*="bg-ink-900/"] { background-color: rgba(4, 120, 87, 0.07) !important; }
-  .student-teal [class*="ring-ink-900"],
-  .student-teal [class*="border-ink-900"] {
-    --tw-ring-color: rgba(4, 120, 87, 0.14) !important;
-    border-color: rgba(4, 120, 87, 0.12) !important;
-  }
-
-  /* One calm visual system for learner, educator, and administrator workspaces.
-     Older teacher screens used indigo and gray utilities; scope their teal
-     replacements to the dashboard so destructive/error states stay distinct. */
-  .dashboard-teal .text-gray-900,
-  .dashboard-teal .text-gray-800,
-  .dashboard-teal .text-slate-900 { color: #064E3B !important; }
-  .dashboard-teal .text-gray-700,
-  .dashboard-teal .text-gray-600,
-  .dashboard-teal .text-slate-700 { color: #166534 !important; }
-  .dashboard-teal .text-gray-500,
-  .dashboard-teal .text-gray-400,
-  .dashboard-teal .text-slate-500 { color: #5B776C !important; }
-  .dashboard-teal [class*="text-indigo-"],
-  .dashboard-teal [class*="text-blue-"],
-  .dashboard-teal [class*="text-purple-"],
-  .dashboard-teal [class*="text-violet-"] { color: #047857 !important; }
-  .dashboard-teal [class*="bg-indigo-"],
-  .dashboard-teal [class*="bg-blue-"],
-  .dashboard-teal [class*="bg-purple-"],
-  .dashboard-teal [class*="bg-violet-"] { background-color: #ECFEF7 !important; }
-  .dashboard-teal [class*="bg-gray-"],
-  .dashboard-teal [class*="bg-slate-"] { background-color: #F3FBF7 !important; }
-  .dashboard-teal [class*="bg-indigo-50"],
-  .dashboard-teal [class*="bg-blue-50"] { background-color: #ECFEF7 !important; }
-  .dashboard-teal [class*="bg-indigo-100"],
-  .dashboard-teal [class*="bg-blue-100"] { background-color: #D0FBE9 !important; }
-  .dashboard-teal [class*="bg-indigo-200"],
-  .dashboard-teal [class*="bg-blue-200"] { background-color: #A4F4D3 !important; }
-  .dashboard-teal [class*="bg-indigo-500"],
-  .dashboard-teal [class*="bg-blue-500"] { background-color: #10B981 !important; }
-  .dashboard-teal [class*="bg-indigo-600"],
-  .dashboard-teal [class*="bg-blue-600"] { background-color: #059669 !important; }
-  .dashboard-teal [class*="bg-indigo-700"],
-  .dashboard-teal [class*="bg-blue-700"] { background-color: #047857 !important; }
-  .dashboard-teal [class*="bg-purple-100"],
-  .dashboard-teal [class*="bg-violet-100"] { background-color: #D0FBE9 !important; }
-  .dashboard-teal [class*="bg-purple-500"],
-  .dashboard-teal [class*="bg-violet-500"] { background-color: #10B981 !important; }
-  .dashboard-teal [class*="bg-purple-600"],
-  .dashboard-teal [class*="bg-violet-600"] { background-color: #059669 !important; }
-  .dashboard-teal [class*="bg-purple-700"],
-  .dashboard-teal [class*="bg-violet-700"] { background-color: #047857 !important; }
-  .dashboard-teal [class*="border-gray-"],
-  .dashboard-teal [class*="border-slate-"] {
-    border-color: rgba(4, 120, 87, 0.14) !important;
-  }
-  .dashboard-teal [class*="ring-indigo-"],
-  .dashboard-teal [class*="ring-blue-"],
-  .dashboard-teal [class*="ring-purple-"],
-  .dashboard-teal [class*="ring-violet-"] { --tw-ring-color: rgba(16, 185, 129, 0.5) !important; }
-  .dashboard-teal [class*="focus:ring-indigo-"],
-  .dashboard-teal [class*="focus:ring-blue-"],
-  .dashboard-teal [class*="focus:ring-purple-"],
-  .dashboard-teal [class*="focus:ring-violet-"] { --tw-ring-color: #10B981 !important; }
-  .dashboard-teal [class*="focus:border-indigo-"],
-  .dashboard-teal [class*="focus:border-blue-"],
-  .dashboard-teal [class*="focus:border-purple-"],
-  .dashboard-teal [class*="focus:border-violet-"] { border-color: #10B981 !important; }
-
-  /* Keep legacy dashboard cards visually aligned with the glass surfaces in
-     the newer student, teacher, and admin views. */
-  .dashboard-teal .bg-white {
-    background-color: rgba(255, 255, 255, 0.78) !important;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-  }
-  .dashboard-teal [class*="from-indigo-"],
-  .dashboard-teal [class*="from-purple-"],
-  .dashboard-teal [class*="from-violet-"] {
-    --tw-gradient-from: #059669 var(--tw-gradient-from-position) !important;
-    --tw-gradient-to: rgb(5 150 105 / 0) var(--tw-gradient-to-position) !important;
-  }
-  .dashboard-teal [class*="via-indigo-"],
-  .dashboard-teal [class*="via-purple-"],
-  .dashboard-teal [class*="via-violet-"] {
-    --tw-gradient-stops: var(--tw-gradient-from), #0F766E var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
-  }
-  .dashboard-teal [class*="to-indigo-"],
-  .dashboard-teal [class*="to-purple-"],
-  .dashboard-teal [class*="to-violet-"] {
-    --tw-gradient-to: #0F766E var(--tw-gradient-to-position) !important;
-  }
-
-  /* The launch-confirmation modal appears inside a dashboard but needs its
-     own contrast-safe actions, independent of the dashboard palette rules. */
-  .dashboard-teal .quiz-opening-footer {
-    background-color: rgba(255, 255, 255, 0.96) !important;
-    border-color: rgba(4, 120, 87, 0.2) !important;
-  }
-  .dashboard-teal .quiz-opening-title {
-    color: #064E3B !important;
-  }
-  .dashboard-teal .quiz-opening-subtitle {
-    color: #3F6B5D !important;
-  }
-  .dashboard-teal .quiz-secondary-action {
-    color: #064E3B !important;
-    background-color: #FFFFFF !important;
-    border-color: #A4F4D3 !important;
-    opacity: 1 !important;
-  }
-  .dashboard-teal .quiz-primary-action {
-    color: #FFFFFF !important;
-    background: linear-gradient(135deg, #059669 0%, #0F766E 100%) !important;
-    opacity: 1 !important;
-  }
-  .dashboard-teal .quiz-primary-action:disabled {
-    color: #FFFFFF !important;
-    -webkit-text-fill-color: #FFFFFF;
-    background: #64748B !important;
-  }
   /* ───── Reveal-on-scroll ───── */
   /* Global learning-flow watermark: abstract enough for every region, quiet
      enough to preserve the focus and contrast of dashboard content. */
@@ -359,8 +216,8 @@
     opacity: 0.72;
     mix-blend-mode: multiply;
     background-image:
-      radial-gradient(circle at 12% 82%, rgba(20, 184, 166, 0.09) 0 2px, transparent 2.5px),
-      radial-gradient(circle at 78% 66%, rgba(5, 150, 105, 0.08) 0 2px, transparent 2.5px),
+      radial-gradient(circle at 12% 82%, rgb(var(--color-primary-400) / 0.09) 0 2px, transparent 2.5px),
+      radial-gradient(circle at 78% 66%, rgb(var(--color-primary-600) / 0.08) 0 2px, transparent 2.5px),
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='960' height='580' viewBox='0 0 960 580' fill='none'%3E%3Cg stroke='%23059669' stroke-opacity='.12' stroke-width='1.2'%3E%3Cpath d='M-40 466C116 382 222 506 367 401S644 308 748 370s155-6 252-89'/%3E%3Cpath d='M12 168c140 40 188-99 335-24s195 153 346 54 188-37 291-73'/%3E%3Cpath d='M196 0c40 109 166 91 223 161s100 130 244 99 166 70 297 44'/%3E%3C/g%3E%3Cg fill='%2314B8A6' fill-opacity='.16'%3E%3Ccircle cx='115' cy='419' r='4'/%3E%3Ccircle cx='367' cy='401' r='5'/%3E%3Ccircle cx='748' cy='370' r='4'/%3E%3Ccircle cx='347' cy='144' r='4'/%3E%3Ccircle cx='693' cy='198' r='5'/%3E%3Ccircle cx='419' cy='161' r='4'/%3E%3C/g%3E%3C/svg%3E");
     background-position: 0 0, 100% 100%, center;
     background-repeat: no-repeat, no-repeat, repeat;
@@ -406,57 +263,23 @@
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");
   }
 
+  .text-on-accent { color: rgb(var(--color-primary-950)); }
   .text-balance { text-wrap: balance; }
   .text-pretty  { text-wrap: pretty; }
 }
 
-/* Display preferences apply to signed-in workspaces, including profile/settings.
-   The green navigation and assessment hero panels retain their own contrast. */
-:root[data-theme="dark"] .app-workspace {
-  color-scheme: dark;
-  color: #E6F4EF;
-  background-color: #0C1715 !important;
-}
-:root[data-theme="dark"] .app-workspace :is(.bg-white, [class~="bg-white/75"], [class~="bg-white/80"], .input-field, .card, .quiz-opening-footer) {
-  background-color: #142722 !important;
-}
-:root[data-theme="dark"] .app-workspace :is([class~="bg-white/70"], [class~="bg-white/90"], [class~="bg-white/95"], [class~="bg-white/60"]) {
-  background-color: rgba(20, 39, 34, 0.94) !important;
-}
-:root[data-theme="dark"] .app-workspace :is(.bg-ink-50, .bg-ink-100, [class*="bg-ink-50/"], [class*="bg-gray-"], [class*="bg-slate-"], .bg-primary-50, .bg-primary-100, [class*="bg-primary-50/"], [class*="bg-primary-100/"], [class*="bg-indigo-50"], [class*="bg-blue-50"], [class*="bg-purple-50"]) {
-  background-color: #1C342C !important;
-}
-:root[data-theme="dark"] .app-workspace :is(.text-ink-900, .text-ink-950, .text-ink-800, .text-gray-900, .text-gray-800, .text-slate-900, .quiz-opening-title) {
-  color: #E6F4EF !important;
-}
-:root[data-theme="dark"] .app-workspace :is(.text-ink-600, .text-ink-700, .text-gray-600, .text-gray-700, .text-slate-700, .quiz-opening-subtitle) {
-  color: #BFD8CF !important;
-}
-:root[data-theme="dark"] .app-workspace :is(.text-ink-300, .text-ink-400, .text-ink-500, .text-gray-400, .text-gray-500, .text-slate-500) {
-  color: #9FBDB1 !important;
-}
-:root[data-theme="dark"] .app-workspace :is(.text-primary-600, .text-primary-700, .text-primary-800, .text-primary-900, [class*="text-indigo-"], [class*="text-blue-"], [class*="text-purple-"], [class*="text-violet-"]) {
-  color: #6CE8B7 !important;
-}
-:root[data-theme="dark"] .app-workspace :is([class*="border-ink-900"], [class*="border-gray-"], [class*="border-slate-"]) {
-  border-color: #38554A !important;
-}
-:root[data-theme="dark"] .app-workspace [class*="ring-ink-900"] {
-  --tw-ring-color: rgba(159, 189, 177, 0.24) !important;
-}
-:root[data-theme="dark"] .app-workspace :is(input:not([type="radio"]):not([type="checkbox"]), textarea, select) {
-  color: #E6F4EF !important;
-  background-color: #10211C !important;
-  border-color: #38554A !important;
-}
-:root[data-theme="dark"] .app-workspace :is(input, textarea)::placeholder {
-  color: #9FBDB1;
-}
-:root[data-theme="dark"] .app-workspace :is(.hover\:bg-ink-50, .hover\:bg-gray-50, .hover\:bg-primary-50):hover {
-  background-color: #244337 !important;
-}
-:root[data-theme="dark"] .app-workspace .quiz-secondary-action {
-  background-color: #1C342C !important;
-  color: #E6F4EF !important;
-  border-color: #38554A !important;
+
+/* Exact base utility matches allow hover/focus utilities to win by specificity.
+   No !important rules or substring colour matches are needed. */
+@layer utilities {
+  :where(:root[data-theme="dark"] .app-workspace) :is(.bg-white, .bg-white\/60, .bg-white\/70, .bg-white\/75, .bg-white\/80, .bg-white\/90, .bg-white\/95) {
+    background-color: var(--color-surface);
+  }
+  :where(:root[data-theme="dark"] .app-workspace) :is(.bg-primary-50, .bg-primary-100, .bg-primary-50\/40, .bg-primary-50\/70, .bg-primary-100\/70, .bg-primary-50\/60, .bg-primary-50\/50) {
+    background-color: rgb(var(--color-ink-100));
+  }
+  :where(:root[data-theme="dark"] .app-workspace) :is(.input-field, input:not([type="radio"]):not([type="checkbox"]), textarea, select) {
+    color: rgb(var(--color-ink-900));
+    background-color: rgb(var(--color-ink-50));
+  }
 }

@@ -23,9 +23,9 @@ interface FaceDetectionCameraProps {
 }
 
 const statusConfig: Record<FaceStatus, { label: string; color: string; bgColor: string; pulse: boolean }> = {
-  model_loading:     { label: 'Loading AI models',     color: 'text-blue-700',   bgColor: 'bg-blue-100',   pulse: true  },
+  model_loading:     { label: 'Loading AI models',     color: 'text-primary-700',   bgColor: 'bg-primary-100',   pulse: true  },
   model_load_failed: { label: 'Model failed to load',  color: 'text-red-700',    bgColor: 'bg-red-100',    pulse: false },
-  camera_starting:   { label: 'Starting camera',       color: 'text-blue-700',   bgColor: 'bg-blue-100',   pulse: true  },
+  camera_starting:   { label: 'Starting camera',       color: 'text-primary-700',   bgColor: 'bg-primary-100',   pulse: true  },
   camera_ready:      { label: 'Waiting for a face',    color: 'text-yellow-700', bgColor: 'bg-yellow-100', pulse: true  },
   camera_unavailable:{ label: 'Camera unavailable',    color: 'text-red-700',    bgColor: 'bg-red-100',    pulse: false },
   inference_error:   { label: 'Detection unavailable', color: 'text-red-700',    bgColor: 'bg-red-100',    pulse: false },
@@ -51,7 +51,7 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit, showAwayLimit
     status === 'looking' ? 'border-green-400' :
     status === 'away' ? 'border-yellow-400' :
     status === 'no_face' ? 'border-red-400' :
-    'border-gray-300';
+    'border-ink-300';
 
   return (
     <div className="fixed top-20 left-4 z-30 w-64">
@@ -60,7 +60,7 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit, showAwayLimit
         status === 'looking' ? 'bg-green-600' :
         status === 'away' ? 'bg-yellow-600' :
         status === 'no_face' ? 'bg-red-600' :
-        'bg-gray-600'
+        'bg-primary-900'
       }`}>
         <span className={`h-2 w-2 rounded-full ${
           status === 'looking' ? 'bg-green-300 animate-pulse' : 'bg-red-300 animate-pulse'
@@ -104,7 +104,7 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit, showAwayLimit
           <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white text-xs gap-2 px-3 text-center">
             <VideoCameraSlashIcon className="h-8 w-8 text-red-400" />
             <span className="font-semibold">Camera access denied</span>
-            <div className="text-gray-300 text-[10px] leading-tight space-y-1">
+            <div className="text-white/75 text-[10px] leading-tight space-y-1">
               <p>To fix this:</p>
               <p>1. Click the 🔒 icon in the address bar</p>
               <p>2. Find "Camera" → set to <strong>Allow</strong></p>
@@ -112,7 +112,7 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit, showAwayLimit
             </div>
             <button
               onClick={retryCamera}
-              className="mt-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded-md transition-colors"
+              className="mt-1 px-3 py-1.5 bg-primary-700 hover:bg-primary-800 text-white text-xs font-medium rounded-md transition-colors"
             >
               🔄 Retry Camera
             </button>
@@ -124,10 +124,10 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit, showAwayLimit
           <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-white text-xs gap-2 px-3 text-center">
             <VideoCameraSlashIcon className="h-8 w-8 text-red-400" />
             <span className="font-semibold">{status === 'model_load_failed' ? 'Face detection model failed to load' : status === 'inference_error' ? 'Face detection temporarily failed' : 'Camera unavailable'}</span>
-            <span className="text-gray-300 text-[10px]">No valid face has been detected. Check the camera and try again.</span>
+            <span className="text-white/75 text-[10px]">No valid face has been detected. Check the camera and try again.</span>
             <button
               onClick={retryCamera}
-              className="mt-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium rounded-md transition-colors"
+              className="mt-1 px-3 py-1.5 bg-primary-700 hover:bg-primary-800 text-white text-xs font-medium rounded-md transition-colors"
             >
               🔄 Retry
             </button>

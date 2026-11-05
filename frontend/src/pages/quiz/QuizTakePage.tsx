@@ -814,10 +814,10 @@ const QuizTakePage = () => {
         <div className="text-center max-w-lg p-6">
           {loadError ? <>
             <p role="alert" className="text-red-700">{loadError}</p>
-            <button type="button" onClick={() => setLoadRetry(value => value + 1)} className="mt-4 rounded bg-indigo-600 px-4 py-2 text-white focus-visible:ring-4">Retry loading exam</button>
+            <button type="button" onClick={() => setLoadRetry(value => value + 1)} className="mt-4 rounded bg-primary-700 px-4 py-2 text-white focus-visible:ring-4">Retry loading exam</button>
           </> : <>
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mx-auto" />
-            <p className="mt-4 text-gray-600 text-sm">Loading exam...</p>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500 mx-auto" />
+            <p className="mt-4 text-ink-600 text-sm">Loading exam...</p>
           </>}
         </div>
       </div>
@@ -831,18 +831,18 @@ const QuizTakePage = () => {
     && !!activeDeadline && Date.parse(activeDeadline) > Date.now() + serverClockOffsetMs && timeLeft > 0;
 
   return (
-    <div className="min-h-screen bg-gray-50 select-none">
+    <div className="min-h-screen bg-ink-50 select-none">
       {!secureModeReady && typeof document.documentElement.requestFullscreen === 'function' && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-xl">
           <div role="dialog" aria-modal="true" aria-labelledby="secure-mode-title" className="w-full max-w-md rounded-3xl border border-white/15 bg-white p-8 text-center shadow-2xl">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-100 text-primary-700">
               <ShieldCheckIcon className="h-9 w-9" />
             </div>
-            <h2 id="secure-mode-title" className="mt-5 text-2xl font-bold text-slate-950">Secure exam mode required</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-600">
+            <h2 id="secure-mode-title" className="mt-5 text-2xl font-bold text-ink-950">Secure exam mode required</h2>
+            <p className="mt-3 text-sm leading-6 text-ink-600">
               Continue in fullscreen. Exiting fullscreen, opening system overlays, shrinking the window, or using another app is recorded as a violation.
             </p>
-            <button type="button" onClick={enterSecureMode} className="mt-6 w-full rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white shadow-lg transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-200">
+            <button type="button" onClick={enterSecureMode} className="mt-6 w-full rounded-xl bg-primary-700 px-5 py-3 font-semibold text-white shadow-lg transition hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-200">
               Enter secure fullscreen
             </button>
           </div>
@@ -879,13 +879,13 @@ const QuizTakePage = () => {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">{quizData.quiz.title}</h1>
-              <p className="text-sm text-gray-500">
+              <h1 className="text-lg font-semibold text-ink-900">{quizData.quiz.title}</h1>
+              <p className="text-sm text-ink-500">
                 Question {currentQuestionIndex + 1} of {totalQuestions}
               </p>
             </div>
             <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
-              timeLeft < 10 ? 'bg-red-100 text-red-700 animate-pulse' : 'bg-indigo-100 text-indigo-700'
+              timeLeft < 10 ? 'bg-red-100 text-red-700 animate-pulse' : 'bg-primary-100 text-primary-700'
             }`}>
               <ClockIcon className="h-5 w-5" />
               <span className="font-mono font-bold text-lg">{formatTime(timeLeft)}</span>
@@ -893,9 +893,9 @@ const QuizTakePage = () => {
           </div>
 
           {/* Progress bar */}
-          <div className="mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div className="mt-4 h-2 bg-ink-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-indigo-600 transition-all duration-300"
+              className="h-full bg-primary-700 transition-all duration-300"
               style={{ width: `${((currentQuestionIndex + 1) / totalQuestions) * 100}%` }}
             />
           </div>
@@ -913,7 +913,7 @@ const QuizTakePage = () => {
           <button type="button" disabled={!!savingQuestionId || submitting} onClick={retryFailedAnswer} className="mt-2 mr-4 underline focus-visible:ring-2 disabled:opacity-50">Retry unsaved answers</button>
           <button type="button" disabled={!!savingQuestionId || submitting} onClick={() => setLoadRetry(value => value + 1)} className="mt-2 underline focus-visible:ring-2 disabled:opacity-50">Discard unsaved edits and reload</button>
         </div>}
-        <p role="status" className="mb-3 text-sm text-gray-700">
+        <p role="status" className="mb-3 text-sm text-ink-700">
           {activatingQuestion ? 'Loading the original question deadline…' : savingQuestionId ? 'Saving answer…' : activeDeadline && timeLeft === 0 ? 'This question has expired. Its saved answer is locked.' : 'Answers are saved to the server as you answer.'}
         </p>
         <div className="bg-white rounded-xl shadow-sm border p-6">
@@ -927,19 +927,19 @@ const QuizTakePage = () => {
             </span>
           </div>
 
-          <h2 className="text-xl font-medium text-gray-900 mb-6">
+          <h2 className="text-xl font-medium text-ink-900 mb-6">
             {currentQuestion.text}
           </h2>
 
           {isShortAnswerQuestion(currentQuestion) ? (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Your Answer</label>
+              <label className="block text-sm font-medium text-ink-700 mb-2">Your Answer</label>
               <textarea
                 disabled={!canAnswer}
                 value={String(selectedAnswers[currentQuestionIndex] ?? '')}
                 onChange={e => handleTextAnswer(currentQuestionIndex, e.target.value)}
                 rows={4}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                className="w-full px-4 py-3 border-2 border-ink-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 placeholder="Type your answer here"
               />
             </div>
@@ -952,19 +952,19 @@ const QuizTakePage = () => {
                   onClick={() => handleSelectAnswer(currentQuestionIndex, index)}
                   className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
                     selectedAnswers[currentQuestionIndex] === index
-                      ? 'border-indigo-500 bg-indigo-50'
-                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                      ? 'border-primary-500 bg-primary-50'
+                      : 'border-ink-200 hover:border-ink-300 hover:bg-ink-50'
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <span className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                       selectedAnswers[currentQuestionIndex] === index
-                        ? 'bg-indigo-500 text-white'
-                        : 'bg-gray-100 text-gray-600'
+                        ? 'bg-primary-700 text-white'
+                        : 'bg-ink-100 text-ink-600'
                     }`}>
                       {String.fromCharCode(65 + index)}
                     </span>
-                    <span className="text-gray-900">{option}</span>
+                    <span className="text-ink-900">{option}</span>
                   </div>
                 </button>
               ))}
@@ -983,7 +983,7 @@ const QuizTakePage = () => {
           <button
             onClick={() => void moveToQuestion(currentQuestionIndex - 1)}
             disabled={currentQuestionIndex === 0 || submitting || activatingQuestion}
-            className="px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-ink-600 hover:text-ink-900 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Previous
           </button>
@@ -997,10 +997,10 @@ const QuizTakePage = () => {
                 onClick={() => handleJumpToQuestion(index)}
                 className={`w-8 h-8 rounded-full text-sm font-medium transition-all ${
                   index === currentQuestionIndex
-                    ? 'bg-indigo-600 text-white'
+                    ? 'bg-primary-700 text-white'
                     : selectedAnswers[index] !== undefined
                     ? 'bg-green-100 text-green-700'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-ink-100 text-ink-600 hover:bg-ink-200'
                 }`}
               >
                 {index + 1}
@@ -1012,7 +1012,7 @@ const QuizTakePage = () => {
             <button
               onClick={() => void handleSubmitQuiz()}
               disabled={submitting}
-              className="px-6 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 flex items-center gap-2"
+              className="px-6 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 disabled:opacity-50 flex items-center gap-2"
             >
               {submitting ? (
                 <>
@@ -1030,7 +1030,7 @@ const QuizTakePage = () => {
             <button
               onClick={handleNextQuestion}
               disabled={submitting || activatingQuestion}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700"
+              className="px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800"
             >
               Next
             </button>

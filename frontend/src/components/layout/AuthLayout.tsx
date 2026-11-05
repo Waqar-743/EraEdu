@@ -10,7 +10,7 @@ const AuthLayout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="app-theme theme-page-background min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
           <Brand
@@ -20,13 +20,13 @@ const AuthLayout = () => {
             iconClassName="h-6 w-6 text-primary-700"
           />
         </div>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-center text-sm text-ink-600">
           AI-Powered Adaptive Learning Platform
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="theme-surface py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <Outlet />
         </div>
       </div>

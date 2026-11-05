@@ -54,17 +54,17 @@ const AccessByCodePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-ink-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
           <div className="h-16 w-16 bg-primary-100 rounded-full flex items-center justify-center">
             <FiKey className="h-8 w-8 text-primary-600" />
           </div>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-ink-900">
           Access Exam via Code
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-center text-sm text-ink-600">
           Enter the 8-character code provided by your teacher
         </p>
       </div>
@@ -74,7 +74,7 @@ const AccessByCodePage = () => {
           {!quizDetails ? (
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="code" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="code" className="block text-sm font-medium text-ink-700">
                   Exam Code
                 </label>
                 <div className="mt-1">
@@ -85,11 +85,11 @@ const AccessByCodePage = () => {
                     value={code}
                     onChange={handleCodeChange}
                     placeholder="ABCD1234"
-                    className="appearance-none block w-full px-3 py-3 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-center text-2xl tracking-widest font-mono uppercase"
+                    className="appearance-none block w-full px-3 py-3 border border-ink-300 rounded-md shadow-sm placeholder-ink-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-center text-2xl tracking-widest font-mono uppercase"
                     maxLength={8}
                   />
                 </div>
-                <p className="mt-2 text-sm text-gray-500 text-center">
+                <p className="mt-2 text-sm text-ink-500 text-center">
                   {code.length}/8 characters
                 </p>
               </div>
@@ -108,7 +108,7 @@ const AccessByCodePage = () => {
               <button
                 type="submit"
                 disabled={loading || code.length !== 8}
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full" />
@@ -125,21 +125,21 @@ const AccessByCodePage = () => {
               <div className="bg-green-50 rounded-lg p-4">
                 <h3 className="text-lg font-medium text-green-800">Exam Found!</h3>
                 <div className="mt-4 space-y-2">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-ink-600">
                     <span className="font-medium">Exam:</span> {quizDetails.quiz?.title || 'Untitled Exam'}
                   </p>
                   {quizDetails.course && (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-ink-600">
                       <span className="font-medium">Course:</span> {quizDetails.course.title}
                     </p>
                   )}
                   {quizDetails.quiz?.time_limit && (
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-ink-600">
                       <span className="font-medium">Time Limit:</span> {quizDetails.quiz.time_limit} minutes
                     </p>
                   )}
                   {quizDetails.quiz?.description && (
-                    <p className="text-sm text-gray-600 mt-2">
+                    <p className="text-sm text-ink-600 mt-2">
                       {quizDetails.quiz.description}
                     </p>
                   )}
@@ -156,13 +156,13 @@ const AccessByCodePage = () => {
               <div className="flex space-x-3">
                 <button
                   onClick={handleTryAnother}
-                  className="flex-1 py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  className="flex-1 py-2 px-4 border border-ink-300 rounded-md shadow-sm text-sm font-medium text-ink-700 bg-white hover:bg-ink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 >
                   Try Another Code
                 </button>
                 <button
                   onClick={handleStartQuiz}
-                  className="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                  className="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
                 >
                   Start Exam
                 </button>

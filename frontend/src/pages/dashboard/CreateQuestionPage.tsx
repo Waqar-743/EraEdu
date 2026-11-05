@@ -89,18 +89,18 @@ const CreateQuestionPage = () => {
     <div className="max-w-3xl mx-auto px-4 py-8">
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center text-gray-600 hover:text-gray-900 mb-6"
+        className="flex items-center text-ink-600 hover:text-ink-900 mb-6"
       >
         <FiArrowLeft className="mr-2" />
         Back
       </button>
 
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Create New Question</h1>
+      <h1 className="text-2xl font-bold text-ink-900 mb-6">Create New Question</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Question Type Selection */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">Step 1: Question Type</h2>
+          <h2 className="text-lg font-medium text-ink-900 mb-4">Step 1: Question Type</h2>
           <div className="flex space-x-4">
             <label className="flex items-center">
               <input
@@ -111,7 +111,7 @@ const CreateQuestionPage = () => {
                 onChange={() => setQuestionType('multipleChoice')}
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500"
               />
-              <span className="ml-2 text-sm text-gray-700">Multiple Choice (MCQ)</span>
+              <span className="ml-2 text-sm text-ink-700">Multiple Choice (MCQ)</span>
             </label>
             <label className="flex items-center">
               <input
@@ -122,32 +122,32 @@ const CreateQuestionPage = () => {
                 onChange={() => setQuestionType('shortAnswer')}
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500"
               />
-              <span className="ml-2 text-sm text-gray-700">Short Answer</span>
+              <span className="ml-2 text-sm text-ink-700">Short Answer</span>
             </label>
           </div>
         </div>
 
         {/* Question Details */}
         <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">Step 2: Question Details</h2>
+          <h2 className="text-lg font-medium text-ink-900 mb-4">Step 2: Question Details</h2>
           
           {/* Question Text */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-ink-700 mb-1">
               Question Text
             </label>
             <textarea
               value={questionText}
               onChange={(e) => setQuestionText(e.target.value)}
               rows={3}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              className="w-full px-3 py-2 border border-ink-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
               placeholder="Enter your question here..."
             />
           </div>
 
           {/* Difficulty */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-ink-700 mb-1">
               Difficulty Level
             </label>
             <div className="flex space-x-4">
@@ -161,7 +161,7 @@ const CreateQuestionPage = () => {
                     onChange={() => setDifficulty(level)}
                     className="h-4 w-4 text-primary-600 focus:ring-primary-500"
                   />
-                  <span className="ml-2 text-sm text-gray-700">{level}</span>
+                  <span className="ml-2 text-sm text-ink-700">{level}</span>
                 </label>
               ))}
             </div>
@@ -170,7 +170,7 @@ const CreateQuestionPage = () => {
           {/* MCQ Options */}
           {questionType === 'multipleChoice' && (
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-ink-700 mb-2">
                 Answer Options
               </label>
               <div className="space-y-3">
@@ -188,7 +188,7 @@ const CreateQuestionPage = () => {
                       type="text"
                       value={option}
                       onChange={(e) => handleOptionChange(index, e.target.value)}
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                      className="flex-1 px-3 py-2 border border-ink-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                       placeholder={`Option ${String.fromCharCode(65 + index)}`}
                     />
                     {correctAnswerIndex === index && (
@@ -199,7 +199,7 @@ const CreateQuestionPage = () => {
                   </div>
                 ))}
               </div>
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="text-sm text-ink-500 mt-2">
                 Select the radio button next to the correct answer
               </p>
             </div>
@@ -208,17 +208,17 @@ const CreateQuestionPage = () => {
           {/* Short Answer Options */}
           {questionType === 'shortAnswer' && (
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-ink-700 mb-1">
                 Acceptable Answers (comma-separated)
               </label>
               <textarea
                 value={acceptableAnswers}
                 onChange={(e) => setAcceptableAnswers(e.target.value)}
                 rows={2}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                className="w-full px-3 py-2 border border-ink-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
                 placeholder="e.g., photosynthesis, cellular respiration, ATP"
               />
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-ink-500 mt-1">
                 Enter multiple acceptable answers separated by commas
               </p>
             </div>
@@ -226,14 +226,14 @@ const CreateQuestionPage = () => {
 
           {/* Explanation */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-ink-700 mb-1">
               Explanation (Optional)
             </label>
             <textarea
               value={explanation}
               onChange={(e) => setExplanation(e.target.value)}
               rows={2}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+              className="w-full px-3 py-2 border border-ink-300 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500"
               placeholder="Explain why this is the correct answer..."
             />
           </div>
@@ -244,14 +244,14 @@ const CreateQuestionPage = () => {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            className="px-4 py-2 border border-ink-300 rounded-md text-ink-700 hover:bg-ink-50"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50 flex items-center"
+            className="px-4 py-2 bg-primary-700 text-white rounded-md hover:bg-primary-800 disabled:opacity-50 flex items-center"
           >
             {loading ? (
               <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2" />

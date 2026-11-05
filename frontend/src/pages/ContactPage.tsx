@@ -19,7 +19,7 @@ const contactChannels = [
 const ContactPage = () => {
   return (
     <div className="min-h-screen bg-white">
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-ink-200 bg-white">
         <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
           <Brand to="/" />
         </div>
@@ -27,17 +27,17 @@ const ContactPage = () => {
 
       <main className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
         <p className="text-xs font-semibold tracking-[0.24em] text-primary-700">SUPPORT</p>
-        <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Contact</h1>
-        <p className="mt-6 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg">
+        <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-ink-900 sm:text-5xl">Contact</h1>
+        <p className="mt-6 max-w-3xl text-base leading-7 text-ink-600 sm:text-lg">
           EraEdu support is usually handled through the institution that deployed the platform. The options below
           cover the most common ways to get help.
         </p>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {contactChannels.map((channel) => (
-            <section key={channel.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
-              <h2 className="text-base font-semibold text-slate-900">{channel.title}</h2>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{channel.description}</p>
+            <section key={channel.title} className="rounded-2xl border border-ink-200 bg-ink-50 p-6">
+              <h2 className="text-base font-semibold text-ink-900">{channel.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-ink-600">{channel.description}</p>
             </section>
           ))}
         </div>
@@ -45,7 +45,7 @@ const ContactPage = () => {
         <div className="mt-12 flex flex-col gap-3 sm:flex-row">
           <Link
             to="/login"
-            className="inline-flex items-center justify-center rounded-md bg-primary-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-700"
+            className="inline-flex items-center justify-center rounded-md bg-primary-700 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-800"
           >
             Sign in
           </Link>

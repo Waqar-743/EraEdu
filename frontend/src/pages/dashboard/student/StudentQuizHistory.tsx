@@ -92,8 +92,8 @@ const StudentQuizHistory = () => {
       header: 'Exam',
       render: (attempt: QuizHistoryItem) => (
         <div>
-          <p className="font-medium text-gray-900">{attempt.quizTitle || 'Untitled Exam'}</p>
-          <p className="text-sm text-gray-500">{attempt.topicTitle}</p>
+          <p className="font-medium text-ink-900">{attempt.quizTitle || 'Untitled Exam'}</p>
+          <p className="text-sm text-ink-500">{attempt.topicTitle}</p>
         </div>
       ),
     },
@@ -115,7 +115,7 @@ const StudentQuizHistory = () => {
               {attempt.score}%
             </span>
           ) : (
-            <span className="text-sm text-gray-400">Hidden until review</span>
+            <span className="text-sm text-ink-400">Hidden until review</span>
           )}
         </div>
       ),
@@ -137,7 +137,7 @@ const StudentQuizHistory = () => {
               )}
             </>
           ) : (
-            <span className="text-sm text-gray-400">{attempt.reviewStatus === 'reviewed' ? 'Not teacher graded' : 'Pending'}</span>
+            <span className="text-sm text-ink-400">{attempt.reviewStatus === 'reviewed' ? 'Not teacher graded' : 'Pending'}</span>
           )}
         </div>
       ),
@@ -146,7 +146,7 @@ const StudentQuizHistory = () => {
       key: 'correctAnswers' as keyof QuizHistoryItem,
       header: 'Correct',
       render: (attempt: QuizHistoryItem) => (
-        <span className="text-gray-600">
+        <span className="text-ink-600">
           {attempt.reviewStatus === 'reviewed' && attempt.correctAnswers !== null
             ? `${attempt.correctAnswers}/${attempt.totalQuestions}`
             : 'Pending review'}
@@ -158,8 +158,8 @@ const StudentQuizHistory = () => {
       header: 'Completed',
       render: (attempt: QuizHistoryItem) => (
         <div className="text-sm">
-          <p className="text-gray-900">{formatDate(attempt.attemptedAt)}</p>
-          <p className="text-gray-500 flex items-center gap-1">
+          <p className="text-ink-900">{formatDate(attempt.attemptedAt)}</p>
+          <p className="text-ink-500 flex items-center gap-1">
             <ClockIcon className="h-3 w-3" />
             {formatDuration(attempt.timeTaken)}
           </p>
@@ -191,7 +191,7 @@ const StudentQuizHistory = () => {
     ? Math.round(reviewedAttempts.reduce((sum, a) => sum + visibleGrade(a)!, 0) / reviewedAttempts.length)
     : null;
 
-  if (loading) return <div role="status" className="p-8 text-center text-gray-600">Loading exam history...</div>;
+  if (loading) return <div role="status" className="p-8 text-center text-ink-600">Loading exam history...</div>;
   if (error) return (
     <div role="alert" className="mx-auto max-w-xl rounded-xl border border-red-200 bg-red-50 p-6 text-red-900">
       Exam history could not be loaded. Please retry.
@@ -203,52 +203,52 @@ const StudentQuizHistory = () => {
     <div className="space-y-6">
       {/* Header */}
       <header>
-        <h1 className="text-2xl font-bold text-gray-900">Exam History</h1>
-        <p className="text-sm text-gray-500 mt-1">Review your past exam attempts and track your progress.</p>
+        <h1 className="text-2xl font-bold text-ink-900">Exam History</h1>
+        <p className="text-sm text-ink-500 mt-1">Review your past exam attempts and track your progress.</p>
       </header>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-primary-100 rounded-lg">
               <AcademicCapIcon className="h-6 w-6 text-primary-700" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Total Attempts</p>
-              <p className="text-2xl font-bold text-gray-900">{totalAttempts}</p>
+              <p className="text-sm text-ink-500">Total Attempts</p>
+              <p className="text-2xl font-bold text-ink-900">{totalAttempts}</p>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-green-100 rounded-lg">
               <CheckCircleIcon className="h-6 w-6 text-green-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Passed</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {passedAttempts} <span className="text-sm font-normal text-gray-500">({reviewedAttempts.length > 0 ? Math.round((passedAttempts / reviewedAttempts.length) * 100) : 0}% of graded)</span>
+              <p className="text-sm text-ink-500">Passed</p>
+              <p className="text-2xl font-bold text-ink-900">
+                {passedAttempts} <span className="text-sm font-normal text-ink-500">({reviewedAttempts.length > 0 ? Math.round((passedAttempts / reviewedAttempts.length) * 100) : 0}% of graded)</span>
               </p>
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-4">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-primary-100 rounded-lg">
               <ClockIcon className="h-6 w-6 text-primary-700" />
             </div>
             <div>
-              <p className="text-sm text-gray-500">Average Score</p>
-              <p className="text-2xl font-bold text-gray-900">{avgScore === null ? '—' : `${avgScore}%`}</p>
+              <p className="text-sm text-ink-500">Average Score</p>
+              <p className="text-2xl font-bold text-ink-900">{avgScore === null ? '—' : `${avgScore}%`}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-        <div className="border-b border-gray-200">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200">
+        <div className="border-b border-ink-200">
           <nav className="flex -mb-px">
             {(['all', 'passed', 'failed'] as const).map((tab) => (
               <button
@@ -257,11 +257,11 @@ const StudentQuizHistory = () => {
                 className={`px-6 py-3 text-sm font-medium border-b-2 ${
                   filter === tab
                     ? 'border-primary-500 text-primary-700'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-ink-500 hover:text-ink-700 hover:border-ink-300'
                 }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                <span className="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                <span className="ml-2 text-xs bg-ink-100 text-ink-600 px-2 py-0.5 rounded-full">
                   {tab === 'all'
                     ? totalAttempts
                     : tab === 'passed'

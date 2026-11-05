@@ -28,7 +28,7 @@ const Sidebar = ({ isOpen, closeSidebar }: SidebarProps) => {
       {/* Mobile backdrop */}
       <div
         className={clsx(
-          'fixed inset-0 z-20 bg-gray-600 bg-opacity-75 transition-opacity lg:hidden',
+          'fixed inset-0 z-20 bg-primary-950/60 transition-opacity lg:hidden',
           isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
         onClick={closeSidebar}
@@ -41,7 +41,7 @@ const Sidebar = ({ isOpen, closeSidebar }: SidebarProps) => {
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
-        <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200 lg:hidden">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-ink-200 lg:hidden">
           <Brand
             to="/"
             textClassName="text-xl font-bold text-primary-700"
@@ -50,13 +50,13 @@ const Sidebar = ({ isOpen, closeSidebar }: SidebarProps) => {
           />
           <button
             onClick={closeSidebar}
-            className="text-gray-500 hover:text-gray-600 focus:outline-none"
+            className="text-ink-500 hover:text-ink-600 focus:outline-none"
           >
             <FiX className="h-6 w-6" />
           </button>
         </div>
 
-        <div className="hidden lg:flex items-center h-16 px-6 border-b border-gray-200">
+        <div className="hidden lg:flex items-center h-16 px-6 border-b border-ink-200">
           <Brand
             to="/"
             textClassName="text-xl font-bold text-primary-700"
@@ -76,7 +76,7 @@ const Sidebar = ({ isOpen, closeSidebar }: SidebarProps) => {
                   'group flex items-center px-2 py-2 text-base font-medium rounded-md transition-colors',
                   isActive
                     ? 'bg-primary-50 text-primary-600'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    : 'text-ink-600 hover:bg-ink-50 hover:text-ink-900'
                 )}
                 onClick={() => {
                   if (window.innerWidth < 1024) closeSidebar();
@@ -85,7 +85,7 @@ const Sidebar = ({ isOpen, closeSidebar }: SidebarProps) => {
                 <item.icon
                   className={clsx(
                     'mr-4 h-6 w-6 flex-shrink-0',
-                    isActive ? 'text-primary-600' : 'text-gray-400 group-hover:text-gray-500'
+                    isActive ? 'text-primary-600' : 'text-ink-400 group-hover:text-ink-500'
                   )}
                 />
                 {item.name}
@@ -97,7 +97,7 @@ const Sidebar = ({ isOpen, closeSidebar }: SidebarProps) => {
         {/* Role badge */}
         {user && (
           <div className="absolute bottom-4 left-4 right-4">
-            <div className="text-xs text-gray-500 px-2">
+            <div className="text-xs text-ink-500 px-2">
               Current role: <span className="font-medium capitalize">{user.role}</span>
             </div>
           </div>

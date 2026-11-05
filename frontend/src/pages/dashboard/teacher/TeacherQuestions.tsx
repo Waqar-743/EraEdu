@@ -109,7 +109,7 @@ const TeacherQuestions = () => {
       hard: 'bg-red-100 text-red-800',
     };
     return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${styles[difficulty] || 'bg-gray-100 text-gray-800'}`}>
+      <span className={`px-2 py-1 rounded-full text-xs font-medium ${styles[difficulty] || 'bg-ink-100 text-ink-800'}`}>
         {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
       </span>
     );
@@ -128,8 +128,8 @@ const TeacherQuestions = () => {
       header: 'Question',
       render: (q: QuestionWithMeta) => (
         <div className="max-w-md">
-          <p className="text-gray-900 line-clamp-2">{q.text}</p>
-          <p className="text-sm text-gray-500 mt-1">{q.topicName}</p>
+          <p className="text-ink-900 line-clamp-2">{q.text}</p>
+          <p className="text-sm text-ink-500 mt-1">{q.topicName}</p>
         </div>
       ),
     },
@@ -142,7 +142,7 @@ const TeacherQuestions = () => {
       key: 'options' as keyof QuestionWithMeta,
       header: 'Options',
       render: (q: QuestionWithMeta) => (
-        <span className="text-gray-600">{q.questionType === 'shortAnswer' ? 'Short answer' : `${q.options.length} options`}</span>
+        <span className="text-ink-600">{q.questionType === 'shortAnswer' ? 'Short answer' : `${q.options.length} options`}</span>
       ),
     },
     {
@@ -162,14 +162,14 @@ const TeacherQuestions = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={() => handleOpenModal(q)}
-            className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="p-1.5 text-ink-500 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
             title="Edit"
           >
             <PencilIcon className="h-5 w-5" />
           </button>
           <button
             onClick={() => handleDelete(q)}
-            className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-1.5 text-ink-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             title="Delete"
           >
             <TrashIcon className="h-5 w-5" />
@@ -184,12 +184,12 @@ const TeacherQuestions = () => {
       {/* Header */}
       <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Questions</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage exam questions for your topics</p>
+          <h1 className="text-2xl font-bold text-ink-900">Questions</h1>
+          <p className="text-sm text-ink-500 mt-1">Manage exam questions for your topics</p>
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
           Add Questions
@@ -197,22 +197,22 @@ const TeacherQuestions = () => {
       </header>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200 p-4">
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
+            <MagnifyingGlassIcon className="h-5 w-5 text-ink-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search questions..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+              className="w-full pl-10 pr-4 py-2 border border-ink-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
             />
           </div>
           <select
             value={selectedTopic}
             onChange={(e) => setSelectedTopic(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="border border-ink-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           >
             <option value="all">All Topics</option>
             {topics.map((topic) => (
@@ -224,7 +224,7 @@ const TeacherQuestions = () => {
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            className="border border-ink-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
           >
             <option value="all">All Difficulties</option>
             <option value="easy">Easy</option>
@@ -235,18 +235,18 @@ const TeacherQuestions = () => {
       </div>
 
       {/* Questions Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white rounded-xl shadow-sm border border-ink-200">
         {loadError ? (
           <div className="p-8 text-center">
-            <p className="text-gray-600 mb-4">{loadError}</p>
-            <button onClick={fetchData} className="text-indigo-600 hover:text-indigo-800 font-medium">
+            <p className="text-ink-600 mb-4">{loadError}</p>
+            <button onClick={fetchData} className="text-primary-600 hover:text-primary-800 font-medium">
               Retry
             </button>
           </div>
         ) : topics.length === 0 && questions.length === 0 && !loading ? (
           <div className="p-8 text-center">
-            <p className="text-gray-500 mb-4">You need to create topics before adding questions.</p>
-            <button onClick={startTopicFirstWorkflow} className="text-indigo-600 hover:text-indigo-800 font-medium">
+            <p className="text-ink-500 mb-4">You need to create topics before adding questions.</p>
+            <button onClick={startTopicFirstWorkflow} className="text-primary-600 hover:text-primary-800 font-medium">
               Create a topic, then add a question →
             </button>
           </div>

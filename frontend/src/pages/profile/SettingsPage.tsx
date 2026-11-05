@@ -40,7 +40,7 @@ const SettingsPage = () => {
           <legend className="mb-2 text-sm font-semibold text-ink-900">Theme</legend>
           <div className="flex flex-wrap gap-3">
             {(['light', 'dark'] as const).map((value) => <label key={value} className="flex cursor-pointer items-center gap-2 rounded-xl border border-ink-900/10 px-4 py-3 text-sm text-ink-800">
-              <input type="radio" name="theme" value={value} checked={theme === value} onChange={() => setTheme(value)} className="accent-emerald-600" />
+              <input type="radio" name="theme" value={value} checked={theme === value} onChange={() => setTheme(value)} className="accent-primary-600" />
               {value === 'light' ? 'Light' : 'Dark'}
             </label>)}
           </div>
@@ -49,7 +49,7 @@ const SettingsPage = () => {
           <legend className="mb-2 text-sm font-semibold text-ink-900">Desktop sidebar</legend>
           <div className="flex flex-wrap gap-3">
             {[false, true].map((collapsed) => <label key={String(collapsed)} className="flex cursor-pointer items-center gap-2 rounded-xl border border-ink-900/10 px-4 py-3 text-sm text-ink-800">
-              <input type="radio" name="sidebar" checked={sidebarCollapsed === collapsed} onChange={() => setSidebarCollapsed(collapsed)} className="accent-emerald-600" />
+              <input type="radio" name="sidebar" checked={sidebarCollapsed === collapsed} onChange={() => setSidebarCollapsed(collapsed)} className="accent-primary-600" />
               {collapsed ? 'Collapsed' : 'Expanded'}
             </label>)}
           </div>

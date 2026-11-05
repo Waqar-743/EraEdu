@@ -74,56 +74,56 @@ export default function QuestionBatchModal({ topics, initialTopicId, editingQues
   };
 
   return <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 p-4">
-    <section role="dialog" aria-modal="true" aria-labelledby="question-batch-title" className="mx-auto my-4 max-w-3xl rounded-xl bg-white p-6 shadow-xl">
+    <section role="dialog" aria-modal="true" aria-labelledby="question-batch-title" className="mx-auto my-4 max-w-3xl rounded-xl theme-surface p-6 shadow-xl">
       <div className="mb-5 flex items-center justify-between gap-3">
-        <h2 id="question-batch-title" className="text-xl font-semibold text-gray-900">{editingQuestion ? 'Edit question' : 'Add questions'}</h2>
-        <button type="button" disabled={saving} onClick={onClose} className="rounded px-3 py-2 text-gray-600 disabled:opacity-50">Cancel</button>
+        <h2 id="question-batch-title" className="text-xl font-semibold text-ink-900">{editingQuestion ? 'Edit question' : 'Add questions'}</h2>
+        <button type="button" disabled={saving} onClick={onClose} className="rounded px-3 py-2 text-ink-600 disabled:opacity-50">Cancel</button>
       </div>
       <form onSubmit={save} className="space-y-5">
         <fieldset disabled={saving} className="space-y-5">
-          {drafts.map((draft, index) => <fieldset key={draft.id} className="rounded-lg border border-gray-200 p-4" aria-label={`Question ${index + 1}`}>
-            <legend className="px-2 font-semibold text-gray-900">Question {index + 1}</legend>
+          {drafts.map((draft, index) => <fieldset key={draft.id} className="rounded-lg border border-ink-200 p-4" aria-label={`Question ${index + 1}`}>
+            <legend className="px-2 font-semibold text-ink-900">Question {index + 1}</legend>
             {!editingQuestion && <div className="mb-3 flex justify-end">
               <button type="button" disabled={drafts.length === 1} aria-label={`Remove question ${index + 1}`} onClick={() => setDrafts(current => current.filter(question => question.id !== draft.id))} className="text-sm text-red-600 disabled:opacity-40">Remove</button>
             </div>}
             <div className="grid gap-3 sm:grid-cols-3">
-              <label className="text-sm text-gray-700">Topic
+              <label className="text-sm text-ink-700">Topic
                 {editingQuestion && !draft.topicId ? <input value="Standalone" readOnly className="input-field mt-1" aria-label="Topic" /> : <select value={draft.topicId} disabled={Boolean(editingQuestion)} onChange={event => update(draft.id, { topicId: event.target.value })} className="input-field mt-1" required>
                   {topics.map(topic => <option key={topic._id} value={topic._id}>{topic.title}{topic.courseName ? ` (${topic.courseName})` : ''}</option>)}
                 </select>}
               </label>
-              <label className="text-sm text-gray-700">Type
+              <label className="text-sm text-ink-700">Type
                 <select value={draft.questionType} onChange={event => update(draft.id, { questionType: event.target.value as Draft['questionType'] })} className="input-field mt-1">
                   <option value="multipleChoice">Multiple choice</option><option value="shortAnswer">Short answer</option>
                 </select>
               </label>
-              <label className="text-sm text-gray-700">Difficulty
+              <label className="text-sm text-ink-700">Difficulty
                 <select value={draft.difficulty} onChange={event => update(draft.id, { difficulty: event.target.value as Draft['difficulty'] })} className="input-field mt-1">
                   <option>Easy</option><option>Medium</option><option>Hard</option>
                 </select>
               </label>
             </div>
-            <label className="mt-4 block text-sm text-gray-700">Question text
+            <label className="mt-4 block text-sm text-ink-700">Question text
               <textarea required maxLength={10000} rows={2} value={draft.questionText} onChange={event => update(draft.id, { questionText: event.target.value })} className="input-field mt-1" />
             </label>
             {draft.questionType === 'multipleChoice' ? <fieldset className="mt-4 space-y-2">
-              <legend className="mb-2 text-sm text-gray-700">Options — select the correct answer</legend>
+              <legend className="mb-2 text-sm text-ink-700">Options — select the correct answer</legend>
               {draft.options.map((option, optionIndex) => <div key={optionIndex} className="flex items-center gap-3">
                 <input type="radio" name={`answer-${draft.id}`} checked={draft.correctAnswer === optionIndex} onChange={() => update(draft.id, { correctAnswer: optionIndex })} aria-label={`Correct option ${optionIndex + 1}`} />
                 <input required maxLength={2000} value={option} onChange={event => update(draft.id, { options: draft.options.map((value, i) => i === optionIndex ? event.target.value : value) })} aria-label={`Option ${optionIndex + 1}`} placeholder={`Option ${optionIndex + 1}`} className="input-field" />
               </div>)}
-            </fieldset> : <label className="mt-4 block text-sm text-gray-700">Accepted answers (one per line)
+            </fieldset> : <label className="mt-4 block text-sm text-ink-700">Accepted answers (one per line)
               <textarea required rows={3} value={draft.acceptedAnswers} onChange={event => update(draft.id, { acceptedAnswers: event.target.value })} className="input-field mt-1" />
             </label>}
-            <label className="mt-4 block text-sm text-gray-700">Explanation (optional)
+            <label className="mt-4 block text-sm text-ink-700">Explanation (optional)
               <textarea maxLength={10000} rows={2} value={draft.explanation} onChange={event => update(draft.id, { explanation: event.target.value })} className="input-field mt-1" />
             </label>
           </fieldset>)}
-          {!editingQuestion && <button type="button" disabled={drafts.length >= 100} onClick={() => setDrafts(current => [...current, newDraft(current[current.length - 1].topicId)])} className="rounded-lg border border-indigo-300 px-4 py-2 font-medium text-indigo-700 disabled:opacity-50">Add another question</button>}
+          {!editingQuestion && <button type="button" disabled={drafts.length >= 100} onClick={() => setDrafts(current => [...current, newDraft(current[current.length - 1].topicId)])} className="rounded-lg border border-primary-300 px-4 py-2 font-medium text-primary-700 disabled:opacity-50">Add another question</button>}
         </fieldset>
         {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">{error}</p>}
-        <div className="flex justify-end border-t border-gray-100 pt-4">
-          <button type="submit" disabled={saving} className="rounded-lg bg-indigo-600 px-5 py-2 font-semibold text-white disabled:opacity-50">{saving ? 'Saving…' : editingQuestion ? 'Update question' : `Save ${drafts.length} question${drafts.length === 1 ? '' : 's'}`}</button>
+        <div className="flex justify-end border-t border-ink-100 pt-4">
+          <button type="submit" disabled={saving} className="rounded-lg bg-primary-700 px-5 py-2 font-semibold text-white disabled:opacity-50">{saving ? 'Saving…' : editingQuestion ? 'Update question' : `Save ${drafts.length} question${drafts.length === 1 ? '' : 's'}`}</button>
         </div>
       </form>
     </section>

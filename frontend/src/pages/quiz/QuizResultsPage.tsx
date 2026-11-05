@@ -44,7 +44,7 @@ const QuizResultsPage: React.FC = () => {
       {/* Teacher-exam feedback is keyed to teacher_quizzes; topic exams have a separate quiz table. */}
       {!result.isTopicExam && <PostQuizFeedbackModal attemptId={attemptId} />}
       <div className="mx-auto max-w-3xl overflow-hidden rounded-3xl border border-primary-900/10 bg-white shadow-soft">
-        <div className="bg-gradient-to-br from-primary-800 via-primary-700 to-teal-700 px-6 py-9 text-center text-white sm:px-10">
+        <div className="bg-[image:var(--gradient-brand-hero)] px-6 py-9 text-center text-white sm:px-10">
           <CheckCircleIcon className="mx-auto h-12 w-12 text-primary-200" />
           <h1 className="mt-3 font-display text-3xl">Exam submitted</h1>
           <p className="mt-2 text-sm text-white/70">Your answers have been saved securely.</p>
