@@ -134,7 +134,7 @@ const TeacherCourses = () => {
 
   const confirmDelete = async () => {
     if (!courseToDelete) return;
-    
+
     try {
       await api.delete(`/courses/${courseToDelete._id}`);
       toast.success('Course deleted successfully');
@@ -173,7 +173,7 @@ const TeacherCourses = () => {
       header: 'Course',
       render: (course: TeacherCourse) => (
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg flex items-center justify-center">
+          <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
             <span className="text-lg font-bold text-primary-700">
               {course.title.charAt(0)}
             </span>

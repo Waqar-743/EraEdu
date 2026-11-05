@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
-import { Brand } from "../components/shared";
+import Brand from "../components/landing/HomepageBrand";
 import MotionControl from "../components/landing/MotionControl";
 import "../components/landing/homepage.css";
 import api from "../services/api";
@@ -873,6 +873,13 @@ const FAQ = () => {
 
 /* ───── PAGE ROOT ───── */
 const LandingPage = () => {
+  useEffect(() => {
+    const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+    if (!favicon) return;
+    const previous = favicon.href;
+    favicon.href = `${import.meta.env.BASE_URL}eraedu-mark.svg`;
+    return () => { favicon.href = previous; };
+  }, []);
   useReveal();
   const [paused, setPaused] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(

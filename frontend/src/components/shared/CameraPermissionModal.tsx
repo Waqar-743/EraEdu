@@ -125,7 +125,7 @@ const CameraPermissionModal = ({ isOpen, onAllow, onCancel, quizTitle, showAwayL
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
 
         {/* Modal */}
-        <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-5">
+        <div className="relative bg-white rounded-lg shadow-2xl max-w-md w-full p-6 space-y-5">
           {/* Header */}
           <div className="text-center">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 mb-3">

@@ -118,7 +118,7 @@ const StudentRecommendations = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <header className="bg-gradient-to-r from-primary-700 to-primary-700 rounded-xl p-6 text-white">
+      <header className="bg-primary-700 rounded-xl p-6 text-white">
         <div className="flex items-center gap-3 mb-2">
           <SparklesIcon className="h-8 w-8" />
           <h1 className="text-2xl font-bold">Learning Recommendations</h1>
@@ -147,7 +147,7 @@ const StudentRecommendations = () => {
         {/* Main Recommendations */}
         <div className="lg:col-span-2 space-y-4">
           <h2 className="text-lg font-semibold text-gray-900">Recommended for You</h2>
-          
+
           {recommendations.length > 0 ? (
             recommendations.map((rec) => (
               <div
@@ -211,7 +211,7 @@ const StudentRecommendations = () => {
         {/* Learning Insights Sidebar */}
         <div className="space-y-4">
           <h2 className="text-lg font-semibold text-gray-900">Learning Insights</h2>
-          
+
           {insights.length > 0 ? (
             insights.map((insight, index) => (
               <div
@@ -249,7 +249,7 @@ const StudentRecommendations = () => {
           )}
 
           {/* Quick Actions */}
-          <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl border border-primary-100 p-4">
+          <div className="bg-primary-50 rounded-xl border border-primary-100 p-4">
             <h4 className="font-medium text-gray-900 mb-3">Quick Actions</h4>
             <div className="space-y-2">
               <Link

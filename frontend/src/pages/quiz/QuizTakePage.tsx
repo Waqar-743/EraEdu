@@ -834,8 +834,8 @@ const QuizTakePage = () => {
     <div className="min-h-screen bg-gray-50 select-none">
       {!secureModeReady && typeof document.documentElement.requestFullscreen === 'function' && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-xl">
-          <div role="dialog" aria-modal="true" aria-labelledby="secure-mode-title" className="w-full max-w-md rounded-3xl border border-white/15 bg-white p-8 text-center shadow-2xl">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700">
+          <div role="dialog" aria-modal="true" aria-labelledby="secure-mode-title" className="w-full max-w-md rounded-lg border border-white/15 bg-white p-8 text-center shadow-2xl">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
               <ShieldCheckIcon className="h-9 w-9" />
             </div>
             <h2 id="secure-mode-title" className="mt-5 text-2xl font-bold text-slate-950">Secure exam mode required</h2>

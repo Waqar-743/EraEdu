@@ -3,12 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import Brand from './Brand';
 import { useAuthStore } from '../../store/authStore';
 
-export interface SidebarItem {
-  label: string;
-  href: string;
-  icon: React.ReactNode;
-}
-
+export interface SidebarItem { label: string; href: string; icon: React.ReactNode; }
 interface RoleSidebarProps {
   items: SidebarItem[];
   isOpen: boolean;
@@ -16,240 +11,42 @@ interface RoleSidebarProps {
   role: 'student' | 'teacher' | 'admin';
   collapsed?: boolean;
 }
-
-const Stroke = ({ d, size = 18 }: { d: string; size?: number }) => (
-  <svg
-    viewBox="0 0 24 24"
-    width={size}
-    height={size}
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.3"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden
-  >
-    <path d={d} />
-  </svg>
-);
-
-const roleAccent: Record<string, string> = {
-  student: 'Learner',
-  teacher: 'Educator',
-  admin: 'Administrator',
-};
+const roleLabels = { student: 'Learner', teacher: 'Educator', admin: 'Administrator' };
 
 const RoleSidebar: React.FC<RoleSidebarProps> = ({ items, isOpen, onClose, role, collapsed = false }) => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
-
-  const handleSignOut = () => {
-    logout();
-    navigate('/login');
-  };
-
-  return (
-    <>
-      {/* Mobile backdrop */}
-      <div
-        className={`
-          fixed inset-0 z-20 bg-primary-950/60 backdrop-blur-sm transition-opacity duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] lg:hidden
-          ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
-        `}
-        onClick={onClose}
-      />
-
-      {/* Sidebar — outer shell (Doppelrand) */}
-      <aside
-        id="dashboard-sidebar"
-        aria-label={`${roleAccent[role]} dashboard navigation`}
-        className={`
-          fixed inset-y-0 left-0 z-30 flex w-72 shrink-0 p-3
-          ${collapsed ? 'lg:w-24' : 'lg:w-72'}
-          transition-transform duration-700 ease-[cubic-bezier(0.32,0.72,0,1)]
-          lg:translate-x-0 lg:static lg:inset-auto
-          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        `}
-      >
-        {/* Inner core — vantablack glass panel */}
-        <div
-          className="
-            relative flex flex-col w-full overflow-hidden
-            rounded-[2rem] bg-gradient-to-b from-primary-900 via-primary-800 to-teal-800
-            ring-1 ring-white/10
-            shadow-[0_30px_80px_-30px_rgba(5,7,11,0.6),inset_0_1px_0_rgba(255,255,255,0.06)]
-          "
-          style={{
-            backgroundImage:
-              'radial-gradient(120% 70% at 0% 0%, rgba(167,243,208,0.20) 0%, transparent 55%), radial-gradient(80% 60% at 100% 100%, rgba(103,232,249,0.14) 0%, transparent 55%), linear-gradient(180deg, #064E3B 0%, #047857 52%, #0F766E 100%)',
-          }}
-        >
-          {/* Mobile close */}
-          <div className="flex items-center justify-between px-5 pt-5 lg:hidden">
-            <Brand to="/" variant="dark" />
-            <button
-              onClick={onClose}
-              className="
-                flex h-9 w-9 items-center justify-center rounded-full
-                text-white/60 ring-1 ring-white/10 bg-white/[0.04]
-                transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                hover:bg-white/[0.08] hover:text-white active:scale-[0.96]
-              "
-              aria-label="Close sidebar"
-            >
-              <Stroke d="M6 6l12 12 M18 6l-12 12" size={16} />
-            </button>
-          </div>
-
-          {/* Brand (desktop) */}
-          <div className={`hidden lg:flex items-center pt-7 pb-5 ${collapsed ? 'justify-center px-2' : 'px-6'}`}>
-            <Brand to="/" variant="dark" iconOnly={collapsed} />
-          </div>
-
-          {/* Eyebrow role badge */}
-          <div className={`px-6 pb-5 ${collapsed ? 'lg:hidden' : ''}`}>
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.04] ring-1 ring-white/10 px-3 py-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/70">
-                {roleAccent[role]}
-              </span>
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <nav aria-label="Dashboard navigation" className={`flex-1 overflow-y-auto space-y-1.5 ${collapsed ? 'px-3 lg:px-1.5' : 'px-3'}`}>
-            {items.map((item) => (
-              <NavLink
-                key={item.label}
-                to={item.href}
-                aria-label={item.label}
-                title={collapsed ? item.label : undefined}
-                onClick={() => {
-                  if (window.innerWidth < 1024) onClose();
-                }}
-                end={item.href.split('/').length <= 3}
-                className={({ isActive }) =>
-                  `
-                  group relative flex items-center gap-3 rounded-2xl px-3 py-2.5
-                  ${collapsed ? 'lg:justify-center lg:px-1' : ''}
-                  text-[13.5px] font-medium tracking-tight
-                  transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                  ${
-                    isActive
-                      ? 'bg-white/[0.08] text-white ring-1 ring-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]'
-                      : 'text-white/60 hover:text-white hover:bg-white/[0.04]'
-                  }
-                  active:scale-[0.985]
-                `
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {/* Active rail */}
-                    <span
-                      aria-hidden
-                      className={`
-                        absolute left-0 top-1/2 -translate-y-1/2 h-6 w-[3px] rounded-r-full
-                        bg-gradient-to-b from-primary-300 via-primary-400 to-accent-400
-                        transition-opacity duration-500
-                        ${isActive ? 'opacity-100' : 'opacity-0'}
-                      `}
-                    />
-                    {/* Icon enclosure */}
-                    <span
-                      className={`
-                        flex h-8 w-8 shrink-0 items-center justify-center rounded-xl
-                        ring-1 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                        ${
-                          isActive
-                            ? 'bg-primary-500/15 ring-primary-400/30 text-primary-300'
-                            : 'bg-white/[0.03] ring-white/5 text-white/55 group-hover:text-white/85 group-hover:ring-white/10'
-                        }
-                      `}
-                    >
-                      {item.icon}
-                    </span>
-                    <span className={`flex-1 ${collapsed ? 'lg:hidden' : ''}`}>{item.label}</span>
-                    <span
-                      aria-hidden
-                      className={`
-                        opacity-0 -translate-x-1 ${collapsed ? 'lg:hidden' : ''}
-                        transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                        ${isActive ? 'opacity-100 translate-x-0' : 'group-hover:opacity-60 group-hover:translate-x-0'}
-                      `}
-                    >
-                      <Stroke d="M9 6l6 6-6 6" size={14} />
-                    </span>
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </nav>
-
-          {/* Bottom: user card + sign out */}
-          <div className={`pb-3 pt-4 mt-auto ${collapsed ? 'px-3 lg:px-1.5' : 'px-3'}`}>
-            <div
-              className="
-                rounded-2xl p-1.5 bg-white/[0.04] ring-1 ring-white/10
-                shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]
-              "
-            >
-              <div className={`flex items-center gap-3 rounded-[calc(1rem-0.375rem)] bg-primary-950/25 px-3 py-2.5 ${collapsed ? 'lg:justify-center lg:px-0' : ''}`}>
-                <span
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl font-display text-sm text-white"
-                  style={{
-                    background:
-                      'linear-gradient(135deg, #022C1F 0%, #047857 50%, #06B6D4 100%)',
-                    boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
-                  }}
-                >
-                  {user?.name?.charAt(0).toUpperCase() || 'U'}
-                </span>
-                <div className={`min-w-0 flex-1 ${collapsed ? 'lg:hidden' : ''}`}>
-                  <p className="truncate text-[13px] font-semibold text-white">
-                    {user?.name}
-                  </p>
-                  <p className="truncate text-[11px] text-white/50">
-                    {user?.email}
-                  </p>
-                </div>
-              </div>
-
-              <button
-                onClick={handleSignOut}
-                aria-label="Sign out"
-                title={collapsed ? 'Sign out' : undefined}
-                className={`
-                  group mt-1.5 flex w-full items-center justify-between gap-2
-                  rounded-[calc(1rem-0.375rem)] px-3 py-2.5
-                  text-[13px] font-medium text-white/70
-                  transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                  hover:text-primary-200 hover:bg-primary-500/10 active:scale-[0.985]
-                  ${collapsed ? 'lg:justify-center lg:px-1' : ''}
-                `}
-              >
-                <span className="inline-flex items-center gap-2.5">
-                  <Stroke d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 17l-5-5 5-5 M5 12h12" size={15} />
-                  <span className={collapsed ? 'lg:hidden' : ''}>Sign out</span>
-                </span>
-                <span
-                  className={`
-                    flex h-7 w-7 items-center justify-center rounded-full ${collapsed ? 'lg:hidden' : ''}
-                    bg-white/[0.04] ring-1 ring-white/10
-                    transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                    group-hover:bg-primary-500/15 group-hover:ring-primary-300/30
-                    group-hover:translate-x-0.5 group-hover:-translate-y-[1px]
-                  `}
-                >
-                  <Stroke d="M7 17 17 7 M9 7h8v8" size={11} />
-                </span>
-              </button>
-            </div>
-          </div>
+  const handleSignOut = () => { logout(); navigate('/login'); };
+  return <>
+    {isOpen && <button type="button" aria-label="Close sidebar backdrop" className="fixed inset-0 z-20 bg-black/40 lg:hidden" onClick={onClose} />}
+    <aside id="dashboard-sidebar" aria-label={`${roleLabels[role]} dashboard navigation`}
+      className={`fixed inset-y-0 left-0 z-30 flex w-64 shrink-0 flex-col border-r border-gray-200 bg-white lg:static ${collapsed ? 'lg:w-20' : 'lg:w-64'} ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
+      <div className={`flex h-16 items-center justify-between border-b border-gray-200 px-5 ${collapsed ? 'lg:justify-center lg:px-2' : ''}`}>
+        <span className="lg:hidden"><Brand to="/" /></span>
+        <span className="hidden lg:inline-flex"><Brand to="/" iconOnly={collapsed} /></span>
+        <button type="button" onClick={onClose} className="rounded-md px-2 py-1 text-xl text-gray-600 lg:hidden" aria-label="Close sidebar">×</button>
+      </div>
+      <p className={`px-5 py-4 text-xs font-semibold text-gray-500 ${collapsed ? 'lg:hidden' : ''}`}>{roleLabels[role]}</p>
+      <nav aria-label="Dashboard navigation" className="flex-1 space-y-1 overflow-y-auto px-3 py-2">
+        {items.map(item => <NavLink key={item.label} to={item.href} aria-label={item.label} title={collapsed ? item.label : undefined}
+          end={item.href.split('/').length <= 3}
+          onClick={() => { if (window.innerWidth < 1024) onClose(); }}
+          className={({ isActive }) => `flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium ${collapsed ? 'lg:justify-center lg:px-1' : ''} ${isActive ? 'bg-primary-50 text-primary-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}>
+          <span className="flex h-5 w-5 shrink-0 items-center justify-center">{item.icon}</span>
+          <span className={collapsed ? 'lg:hidden' : ''}>{item.label}</span>
+        </NavLink>)}
+      </nav>
+      <div className="mt-auto border-t border-gray-200 p-4">
+        <div className={collapsed ? 'lg:hidden' : ''}>
+          <p className="truncate text-sm font-semibold text-gray-900">{user?.name}</p>
+          <p className="mt-1 truncate text-xs text-gray-500">{user?.email}</p>
         </div>
-      </aside>
-    </>
-  );
+        <button type="button" onClick={handleSignOut} aria-label="Sign out" title={collapsed ? 'Sign out' : undefined}
+          className="mt-3 w-full rounded-md px-2 py-2 text-left text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+          {collapsed ? <><span className="hidden lg:inline" aria-hidden="true">↪</span><span className="lg:hidden">Sign out</span></> : 'Sign out'}
+        </button>
+      </div>
+    </aside>
+  </>;
 };
-
 export default RoleSidebar;

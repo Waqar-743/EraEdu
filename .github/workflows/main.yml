@@ -81,6 +81,9 @@ jobs:
     - name: Verify account session binding
       run: npm run test:session
 
+    - name: Verify homepage design isolation
+      run: npm run test:homepage-isolation
+
     - name: Build
       run: npx vite build
       env:

@@ -49,15 +49,15 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
       <div
         className="
           mx-auto flex h-14 w-full items-center gap-2 rounded-full px-2
-          bg-white/75 backdrop-blur-2xl ring-1 ring-ink-900/5
-          shadow-[0_12px_40px_-20px_rgba(5,7,11,0.18)]
+          bg-white ring-1 ring-ink-900/5
+          shadow-sm
         "
       >
         <button
           onClick={toggleSidebar}
           className="
             flex h-10 w-10 items-center justify-center rounded-full
-            text-ink-500 transition-all duration-500 ease-spring
+            text-ink-500 transition-colors duration-150 ease-spring
             hover:bg-ink-900/[0.04] hover:text-ink-900 lg:hidden
           "
           aria-label="Open sidebar"
@@ -73,7 +73,7 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
           <button
             className="
               hidden sm:flex h-10 w-10 items-center justify-center rounded-full
-              text-ink-500 transition-all duration-500 ease-spring
+              text-ink-500 transition-colors duration-150 ease-spring
               hover:bg-ink-900/[0.04] hover:text-ink-900
             "
             aria-label="Notifications"
@@ -87,18 +87,14 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
               className="
                 group flex items-center gap-2 rounded-full p-1 pr-3
                 ring-1 ring-ink-900/5 bg-ink-900/[0.03]
-                transition-all duration-500 ease-spring hover:bg-ink-900/[0.06]
+                transition-colors duration-150 ease-spring hover:bg-ink-900/[0.06]
               "
             >
               <span
                 className="
                   flex h-8 w-8 items-center justify-center rounded-full
-                  font-display text-sm text-white
+                  bg-primary-100 font-semibold text-sm text-primary-800
                 "
-                style={{
-                  background:
-                    'linear-gradient(135deg, #047857 0%, #10B981 50%, #06B6D4 100%)',
-                }}
               >
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
               </span>
@@ -111,9 +107,9 @@ const Header = ({ toggleSidebar }: HeaderProps) => {
             <div
               className={`
                 absolute right-0 mt-3 w-56 origin-top-right
-                rounded-2xl bg-white p-1.5 ring-1 ring-ink-900/5
-                shadow-[0_24px_60px_-20px_rgba(5,7,11,0.2)]
-                transition-all duration-500 ease-spring
+                rounded-lg bg-white p-1.5 ring-1 ring-ink-900/5
+                shadow-sm
+                transition-colors duration-150 ease-spring
                 ${
                   isProfileOpen
                     ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'

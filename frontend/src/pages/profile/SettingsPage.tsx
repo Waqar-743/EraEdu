@@ -27,12 +27,12 @@ const SettingsPage = () => {
   return <div className="mx-auto max-w-3xl space-y-6">
     <header>
       <p className="text-xs font-semibold uppercase tracking-wider text-primary-700">Your account</p>
-      <h1 className="mt-1 font-display text-3xl text-ink-900">Settings</h1>
+      <h1 className="mt-1 font-sans text-3xl text-ink-900">Settings</h1>
       <p className="mt-2 text-sm text-ink-500">Choose your appearance and manage your password.</p>
       <Link to="/profile" className="mt-3 inline-block text-sm font-semibold text-primary-700 hover:underline">Edit your profile</Link>
     </header>
 
-    <section className="rounded-3xl border border-ink-900/5 bg-white p-6 shadow-soft" aria-labelledby="appearance-heading">
+    <section className="rounded-lg border border-ink-900/5 bg-white p-6 shadow-soft" aria-labelledby="appearance-heading">
       <h2 id="appearance-heading" className="text-xl text-ink-900">Appearance</h2>
       <p className="mt-1 text-sm text-ink-500">These preferences are saved in this browser.</p>
       <div className="mt-5 space-y-6">
@@ -57,7 +57,7 @@ const SettingsPage = () => {
       </div>
     </section>
 
-    <section className="rounded-3xl border border-ink-900/5 bg-white p-6 shadow-soft" aria-labelledby="password-heading">
+    <section className="rounded-lg border border-ink-900/5 bg-white p-6 shadow-soft" aria-labelledby="password-heading">
       <h2 id="password-heading" className="text-xl text-ink-900">Change password</h2>
       <p id="password-requirements" className="mt-1 text-sm text-ink-500">Use 8–128 characters, including an uppercase letter, a lowercase letter and a number. Copy and paste are supported.</p>
       <form className="mt-5 space-y-4" onSubmit={handleSubmit(changePassword)}>

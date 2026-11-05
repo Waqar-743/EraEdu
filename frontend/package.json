@@ -14,6 +14,7 @@
     "test:submissions": "node --experimental-strip-types --test verification/submissionView.test.mjs verification/adminLearningView.test.mjs",
     "test:hosting": "node --test verification/hostingRoutes.test.mjs",
     "test:session": "node --test verification/sessionAccount.test.mjs",
+    "test:homepage-isolation": "node --test verification/homepageIsolation.test.mjs",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

@@ -90,7 +90,7 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
   return (
     <div className="fixed bottom-5 left-5 z-40">
       {isOpen && (
-        <div className="mb-3 w-[22rem] max-w-[90vw] rounded-2xl border border-gray-200 bg-white shadow-xl">
+        <div className="mb-3 w-[22rem] max-w-[90vw] rounded-lg border border-gray-200 bg-white shadow-xl">
           <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
             <div>
               <p className="text-sm font-semibold text-gray-900">EraEdu {isTeacher ? 'Teacher' : 'Student'} Assistant</p>
@@ -111,8 +111,8 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
                 key={`${message.role}-${index}`}
                 className={
                   message.role === 'user'
-                    ? 'ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-primary-700 px-3 py-2 text-sm text-white'
-                    : 'w-fit max-w-[85%] rounded-2xl rounded-bl-sm bg-gray-100 px-3 py-2 text-sm text-gray-700'
+                    ? 'ml-auto w-fit max-w-[85%] rounded-lg rounded-br-sm bg-primary-700 px-3 py-2 text-sm text-white'
+                    : 'w-fit max-w-[85%] rounded-lg rounded-bl-sm bg-gray-100 px-3 py-2 text-sm text-gray-700'
                 }
               >
                 {message.content}
@@ -120,7 +120,7 @@ const ChatbotWidget = ({ role }: ChatbotWidgetProps) => {
             ))}
 
             {loading && (
-              <div className="w-fit max-w-[85%] rounded-2xl rounded-bl-sm bg-gray-100 px-3 py-2 text-sm text-gray-500">
+              <div className="w-fit max-w-[85%] rounded-lg rounded-bl-sm bg-gray-100 px-3 py-2 text-sm text-gray-500">
                 Thinking...
               </div>
             )}

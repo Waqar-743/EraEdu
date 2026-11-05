@@ -128,7 +128,7 @@ const TeacherQuizResultsPage = () => {
 
   if (isPendingReview) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
+      <div className="min-h-screen bg-primary-50 py-8 px-4">
         {isStudent && <PostQuizFeedbackModal attemptId={attemptId} />}
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-xl shadow-sm border p-8 text-center">
@@ -173,11 +173,11 @@ const TeacherQuizResultsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
+    <div className="min-h-screen bg-primary-50 py-8 px-4">
       {isStudent && <PostQuizFeedbackModal attemptId={attemptId} />}
       <div className="max-w-3xl mx-auto">
         {/* Success Banner */}
-        <div className={`rounded-2xl p-8 text-center mb-6 ${isPassing ? 'bg-green-500' : 'bg-orange-500'} text-white`}>
+        <div className={`rounded-lg p-8 text-center mb-6 ${isPassing ? 'bg-green-500' : 'bg-orange-500'} text-white`}>
           <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-white/20 mb-4">
             <TrophyIcon className="h-10 w-10" />
           </div>
@@ -195,7 +195,7 @@ const TeacherQuizResultsPage = () => {
         <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">{result.quiz.title}</h2>
           <p className="mb-4 text-sm text-gray-600">Student: {result.studentName || 'Unknown student'}{result.studentEmail ? ` (${result.studentEmail})` : ''} · Assessment: {result.quiz.title}</p>
-          
+
           <div className="grid grid-cols-4 gap-4 mb-6">
             <div className="text-center p-4 bg-primary-50 rounded-lg">
               <p className="text-4xl font-bold text-primary-600">{percentage}%</p>
@@ -268,7 +268,7 @@ const TeacherQuizResultsPage = () => {
           <div className="space-y-4">
             {result.quiz.questions.map((question, qIndex) => {
               const userAnswer = result.answers.find(
-                a => a.questionId === `${result.id.split('-')[0]}-q${qIndex}` || 
+                a => a.questionId === `${result.id.split('-')[0]}-q${qIndex}` ||
                      a.questionId.endsWith(`-q${qIndex}`)
               );
               const selectedIndex = typeof userAnswer?.selectedAnswer === 'number' ? userAnswer.selectedAnswer : -1;

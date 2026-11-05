@@ -38,7 +38,7 @@ const PrivacyPage = () => {
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {privacyPoints.map((point) => (
-            <section key={point.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+            <section key={point.title} className="rounded-lg border border-slate-200 bg-slate-50 p-6">
               <h2 className="text-base font-semibold text-slate-900">{point.title}</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">{point.description}</p>
             </section>

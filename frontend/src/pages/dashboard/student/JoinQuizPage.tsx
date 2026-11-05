@@ -38,7 +38,7 @@ const JoinQuizPage = () => {
 
       const checkTime = () => {
         const now = new Date();
-        
+
         // Check expiration time
         if (quizDetails.quiz.expiresAt) {
           const expiryTime = new Date(quizDetails.quiz.expiresAt);
@@ -54,7 +54,7 @@ const JoinQuizPage = () => {
         if (quizDetails.quiz.scheduledStart) {
           const scheduledTime = new Date(quizDetails.quiz.scheduledStart);
           const diff = scheduledTime.getTime() - now.getTime();
-          
+
           if (diff <= 0) {
             setCanStart(true);
             setTimeUntilStart(null);
@@ -74,7 +74,7 @@ const JoinQuizPage = () => {
           setTimeUntilStart(null);
         }
       };
-      
+
       checkTime();
       const interval = setInterval(checkTime, 1000);
       return () => clearInterval(interval);
@@ -155,18 +155,18 @@ const JoinQuizPage = () => {
     try {
       const response = await api.post(`/quizzes/start-by-code/${code}`);
       const { attemptId, quiz } = response.data.data;
-      
+
       // Store quiz data in sessionStorage for the quiz page
       sessionStorage.setItem('currentQuiz', JSON.stringify({
         attemptId,
         quiz,
         code
       }));
-      
+
       navigate(`/quiz/take/${attemptId}`);
     } catch (err: any) {
       const message = err.response?.data?.error?.message || 'Failed to start exam';
-      
+
       // Check if quiz has expired
       if (message === 'QUIZ_EXPIRED' || message.toLowerCase().includes('expired')) {
         setIsExpired(true);
@@ -374,8 +374,8 @@ const JoinQuizPage = () => {
                 onClick={handleStartQuiz}
                 disabled={!canStart || starting || isExpired}
                 className={`flex-1 py-3 px-4 border border-transparent rounded-xl text-base font-medium text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                  isExpired 
-                    ? 'bg-gray-400 cursor-not-allowed' 
+                  isExpired
+                    ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
                 }`}
               >
@@ -400,7 +400,7 @@ const JoinQuizPage = () => {
       {/* Camera Permission Modal — shown before quiz starts */}
       {showViolationNotice && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary-950/55 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-primary-900/10">
+          <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-2xl ring-1 ring-primary-900/10">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-amber-100 text-amber-700"><ExclamationCircleIcon className="h-6 w-6" /></div>
             <h2 className="mt-4 text-xl font-semibold text-primary-950">Before you start</h2>
             <p className="mt-2 text-sm leading-relaxed text-gray-600">This assessment records integrity events to help your teacher review the session fairly.</p>
