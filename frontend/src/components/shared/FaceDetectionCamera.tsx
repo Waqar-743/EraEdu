@@ -146,7 +146,7 @@ const FaceDetectionCamera = ({ enabled, onViolation, onAutoSubmit, showAwayLimit
           </div>
           {showAwayLimit && <div className="mt-1 h-1.5 bg-red-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-red-500 transition-colors duration-150"
+              className="h-full bg-red-500 transition-all duration-500"
               style={{ width: `${Math.min(100, (awaySeconds / 60) * 100)}%` }}
             />
           </div>}

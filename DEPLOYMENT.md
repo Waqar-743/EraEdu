@@ -100,17 +100,6 @@ returns to `/profile?payment=cancelled`, which is informational only; plan
 activation occurs solely after the backend verifies `TRACKER_ENDED` with
 Safepay (including via the signed webhook).
 
-Optional AI integration: `GEMINI_API_KEY`.
-
-Password recovery supports SMTP without buying a domain: set
-`EMAIL_PROVIDER=smtp`, `SMTP_HOST`, `SMTP_PORT` (465 or 587), `SMTP_USER`,
-`SMTP_PASS`, and an `EMAIL_FROM` authorized by that mailbox. Gmail requires
-an App Password. Alternatively, keep `EMAIL_PROVIDER=resend` (the default)
-with `RESEND_API_KEY` and a sender on a domain verified in Resend. The shared
-`onboarding@resend.dev` sender only permits tests to the Resend account owner.
-Set `FRONTEND_URL`
-to the full frontend app URL, including `/EraEdu` when using GitHub Pages, so
-recovery links open the correct application. Redeploy the backend after changing
-these settings. See [password recovery setup](PASSWORD-RECOVERY.md).
+Optional integrations: `GEMINI_API_KEY`, `RESEND_API_KEY`.
 
 After deployment, verify `/health`, login, quiz launch, and the admin control center. See `PRE_LAUNCH_CHECKLIST.md` for the complete sign-off process.

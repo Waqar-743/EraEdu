@@ -13,18 +13,6 @@ afterEach(() => { process.env = { ...originalEnv }; });
 it('normalizes the app path separately from the credentialed CORS origin', () => {
   expect(load()).toMatchObject({ frontendAppUrl: 'https://school.test/EraEdu', frontendUrl: 'https://school.test' });
 });
-it('preserves existing Resend configuration unless SMTP is explicitly selected', () => {
-  expect(load({ EMAIL_PROVIDER: undefined, EMAIL_FROM: undefined, SMTP_USER: 'sender@gmail.com' })).toMatchObject({
-    emailProvider: 'resend', emailFrom: 'EraEdu <onboarding@resend.dev>',
-  });
-});
-it('uses the SMTP login as the default sender and preserves the exact password', () => {
-  expect(load({ EMAIL_PROVIDER: ' SMTP ', EMAIL_FROM: undefined, SMTP_HOST: ' smtp.gmail.com ',
-    SMTP_USER: ' sender@gmail.com ', SMTP_PORT: undefined, SMTP_PASS: ' exact secret ' })).toMatchObject({
-    emailProvider: 'smtp', emailFrom: 'EraEdu <sender@gmail.com>',
-    smtp: { host: 'smtp.gmail.com', port: 465, user: 'sender@gmail.com', pass: ' exact secret ' },
-  });
-});
 it('enforces placeholder validation when Vercel supplies the production fallback', () => {
   expect(() => load({ NODE_ENV: undefined, SUPABASE_URL: 'https://your-project.supabase.co' })).toThrow('placeholder');
 });

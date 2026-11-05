@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../../store/authStore';
@@ -11,17 +10,13 @@ interface ForgotPasswordFormValues {
 const ForgotPasswordPage = () => {
   const { requestPasswordReset, isLoading } = useAuthStore();
   const { register, handleSubmit, formState: { errors } } = useForm<ForgotPasswordFormValues>();
-  const [notice, setNotice] = useState<{ message: string; error: boolean } | null>(null);
 
   const onSubmit = async ({ email }: ForgotPasswordFormValues) => {
-    setNotice(null);
     try {
       const message = await requestPasswordReset(email);
-      setNotice({ message, error: false });
       toast.success(message);
     } catch (error: any) {
       const message = error.response?.data?.message || error.response?.data?.error?.message || 'Failed to send reset email';
-      setNotice({ message, error: true });
       toast.error(message);
     }
   };
@@ -36,10 +31,6 @@ const ForgotPasswordPage = () => {
       </p>
 
       <div className="mt-8">
-        {notice && <div role={notice.error ? 'alert' : 'status'} className={`mb-5 rounded-md border p-3 text-sm ${notice.error ? 'border-red-200 bg-red-50 text-red-800' : 'border-primary-200 bg-primary-50 text-primary-800'}`}>
-          <p>{notice.message}</p>
-          {!notice.error && <p className="mt-2">Check your inbox and spam folder. Reset links expire after 1 hour.</p>}
-        </div>}
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -68,7 +59,7 @@ const ForgotPasswordPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
           >
             {isLoading ? 'Sending reset link...' : 'Send reset link'}
           </button>

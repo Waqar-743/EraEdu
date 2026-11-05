@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { safeRouteLabel } from '../config/logger';
 import { ACCOUNT_SCHEMA_REQUIRED } from '../services/accountState';
-import { PASSWORD_RESET_EMAIL_UNAVAILABLE } from '../services/emailDeliveryError';
 
 const isProd = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
 
@@ -16,7 +15,6 @@ const SAFE_400_MESSAGES = new Set<string>([
 ]);
 
 const SAFE_OPERATIONAL_MESSAGES = new Set<string>([
-  PASSWORD_RESET_EMAIL_UNAVAILABLE,
   'Submission monitoring records could not be loaded. Please retry or contact an administrator.',
   'Unable to confirm the exam save. Retry the same request.',
   'Unable to verify the selected course. Please retry.',

@@ -23,7 +23,7 @@ const DashboardPage: React.FC = () => {
   if (statsLoading || coursesLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
@@ -106,7 +106,7 @@ const DashboardPage: React.FC = () => {
       <div className="bg-white shadow sm:rounded-lg">
         <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
           <h3 className="text-lg leading-6 font-medium text-gray-900">My Courses</h3>
-          <Link to="/courses" className="text-sm font-medium text-primary-600 hover:text-primary-500">
+          <Link to="/courses" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
             View all
           </Link>
         </div>
@@ -118,7 +118,7 @@ const DashboardPage: React.FC = () => {
                   <Link to={`/courses/${course._id}`} className="block hover:bg-gray-50">
                     <div className="px-4 py-4 sm:px-6">
                       <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium text-primary-600 truncate">{course.title}</p>
+                        <p className="text-sm font-medium text-indigo-600 truncate">{course.title}</p>
                         <div className="ml-2 flex-shrink-0 flex">
                           <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                             {course.difficulty}
@@ -140,7 +140,7 @@ const DashboardPage: React.FC = () => {
           ) : (
             <div className="p-6 text-center text-gray-500">
               You haven't enrolled in any courses yet. 
-              <Link to="/courses" className="ml-1 text-primary-600 hover:text-primary-500">Browse courses</Link>
+              <Link to="/courses" className="ml-1 text-indigo-600 hover:text-indigo-500">Browse courses</Link>
             </div>
           )}
         </div>

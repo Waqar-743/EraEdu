@@ -67,7 +67,7 @@ const TeacherAnalytics = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -155,9 +155,9 @@ const TeacherAnalytics = () => {
                     <Line
                       type="monotone"
                       dataKey="avgScore"
-                      stroke="#2563eb"
+                      stroke="#4ca1af"
                       strokeWidth={2}
-                      dot={{ fill: '#2563eb' }}
+                      dot={{ fill: '#4ca1af' }}
                       name="Avg Score %"
                     />
                     <Legend />
@@ -201,7 +201,7 @@ const TeacherAnalytics = () => {
                       />
                       <Bar dataKey="count" name="Students" radius={[6, 6, 0, 0]}>
                         {(analytics?.scoreDistribution || []).map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color || '#2563eb'} />
+                          <Cell key={`cell-${index}`} fill={entry.color || '#4ca1af'} />
                         ))}
                       </Bar>
                     </BarChart>
@@ -231,7 +231,7 @@ const TeacherAnalytics = () => {
                       borderRadius: '8px',
                     }}
                   />
-                  <Bar dataKey="attempts" fill="#2563eb" name="Attempts" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="attempts" fill="#4ca1af" name="Attempts" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -260,7 +260,7 @@ const TeacherAnalytics = () => {
                       borderRadius: '8px',
                     }}
                   />
-                  <Bar dataKey="participationPercentage" fill="#2563eb" radius={[0, 6, 6, 0]} />
+                  <Bar dataKey="participationPercentage" fill="#4ca1af" radius={[0, 6, 6, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -268,7 +268,7 @@ const TeacherAnalytics = () => {
 
           {/* Summary Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-green-500 rounded-xl p-6 text-white">
+            <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-6 text-white">
               <h4 className="text-lg font-semibold mb-2">Pass Rate</h4>
               <p className="text-4xl font-bold">{analytics.passRate == null ? 'Pending' : `${analytics.passRate}%`}</p>
               <p className="text-green-100 mt-2">
@@ -277,12 +277,12 @@ const TeacherAnalytics = () => {
                   : 'Consider reviewing difficult topics.'}
               </p>
             </div>
-            <div className="bg-primary-700 rounded-xl p-6 text-white">
+            <div className="bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl p-6 text-white">
               <h4 className="text-lg font-semibold mb-2">Total Exams</h4>
               <p className="text-4xl font-bold">{analytics?.totalQuizzes || 0}</p>
               <p className="text-white/90 mt-2">Exams created and available</p>
             </div>
-            <div className="bg-orange-500 rounded-xl p-6 text-white">
+            <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-xl p-6 text-white">
               <h4 className="text-lg font-semibold mb-2">Engagement</h4>
               <p className="text-4xl font-bold">{analytics?.totalAttempts || 0}</p>
               <p className="text-orange-100 mt-2">Total exam attempts by students</p>

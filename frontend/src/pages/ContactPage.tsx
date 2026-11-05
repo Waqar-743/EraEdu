@@ -35,7 +35,7 @@ const ContactPage = () => {
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {contactChannels.map((channel) => (
-            <section key={channel.title} className="rounded-lg border border-slate-200 bg-slate-50 p-6">
+            <section key={channel.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
               <h2 className="text-base font-semibold text-slate-900">{channel.title}</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">{channel.description}</p>
             </section>
@@ -45,7 +45,7 @@ const ContactPage = () => {
         <div className="mt-12 flex flex-col gap-3 sm:flex-row">
           <Link
             to="/login"
-            className="inline-flex items-center justify-center rounded-md bg-primary-700 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-800"
+            className="inline-flex items-center justify-center rounded-md bg-primary-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-700"
           >
             Sign in
           </Link>

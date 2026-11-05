@@ -1,24 +1,9 @@
-import { useEffect, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
-import Brand from "../components/landing/HomepageBrand";
-import MotionControl from "../components/landing/MotionControl";
-import "../components/landing/homepage.css";
-import api from "../services/api";
-import toast from "react-hot-toast";
-import { useReveal } from "../hooks/useReveal";
-import {
-  AssessmentJourney,
-  CompactJourney,
-  ActivityReviewGraphic,
-  CompactActivityGraphic,
-  FocusGraphic,
-  CopyGuardGraphic,
-  PracticeGraphic,
-  CourseGraphic,
-  ExportGraphic,
-  WorkflowGraphic,
-  PrivateResultsGraphic,
-} from "../components/landing/Illustrations";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Brand } from '../components/shared';
+import { useReveal } from '../hooks/useReveal';
+import api from '../services/api';
+import toast from 'react-hot-toast';
 
 /* ──────────────────────────────────────────────────────────────────────────
    Vibe: Ethereal Glass · Layout: Asymmetrical Bento + Editorial Split
@@ -28,7 +13,7 @@ import {
 const Stroke = ({
   d,
   size = 18,
-  className = "",
+  className = '',
 }: {
   d: string;
   size?: number;
@@ -50,42 +35,57 @@ const Stroke = ({
   </svg>
 );
 
-const Arrow = ({
-  size = 14,
-  className = "",
-}: {
-  size?: number;
-  className?: string;
-}) => <Stroke d="M5 19 19 5 M9 5h10v10" size={size} className={className} />;
+const Arrow = ({ size = 14, className = '' }: { size?: number; className?: string }) => (
+  <Stroke d="M5 19 19 5 M9 5h10v10" size={size} className={className} />
+);
+
+/* An illustrative scan frame makes the proctoring story understandable without
+   implying that a real student's face or camera footage is being shown. */
+const FaceScanArtwork = ({ dark = false }: { dark?: boolean }) => (
+  <div
+    aria-hidden="true"
+    className={`relative aspect-[1.42] w-full overflow-hidden rounded-[1.5rem] ring-1 ${
+      dark
+        ? 'bg-gradient-to-br from-emerald-400/20 via-teal-500/10 to-slate-950/30 ring-white/15'
+        : 'bg-gradient-to-br from-emerald-50 via-white to-cyan-50 ring-emerald-900/10 shadow-[0_20px_45px_-32px_rgba(4,120,87,0.55)]'
+    }`}
+  >
+    <div className={`absolute inset-0 opacity-50 ${dark ? 'bg-[radial-gradient(circle_at_50%_30%,rgba(45,212,191,.32),transparent_38%)]' : 'bg-[radial-gradient(circle_at_50%_30%,rgba(52,211,153,.25),transparent_38%)]'}`} />
+    <div className={`absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[9px] font-bold tracking-[0.14em] ${dark ? 'bg-emerald-300/10 text-emerald-100 ring-1 ring-emerald-200/20' : 'bg-white/80 text-emerald-700 ring-1 ring-emerald-200'}`}>
+      <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,.9)]" />
+      FACE VERIFIED
+    </div>
+    <span className={`absolute right-3 top-3 font-mono text-[8px] tracking-[0.16em] ${dark ? 'text-white/45' : 'text-emerald-800/45'}`}>ON-DEVICE</span>
+
+    <div className="absolute inset-x-0 bottom-0 top-8 flex items-end justify-center">
+      <svg viewBox="0 0 220 160" className="h-[94%] w-[94%]" fill="none">
+        <path d="M42 152c7-38 30-56 68-56s61 18 68 56" fill={dark ? 'rgba(45,212,191,.28)' : 'rgba(16,185,129,.20)'} />
+        <ellipse cx="110" cy="70" rx="34" ry="42" fill={dark ? 'rgba(153,246,228,.55)' : 'rgba(209,250,229,.9)'} />
+        <path d="M89 67c5 4 11 4 16 0M116 67c5 4 11 4 16 0M101 88c6 4 12 4 18 0" stroke={dark ? 'rgba(236,253,245,.82)' : 'rgba(4,120,87,.55)'} strokeWidth="2" strokeLinecap="round" />
+        <path d="M61 39h18M61 39v18M159 39h-18M159 39v18M61 117h18M61 117V99M159 117h-18M159 117V99" stroke={dark ? 'rgba(110,231,183,.9)' : 'rgba(5,150,105,.75)'} strokeWidth="3" strokeLinecap="round" />
+        <rect x="70" y="25" width="80" height="106" rx="35" stroke={dark ? 'rgba(94,234,212,.55)' : 'rgba(16,185,129,.42)'} strokeWidth="1.5" strokeDasharray="4 4" />
+      </svg>
+    </div>
+  </div>
+);
 
 /* ───── Floating Glass Island Nav (with morphing hamburger) ───── */
 const NavIsland = () => {
   const [open, setOpen] = useState(false);
-  useEffect(() => {
-    if (!open) return;
-    const close = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setOpen(false);
-        document.getElementById("mobile-menu-toggle")?.focus();
-      }
-    };
-    document.addEventListener("keydown", close);
-    return () => document.removeEventListener("keydown", close);
-  }, [open]);
 
   useEffect(() => {
-    document.documentElement.style.overflow = open ? "hidden" : "";
+    document.documentElement.style.overflow = open ? 'hidden' : '';
     return () => {
-      document.documentElement.style.overflow = "";
+      document.documentElement.style.overflow = '';
     };
   }, [open]);
 
   const links = [
-    { href: "#features", label: "Features" },
-    { href: "#how", label: "How it works" },
-    { href: "#integrity", label: "Integrity" },
-    { href: "#trust", label: "Trust" },
-    { href: "#pricing", label: "Pricing" },
+    { href: '#features', label: 'Features' },
+    { href: '#how', label: 'How it works' },
+    { href: '#integrity', label: 'AI Integrity' },
+    { href: '#pricing', label: 'Pricing' },
+    { href: '#trust', label: 'Trust' },
   ];
 
   return (
@@ -93,22 +93,22 @@ const NavIsland = () => {
       <header className="fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-6">
         <div
           className="
-            flex w-full max-w-5xl items-center gap-2 rounded-full p-1.5
-            bg-white/70 backdrop-blur-2xl ring-1 ring-ink-900/5
+            landing-nav flex w-full max-w-6xl items-center gap-2 rounded-full p-1.5
+            bg-white/90 backdrop-blur-2xl ring-1 ring-ink-900/5
             shadow-[0_20px_60px_-30px_rgba(5,7,11,0.25)]
           "
         >
-          <div className="shrink-0 pl-3 pr-2">
+          <div className="pl-3 pr-2">
             <Brand to="/" />
           </div>
 
-          <nav className="hidden lg:flex items-center gap-1 px-2">
+          <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-1 px-2">
             {links.map((l) => (
               <a
                 key={l.href}
                 href={l.href}
                 className="
-                  rounded-full px-3.5 py-2 whitespace-nowrap text-sm font-medium text-ink-600
+                  whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-medium text-ink-600
                   transition-all duration-500 ease-spring
                   hover:text-ink-900 hover:bg-ink-900/[0.04]
                 "
@@ -122,16 +122,13 @@ const NavIsland = () => {
             <Link
               to="/login"
               className="
-                hidden shrink-0 whitespace-nowrap sm:inline-flex rounded-full px-4 py-2 text-sm font-medium text-ink-700
+                hidden sm:inline-flex whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium text-ink-700
                 transition-all duration-500 ease-spring hover:text-ink-900 hover:bg-ink-900/[0.04]
               "
             >
               Sign in
             </Link>
-            <Link
-              to="/register"
-              className="btn-island-primary hidden shrink-0 whitespace-nowrap sm:inline-flex"
-            >
+            <Link to="/register" className="btn-island-primary whitespace-nowrap">
               <span className="pr-1">Get started</span>
               <span className="btn-icon bg-white/15">
                 <Arrow />
@@ -143,7 +140,6 @@ const NavIsland = () => {
               type="button"
               onClick={() => setOpen((o) => !o)}
               aria-label="Menu"
-              id="mobile-menu-toggle"
               aria-expanded={open}
               aria-controls="mobile-navigation"
               className="
@@ -153,12 +149,12 @@ const NavIsland = () => {
             >
               <span
                 className={`absolute h-[1.5px] w-4 bg-ink-900 transition-all duration-500 ease-spring ${
-                  open ? "rotate-45 translate-y-0" : "-translate-y-1.5"
+                  open ? 'rotate-45 translate-y-0' : '-translate-y-1.5'
                 }`}
               />
               <span
                 className={`absolute h-[1.5px] w-4 bg-ink-900 transition-all duration-500 ease-spring ${
-                  open ? "-rotate-45 translate-y-0" : "translate-y-1.5"
+                  open ? '-rotate-45 translate-y-0' : 'translate-y-1.5'
                 }`}
               />
             </button>
@@ -169,12 +165,11 @@ const NavIsland = () => {
       {/* Mobile screen-filling glass overlay */}
       <div
         id="mobile-navigation"
-        aria-hidden={!open}
-        style={{ visibility: open ? "visible" : "hidden" }}
+        aria-label="Mobile navigation"
         className={`
           fixed inset-0 z-30 lg:hidden
           transition-all duration-700 ease-spring
-          ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+          ${open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
           backdrop-blur-3xl bg-white/80
         `}
       >
@@ -187,7 +182,7 @@ const NavIsland = () => {
               className={`
                 block py-4 font-display text-5xl tracking-tightest text-ink-900
                 transition-all duration-700 ease-spring
-                ${open ? "translate-y-0 opacity-100 blur-0" : "translate-y-12 opacity-0 blur-md"}
+                ${open ? 'translate-y-0 opacity-100 blur-0' : 'translate-y-12 opacity-0 blur-md'}
               `}
               style={{ transitionDelay: `${100 + i * 60}ms` }}
             >
@@ -220,10 +215,13 @@ const NavIsland = () => {
 };
 
 /* ───── HERO ───── */
-const Hero = ({ motionControl }: { motionControl: ReactNode }) => (
+const Hero = () => (
   <section className="relative overflow-hidden pt-40 md:pt-48 pb-24 md:pb-32">
     {/* Mesh background */}
-    <div aria-hidden className="absolute inset-0 -z-10 bg-mesh-emerald" />
+    <div
+      aria-hidden
+      className="absolute inset-0 -z-10 bg-mesh-emerald"
+    />
     <div
       aria-hidden
       className="absolute inset-x-0 top-0 -z-10 h-[60vh] bg-grid-faint [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_70%)]"
@@ -233,22 +231,21 @@ const Hero = ({ motionControl }: { motionControl: ReactNode }) => (
       aria-hidden
       className="absolute left-1/2 top-32 -z-10 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-primary-300/30 blur-3xl animate-pulse-soft"
     />
-
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
         <span className="eyebrow eyebrow-light reveal">
           <span className="h-1.5 w-1.5 rounded-full bg-primary-500 animate-pulse" />
-          Assessment scheduling and review
+          Now with AI face-presence proctoring
         </span>
 
         <h1 className="reveal reveal-delay-1 mt-6 font-display text-[44px] sm:text-6xl md:text-7xl lg:text-[88px] leading-[0.95] tracking-tightest text-balance text-ink-900">
-          The integrity engine for{" "}
+          The integrity engine for{' '}
           <span className="relative inline-block">
             <span
               className="bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  "linear-gradient(135deg, #047857 0%, #10B981 40%, #06B6D4 100%)",
+                  'linear-gradient(135deg, #047857 0%, #10B981 40%, #06B6D4 100%)',
               }}
             >
               modern classrooms
@@ -258,14 +255,14 @@ const Hero = ({ motionControl }: { motionControl: ReactNode }) => (
         </h1>
 
         <p className="reveal reveal-delay-2 mx-auto mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-ink-500">
-          EraEdu supports every assessment with scheduled availability,
-          tab-switch sentinels, and copy-paste guards — so educators measure
-          what students actually know, not what they could borrow.
+          EraEdu secures every assessment with face-presence detection,
+          tab-switch sentinels, and copy-paste guards — so educators measure what
+          students actually know, not what they could borrow.
         </p>
 
         <div className="reveal reveal-delay-3 mt-10 flex flex-wrap items-center justify-center gap-3">
           <Link to="/register" className="btn-island-primary">
-            <span className="pr-1">Create an account</span>
+            <span className="pr-1">Start free trial</span>
             <span className="btn-icon bg-white/15">
               <Arrow />
             </span>
@@ -279,67 +276,189 @@ const Hero = ({ motionControl }: { motionControl: ReactNode }) => (
         </div>
 
         <p className="reveal reveal-delay-4 mt-6 text-xs text-ink-400">
-          Create a teacher account · Create, schedule and review assessments
+          No credit card · Five free assessment trials · Built for thoughtful educators
         </p>
       </div>
 
-      <figure className="reveal reveal-delay-5 mx-auto mt-16 max-w-5xl">
-        <div className="bezel">
-          <div className="bezel-core overflow-hidden bg-[#f7faf8]">
-            <AssessmentJourney />
-            <CompactJourney />
+      {/* Hero showcase — Double-bezel display panel */}
+      <div className="reveal reveal-delay-5 mt-20">
+        <div className="bezel mx-auto max-w-5xl">
+          <div className="bezel-core relative overflow-hidden">
+            {/* Faux app chrome */}
+            <div className="flex items-center gap-2 border-b border-ink-900/5 px-5 py-3">
+              <span className="h-2.5 w-2.5 rounded-full bg-ink-200" />
+              <span className="h-2.5 w-2.5 rounded-full bg-ink-200" />
+              <span className="h-2.5 w-2.5 rounded-full bg-ink-200" />
+              <span className="ml-4 text-[11px] font-medium text-ink-400">
+                eraedu.app / live-session / CS-401-Final
+              </span>
+              <span className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-2.5 py-1 text-[10px] font-semibold text-primary-700 ring-1 ring-primary-200">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary-500 animate-pulse" />
+                MONITORING · 24 STUDENTS
+              </span>
+            </div>
+
+            <div className="grid gap-px bg-ink-900/5 md:grid-cols-[260px_1fr_220px]">
+              {/* Sidebar */}
+              <div className="bg-white p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-eyebrow text-ink-400">
+                  Sections
+                </p>
+                <ul className="mt-3 space-y-1 text-sm text-ink-700">
+                  {['Algorithms', 'Data Structures', 'Complexity', 'Recursion'].map((s, i) => (
+                    <li
+                      key={s}
+                      className={`flex items-center justify-between rounded-xl px-3 py-2 ${
+                        i === 0 ? 'bg-ink-900 text-white' : 'hover:bg-ink-50'
+                      }`}
+                    >
+                      <span>{s}</span>
+                      <span className={`text-[10px] ${i === 0 ? 'text-white/60' : 'text-ink-400'}`}>
+                        {12 - i * 2}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {/* Main quiz */}
+              <div className="bg-white p-6">
+                <p className="text-[10px] font-semibold uppercase tracking-eyebrow text-ink-400">
+                  Question 04 / 20
+                </p>
+                <p className="mt-2 font-display text-2xl tracking-tightest text-ink-900">
+                  What is the worst-case time complexity of inserting into a balanced BST?
+                </p>
+                <div className="mt-5 grid gap-2.5">
+                  {['O(1)', 'O(log n)', 'O(n)', 'O(n log n)'].map((opt, i) => (
+                    <div
+                      key={opt}
+                      className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm ring-1 transition-all duration-500 ease-spring ${
+                        i === 1
+                          ? 'bg-primary-50 ring-primary-200 text-primary-800'
+                          : 'bg-white ring-ink-900/5 text-ink-700'
+                      }`}
+                    >
+                      <span
+                        className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
+                          i === 1 ? 'bg-primary-500 text-white' : 'bg-ink-900/[0.06] text-ink-500'
+                        }`}
+                      >
+                        {String.fromCharCode(65 + i)}
+                      </span>
+                      <span>{opt}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Live monitor */}
+              <div className="bg-white p-5">
+                <p className="text-[10px] font-semibold uppercase tracking-eyebrow text-ink-400">
+                  Live presence
+                </p>
+                <div className="mt-3 grid grid-cols-3 gap-1.5">
+                  {Array.from({ length: 12 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className={`aspect-square rounded-lg ring-1 ${
+                        i === 5
+                          ? 'bg-rose-100 ring-rose-300'
+                          : 'bg-primary-50 ring-primary-200'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <div className="mt-4 rounded-2xl bg-rose-50 p-3 ring-1 ring-rose-200">
+                  <p className="text-[10px] font-semibold uppercase tracking-eyebrow text-rose-700">
+                    Flagged
+                  </p>
+                  <p className="mt-1 text-xs text-rose-900">
+                    Seat 06 — face absent 4.2s
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <figcaption className="home-art-caption mt-4 px-2">
-          <p>
-            <span className="font-semibold text-ink-700">
-              Create. Schedule. Review. Grade.
-            </span>{" "}
-            An illustrated workflow.
-          </p>
-          {motionControl}
-        </figcaption>
-      </figure>
+      </div>
     </div>
   </section>
 );
 
-/* ───── SOCIAL PROOF marquee ───── */
+const AnimatedQuoteBackground = () => {
+  const [revealed, setRevealed] = useState(false);
+  const words = [
+    { value: 'Better', color: '#047857' }, { value: 'learning', color: '#059669' },
+    { value: 'begins', color: '#0F766E' }, { value: 'with', color: '#0891B2' },
+    { value: 'better', color: '#10B981' }, { value: 'tools.', color: '#0E7490' },
+  ];
 
+  useEffect(() => {
+    const revealOnScroll = () => {
+      if (window.scrollY > Math.max(420, window.innerHeight * 0.65)) setRevealed(true);
+    };
+    revealOnScroll();
+    window.addEventListener('scroll', revealOnScroll, { passive: true });
+    return () => window.removeEventListener('scroll', revealOnScroll);
+  }, []);
+
+  return (
+    <div aria-hidden="true" className={`landing-scroll-quote ${revealed ? 'is-revealed' : ''}`}>
+      <p className="landing-scroll-quote-line">
+        <span className="landing-scroll-quote-mark">“</span>
+        {words.map((word, index) => <span key={`${word.value}-${index}`} className="landing-scroll-quote-word" style={{ color: word.color, animationDelay: `${index * 120}ms` }}>{word.value}</span>)}
+        <span className="landing-scroll-quote-mark">”</span>
+      </p>
+    </div>
+  );
+};
+
+/* ───── SOCIAL PROOF marquee ───── */
 /* ───── FEATURE BENTO (Asymmetrical) ───── */
+const TrustByDesign = () => {
+  const principles = [
+    { title: 'Teacher-controlled rules', copy: 'Set exam availability, assessment rules, and violation limits before a session begins.', icon: 'M5 12h14 M12 5v14' },
+    { title: 'Reviewable activity', copy: 'Keep exam submissions and integrity events together for clear, informed follow-up.', icon: 'M5 12l4 4L19 6 M5 6h14' },
+    { title: 'A practical way to start', copy: 'Explore the workflow with five free assessment trials before choosing a paid plan.', icon: 'M12 5v14 M5 12h14' },
+  ];
+  return (
+    <section className="relative border-y border-primary-900/5 bg-white py-8 sm:py-10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-5 md:grid-cols-3 md:gap-0">
+          {principles.map((item, index) => (
+            <div key={item.title} className={`flex gap-4 px-2 py-3 md:px-8 ${index ? 'md:border-l md:border-primary-900/10' : ''}`}>
+              <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-700 ring-1 ring-primary-100"><Stroke d={item.icon} size={18} /></span>
+              <div><h2 className="text-sm font-semibold text-primary-950">{item.title}</h2><p className="mt-1 text-sm leading-relaxed text-ink-500">{item.copy}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 type Feat = {
   title: string;
-  label: string;
   copy: string;
   span: string;
   visual: React.ReactNode;
-  accent?: "emerald" | "cyan" | "violet";
+  accent?: 'emerald' | 'cyan' | 'violet';
 };
 
-const FeatureCard = ({
-  title,
-  label,
-  copy,
-  span,
-  visual,
-  accent = "emerald",
-}: Feat) => {
+const FeatureCard = ({ title, copy, span, visual, accent = 'emerald' }: Feat) => {
   const tag =
-    accent === "cyan"
-      ? "text-accent-700 bg-accent-50 ring-accent-200"
-      : accent === "violet"
-        ? "text-secondary-700 bg-secondary-50 ring-secondary-200"
-        : "text-primary-700 bg-primary-50 ring-primary-200";
+    accent === 'cyan'
+      ? 'text-accent-700 bg-accent-50 ring-accent-200'
+      : accent === 'violet'
+      ? 'text-secondary-700 bg-secondary-50 ring-secondary-200'
+      : 'text-primary-700 bg-primary-50 ring-primary-200';
   return (
-    <div className={`reveal bezel ${span}`}>
+    <div className={`reveal bezel ${span} transition-transform duration-500 ease-spring hover:-translate-y-1`}>
       <div className="bezel-core flex h-full flex-col justify-between gap-6 p-7">
-        <div
-          className={`home-feature-art ${span.includes("row-span-2") ? "home-feature-art--large" : ""} relative overflow-hidden rounded-[1.25rem] bg-ink-50 ring-1 ring-ink-900/5`}
-        >
+        <div className="relative h-44 overflow-hidden rounded-[1.25rem] bg-ink-50 ring-1 ring-ink-900/5">
           {visual}
         </div>
         <div>
-          <span className={`eyebrow ring-1 ${tag}`}>{label}</span>
+          <span className={`eyebrow ring-1 ${tag}`}>{accent}</span>
           <h3 className="mt-3 font-display text-2xl tracking-tightest text-ink-900">
             {title}
           </h3>
@@ -350,62 +469,8 @@ const FeatureCard = ({
   );
 };
 
-const features: Feat[] = [
-  {
-    title: "Assessment activity review",
-    label: "Event review",
-    copy: "Records tab and focus events for teacher review alongside submitted answers.",
-    span: "md:col-span-7 md:row-span-2",
-    visual: (
-      <>
-        <ActivityReviewGraphic />
-        <CompactActivityGraphic />
-      </>
-    ),
-  },
-  {
-    title: "Tab-switch sentinel",
-    label: "Browser focus",
-    copy: "Records supported tab visibility and focus changes during an attempt for teacher review.",
-    span: "md:col-span-5",
-    accent: "cyan",
-    visual: <FocusGraphic />,
-  },
-  {
-    title: "Copy-paste guard",
-    label: "Attempt controls",
-    copy: "Guards supported copy, paste, context-menu and developer-tool shortcuts during an assessment.",
-    span: "md:col-span-5",
-    accent: "violet",
-    visual: <CopyGuardGraphic />,
-  },
-  {
-    title: "Learning and practice",
-    label: "Practice",
-    copy: "Explore course resources, practise your skills, and use reviewed results to guide your next steps.",
-    span: "md:col-span-4",
-    visual: <PracticeGraphic />,
-  },
-  {
-    title: "Course performance",
-    label: "Courses",
-    copy: "Educators review course performance, submissions and reported browser events from their dashboard.",
-    span: "md:col-span-4",
-    accent: "cyan",
-    visual: <CourseGraphic />,
-  },
-  {
-    title: "Assessment exports",
-    label: "Reviewed marks",
-    copy: "Review submissions, save teacher grades and feedback, and export marks as CSV.",
-    span: "md:col-span-4",
-    accent: "violet",
-    visual: <ExportGraphic />,
-  },
-];
-
-const FeaturesBento = ({ motionControl }: { motionControl: ReactNode }) => (
-  <section id="features" className="relative py-24 md:py-32">
+const FeaturesBento = () => (
+  <section id="features" className="relative py-32">
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="reveal mx-auto max-w-3xl text-center">
         <span className="eyebrow eyebrow-light">Capabilities</span>
@@ -413,18 +478,137 @@ const FeaturesBento = ({ motionControl }: { motionControl: ReactNode }) => (
           Every layer of integrity, in one platform.
         </h2>
         <p className="mt-5 text-lg text-ink-500 text-pretty">
-          From assessment entry to reviewed results, keep the work and its
-          context together.
+          From the moment a student joins a session to the final analytics
+          breakdown, EraEdu enforces fairness without disrupting flow.
         </p>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <span className="text-xs text-ink-500">Workflow illustrations</span>
-          {motionControl}
-        </div>
       </div>
-      <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-12 md:auto-rows-[minmax(280px,auto)]">
-        {features.map((feature) => (
-          <FeatureCard key={feature.title} {...feature} />
-        ))}
+
+      <div className="mt-16 grid grid-cols-1 gap-5 md:grid-cols-12 md:auto-rows-[minmax(280px,auto)]">
+        <FeatureCard
+          span="md:col-span-7 md:row-span-2"
+          title="AI Face-Presence Proctoring"
+          copy="Continuously verifies the student is present, alone, and focused — using an on-device face-detection pipeline. Zero footage uploaded."
+          accent="emerald"
+          visual={
+            <div className="relative flex h-full items-center justify-center p-5 sm:p-7">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary-100/70 via-white/20 to-accent-100/50" />
+              <div className="relative w-full max-w-[18rem]">
+                <FaceScanArtwork />
+                <div className="absolute -bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-white/90 px-3 py-1.5 text-[9px] font-semibold text-emerald-800 shadow-[0_10px_22px_-14px_rgba(4,120,87,.5)] ring-1 ring-emerald-100 backdrop-blur-xl">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  PRIVATE · ON-DEVICE ANALYSIS
+                </div>
+              </div>
+            </div>
+          }
+        />
+        <FeatureCard
+          span="md:col-span-5"
+          title="Tab-Switch Sentinel"
+          copy="Detects every blur, alt-tab, and split-screen attempt. Counts toward a configurable strike system."
+          accent="cyan"
+          visual={
+            <div className="relative flex h-full items-center justify-center bg-ink-900">
+              <div className="absolute inset-0 bg-grid-faint [background-size:24px_24px] opacity-30" />
+              <div className="relative grid grid-cols-3 gap-2">
+                {[0, 1, 2, 3, 4, 5].map((i) => (
+                  <div
+                    key={i}
+                    className={`h-10 w-14 rounded-md ring-1 ${
+                      i === 4
+                        ? 'bg-rose-500/20 ring-rose-400/60'
+                        : 'bg-white/5 ring-white/10'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          }
+        />
+        <FeatureCard
+          span="md:col-span-5"
+          title="Copy-Paste Guard"
+          copy="Disables copy, paste, right-click, and DevTools shortcuts inside live sessions."
+          accent="violet"
+          visual={
+            <div className="relative flex h-full items-center justify-center">
+              <div className="font-mono text-[11px] text-ink-300 select-none">
+                <p>Ctrl + C ✗</p>
+                <p>Ctrl + V ✗</p>
+                <p>Right-click ✗</p>
+                <p>DevTools ✗</p>
+              </div>
+            </div>
+          }
+        />
+        <FeatureCard
+          span="md:col-span-4"
+          title="Adaptive Question Flow"
+          copy="Difficulty self-tunes to each student's signal — keeping the cohort in challenge state."
+          accent="emerald"
+          visual={
+            <div className="relative flex h-full items-end justify-around p-4">
+              {[40, 65, 50, 80, 60, 90, 75].map((h, i) => (
+                <div
+                  key={i}
+                  className="w-3 rounded-t-md bg-gradient-to-t from-primary-200 to-primary-500"
+                  style={{ height: `${h}%` }}
+                />
+              ))}
+            </div>
+          }
+        />
+        <FeatureCard
+          span="md:col-span-4"
+          title="Live Cohort Heatmap"
+          copy="Educators see attention, accuracy, and risk in a single ambient grid."
+          accent="cyan"
+          visual={
+            <div className="grid h-full grid-cols-6 gap-1 p-3">
+              {Array.from({ length: 30 }).map((_, i) => {
+                const intensity = (Math.sin(i * 1.7) + 1) / 2;
+                return (
+                  <div
+                    key={i}
+                    className="rounded-md"
+                    style={{
+                      background: `rgba(16,185,129,${0.15 + intensity * 0.7})`,
+                    }}
+                  />
+                );
+              })}
+            </div>
+          }
+        />
+        <FeatureCard
+          span="md:col-span-4"
+          title="Forensic Analytics"
+          copy="Per-student timelines, violation receipts, and exportable academic reports."
+          accent="violet"
+          visual={
+            <div className="relative h-full p-4">
+              <svg viewBox="0 0 200 100" className="h-full w-full">
+                <path
+                  d="M0 80 C 30 60, 60 30, 90 50 S 150 90, 200 30"
+                  fill="none"
+                  stroke="#7C3AED"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M0 80 C 30 60, 60 30, 90 50 S 150 90, 200 30 L 200 100 L 0 100 Z"
+                  fill="url(#g1)"
+                  opacity="0.3"
+                />
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stopColor="#A78BFA" />
+                    <stop offset="100%" stopColor="#A78BFA" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          }
+        />
       </div>
     </div>
   </section>
@@ -434,24 +618,24 @@ const FeaturesBento = ({ motionControl }: { motionControl: ReactNode }) => (
 const HowItWorks = () => {
   const steps = [
     {
-      n: "01",
-      t: "Author a quiz in minutes",
-      d: "Create multiple-choice and short-answer questions, choose a course, and schedule when students can start.",
+      n: '01',
+      t: 'Author an exam in minutes',
+      d: 'Build with rich question types — multiple-choice, code blocks, free response. Versioned, branchable, instantly publishable.',
     },
     {
-      n: "02",
-      t: "Distribute via secure code",
-      d: "Students enrol using a course code and enter a four-digit assessment code. The server checks assignments and availability.",
+      n: '02',
+      t: 'Distribute via secure code',
+      d: 'Students enter a 6-digit join code. We verify identity, request camera permission, and lock the testing window.',
     },
     {
-      n: "03",
-      t: "Review assessment activity",
-      d: "Review submitted answers and recorded tab and focus events before assigning a grade.",
+      n: '03',
+      t: 'Monitor in real time',
+      d: 'A live heatmap surfaces presence anomalies, tab switches, and pace outliers. Intervene with one click.',
     },
     {
-      n: "04",
-      t: "Grade and give feedback",
-      d: "Review each submission, save a teacher grade and feedback, and export assessment marks.",
+      n: '04',
+      t: 'Analyze & defend grades',
+      d: 'Per-student forensic timelines and exportable reports give you the receipts to defend every score.',
     },
   ];
 
@@ -468,18 +652,12 @@ const HowItWorks = () => {
               Four deliberate steps — engineered so educators spend more time
               teaching, less time policing.
             </p>
-            <Link
-              to="/register"
-              className="reveal reveal-delay-3 mt-8 btn-island-primary"
-            >
+            <Link to="/register" className="reveal reveal-delay-3 mt-8 btn-island-primary">
               <span className="pr-1">Try the workflow</span>
               <span className="btn-icon bg-white/15">
                 <Arrow />
               </span>
             </Link>
-            <div className="reveal mt-10 max-w-sm">
-              <WorkflowGraphic />
-            </div>
           </div>
 
           <div className="relative lg:col-span-7">
@@ -512,62 +690,110 @@ const HowItWorks = () => {
   );
 };
 
+/* ───── PRODUCT WALKTHROUGH ───── */
 /* ───── INTEGRITY SPOTLIGHT (dark editorial split) ───── */
-const IntegritySpotlight = ({
-  motionControl,
-}: {
-  motionControl: ReactNode;
-}) => (
+const IntegritySpotlight = () => (
   <section
     id="integrity"
-    className="relative overflow-hidden bg-ink-950 py-24 text-white md:py-32"
+    className="relative overflow-hidden bg-gradient-to-br from-primary-950 via-primary-900 to-teal-900 py-32 text-white"
   >
+    <div
+      aria-hidden
+      className="absolute inset-0 -z-10 bg-mesh-emerald opacity-60"
+    />
+    <div
+      aria-hidden
+      className="absolute inset-x-0 top-0 -z-10 h-full bg-grid-faint [background-size:48px_48px] opacity-[0.04]"
+    />
+
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="grid items-center gap-16 lg:grid-cols-2">
         <div>
-          <span className="eyebrow eyebrow-dark reveal">
-            Assessment integrity
-          </span>
+          <span className="eyebrow eyebrow-dark reveal">AI Integrity</span>
           <h2 className="reveal reveal-delay-1 mt-4 font-display text-4xl md:text-6xl tracking-tightest text-white text-balance">
-            Assessment protection that respects{" "}
-            <span className="text-primary-300">students.</span>
+            Proctoring that respects{' '}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  'linear-gradient(135deg, #6CE8B7 0%, #22D3EE 100%)',
+              }}
+            >
+              students.
+            </span>
           </h2>
           <p className="reveal reveal-delay-2 mt-5 max-w-xl text-lg text-white/60 text-pretty">
-            Sign in with email and password. Assessment timing and assignments
-            are checked by the server. Browser activity events provide context
-            for teacher review.
+            All face-presence inference happens on-device using face-api.js.
+            We store anomaly events, never video. Reviewable. Explainable.
+            Designed with privacy-aware assessment workflows in mind.
           </p>
+
           <ul className="reveal reveal-delay-3 mt-10 space-y-4">
             {[
-              "Server-enforced assessment timing and assignment",
-              "Browser events alongside submitted answers",
-              "Results and feedback after teacher review",
-              "Teacher judgment at the centre of review",
+              'On-device processing designed to minimise unnecessary data collection',
+              'Event-only logs with timestamped rationale',
+              'Configurable strike thresholds per exam',
+              'Auditable trail for every flagged moment',
             ].map((line) => (
               <li key={line} className="flex items-start gap-3 text-white/80">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-500/20 ring-1 ring-primary-400/40">
-                  <Stroke
-                    d="M5 13l4 4L19 7"
-                    size={12}
-                    className="text-primary-300"
-                  />
+                <span className="mt-1.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-500/20 ring-1 ring-primary-400/40">
+                  <Stroke d="M5 13l4 4L19 7" size={12} className="text-primary-300" />
                 </span>
                 <span className="text-sm leading-relaxed">{line}</span>
               </li>
             ))}
           </ul>
         </div>
-        <figure className="reveal reveal-delay-2 min-w-0">
+
+        {/* Visual — Camera ring + telemetry */}
+        <div className="reveal reveal-delay-2 relative">
           <div className="bezel-dark">
-            <div className="bezel-core-dark overflow-hidden">
-              <PrivateResultsGraphic />
+            <div className="bezel-core-dark relative aspect-[4/5] overflow-hidden p-8">
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-br from-primary-500/10 via-transparent to-accent-500/10"
+              />
+
+              <div className="relative flex h-full flex-col">
+                <div className="flex items-center justify-between">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-eyebrow text-white/70 ring-1 ring-white/10">
+                    <span className="h-1.5 w-1.5 rounded-full bg-rose-400 animate-pulse" />
+                    REC · 00:14:32
+                  </span>
+                  <span className="font-mono text-[10px] text-white/40">
+                    QS · v4.2
+                  </span>
+                </div>
+
+                <div className="relative mx-auto my-auto w-full max-w-[19rem] py-7">
+                  <FaceScanArtwork dark />
+                  <div className="absolute -bottom-1 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-300/10 px-3 py-1 text-[9px] font-semibold tracking-[0.12em] text-emerald-100 ring-1 ring-emerald-200/20 backdrop-blur-xl">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,.9)]" />
+                    PRESENCE CONFIRMED
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  {[
+                    { l: 'Confidence', v: '99.4%' },
+                    { l: 'Latency', v: '12ms' },
+                    { l: 'Anomalies', v: '0' },
+                  ].map((m) => (
+                    <div
+                      key={m.l}
+                      className="rounded-2xl bg-white/[0.04] p-3 ring-1 ring-white/10"
+                    >
+                      <p className="font-display text-xl text-white">{m.v}</p>
+                      <p className="mt-0.5 text-[9px] uppercase tracking-eyebrow text-white/40">
+                        {m.l}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-          <figcaption className="home-art-caption home-art-caption--dark mt-4 px-2">
-            <p>Illustration · Submitted by students. Reviewed by you.</p>
-            {motionControl}
-          </figcaption>
-        </figure>
+        </div>
       </div>
     </div>
   </section>
@@ -576,10 +802,10 @@ const IntegritySpotlight = ({
 /* ───── METRICS strip ───── */
 const Metrics = () => {
   const items = [
-    { k: "Create", l: "Build course assessments" },
-    { k: "Timed", l: "Server-enforced availability" },
-    { k: "Review", l: "Teacher-approved grades" },
-    { k: "Feedback", l: "Help students improve" },
+    { k: 'Privacy-aware', l: 'Designed for responsible assessment workflows' },
+    { k: 'Configurable', l: 'Set rules and violation thresholds per exam' },
+    { k: 'Actionable', l: 'Review clear integrity events and exam results' },
+    { k: 'Launch offer', l: 'Start with five free assessment trials' },
   ];
   return (
     <section className="bg-white py-24">
@@ -590,7 +816,7 @@ const Metrics = () => {
               key={m.k}
               className={`reveal reveal-delay-${i + 1} border-l border-ink-900/10 pl-6`}
             >
-              <p className="font-display text-5xl tracking-tightest text-ink-900">
+              <p className="font-display text-3xl tracking-tightest text-primary-800">
                 {m.k}
               </p>
               <p className="mt-2 text-sm font-medium text-ink-500">{m.l}</p>
@@ -603,186 +829,6 @@ const Metrics = () => {
 };
 
 /* ───── TESTIMONIALS — Z-axis cascade on desktop ───── */
-const Testimonials = () => {
-  const quotes = [
-    {
-      q: "Create course assessments and choose when enrolled students can start them.",
-      a: "Create and schedule",
-      r: "Teacher controls",
-      rot: "md:-rotate-2",
-    },
-    {
-      q: "Review answers and recorded events before saving a teacher grade and feedback.",
-      a: "Review and grade",
-      r: "Assessment workflow",
-      rot: "md:rotate-1",
-    },
-    {
-      q: "Organise topics, learning resources, and enrolled students within each course.",
-      a: "Manage your courses",
-      r: "Course workspace",
-      rot: "md:-rotate-1",
-    },
-  ];
-
-  return (
-    <section id="trust" className="relative bg-ink-50 py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="reveal mx-auto max-w-3xl text-center">
-          <span className="eyebrow eyebrow-light">Your workflow</span>
-          <h2 className="mt-4 font-display text-4xl md:text-6xl tracking-tightest text-ink-900 text-balance">
-            A clear path from questions to reviewed results.
-          </h2>
-        </div>
-
-        <div className="mt-20 grid gap-6 md:grid-cols-3">
-          {quotes.map((qq, i) => (
-            <figure
-              key={i}
-              className={`reveal reveal-delay-${i + 1} bezel ${qq.rot} transition-transform duration-700 ease-spring hover:rotate-0`}
-            >
-              <blockquote className="bezel-core flex h-full flex-col gap-6 p-7">
-                <Stroke
-                  d="M9 7H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2v3a2 2 0 0 1-2 2H4 M19 7h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2v3a2 2 0 0 1-2 2h-1"
-                  size={28}
-                  className="text-primary-500"
-                />
-                <p className="font-display text-xl leading-snug tracking-tightest text-ink-900">
-                  {qq.q}
-                </p>
-                <figcaption className="mt-auto flex items-center gap-3 border-t border-ink-900/5 pt-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-accent-400 font-display text-white">
-                    {qq.a.split(" ").slice(-1)[0][0]}
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold text-ink-900">{qq.a}</p>
-                    <p className="text-xs text-ink-500">{qq.r}</p>
-                  </div>
-                </figcaption>
-              </blockquote>
-            </figure>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-/* ───── FINAL CTA ───── */
-const FinalCTA = () => (
-  <section className="relative px-4 py-32">
-    <div className="reveal mx-auto max-w-6xl">
-      <div className="bezel-dark">
-        <div className="bezel-core-dark relative overflow-hidden px-8 py-24 sm:px-16 text-center">
-          <div
-            aria-hidden
-            className="absolute inset-0 -z-10 bg-mesh-emerald opacity-80"
-          />
-          <span className="eyebrow eyebrow-dark">Ready when you are</span>
-          <h2 className="mt-5 font-display text-5xl md:text-7xl tracking-tightest text-white text-balance">
-            Bring integrity back to{" "}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage:
-                  "linear-gradient(135deg, #6CE8B7 0%, #22D3EE 100%)",
-              }}
-            >
-              every assessment.
-            </span>
-          </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-white/60 text-pretty">
-            Manage courses, scheduled assessments and reviewed results with
-            EraEdu.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <Link to="/register" className="btn-island-emerald">
-              <span className="pr-1">Create an account</span>
-              <span className="btn-icon-dark">
-                <Arrow />
-              </span>
-            </Link>
-            <Link to="/contact" className="btn-island-ghost-dark">
-              <span className="pr-1">Get support</span>
-              <span className="btn-icon">
-                <Arrow />
-              </span>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-);
-
-/* ───── FOOTER ───── */
-const Footer = () => (
-  <footer className="border-t border-ink-900/5 bg-white">
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="grid gap-10 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <Brand to="/" />
-          <p className="mt-5 max-w-sm text-sm text-ink-500">
-            EraEdu is the integrity engine for modern classrooms. Built by
-            educators, secured by engineers.
-          </p>
-        </div>
-        {[
-          {
-            h: "Platform",
-            l: [
-              ["Features", "#features"],
-              ["Workflow", "#how"],
-              ["Integrity", "#integrity"],
-              ["Trust", "#trust"],
-            ],
-          },
-          {
-            h: "Account",
-            l: [
-              ["Sign in", "/login"],
-              ["Create account", "/register"],
-              ["Profile", "/profile"],
-            ],
-          },
-          {
-            h: "Company",
-            l: [
-              ["Contact", "/contact"],
-              ["Privacy", "/privacy"],
-              ["Terms", "/terms"],
-            ],
-          },
-        ].map((col) => (
-          <div key={col.h} className="lg:col-span-2">
-            <p className="text-[10px] font-semibold uppercase tracking-eyebrow text-ink-400">
-              {col.h}
-            </p>
-            <ul className="mt-4 space-y-2.5">
-              {col.l.map(([label, href]) => (
-                <li key={label}>
-                  <Link
-                    to={href.startsWith("#") ? `/${href}` : href}
-                    className="text-sm text-ink-700 transition-colors duration-300 hover:text-primary-700"
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      <div className="hairline-x mt-14" />
-      <div className="mt-6 flex flex-col items-start justify-between gap-4 text-xs text-ink-400 sm:flex-row sm:items-center">
-        <p>© {new Date().getFullYear()} EraEdu. All rights reserved.</p>
-        <p className="font-mono">Engineered for academic integrity.</p>
-      </div>
-    </div>
-  </footer>
-);
-
 const Pricing = () => {
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const plans = [
@@ -827,6 +873,67 @@ const Pricing = () => {
   );
 };
 
+const Testimonials = () => {
+  const principles = [
+    {
+      q: 'Make assessment expectations clear before students start, then capture the events educators need to review.',
+      a: 'Clear by design',
+      r: 'Transparent assessment workflows',
+    },
+    {
+      q: 'Give educators practical controls for tab switches, copy-paste behaviour, and automatic submission limits.',
+      a: 'Educator control',
+      r: 'Configurable safeguards per exam',
+    },
+    {
+      q: 'Build a defensible assessment record without turning a classroom into a surveillance exercise.',
+      a: 'Respectful integrity',
+      r: 'Purposeful monitoring and review',
+    },
+  ];
+
+  return (
+    <section id="trust" className="relative bg-ink-50 py-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="reveal mx-auto max-w-3xl text-center">
+          <span className="eyebrow eyebrow-light">Our approach</span>
+          <h2 className="mt-4 font-display text-4xl md:text-6xl tracking-tightest text-ink-900 text-balance">
+            Built for fair, reviewable assessments.
+          </h2>
+        </div>
+
+        <div className="mt-20 grid gap-6 md:grid-cols-3">
+          {principles.map((qq, i) => (
+            <figure
+              key={i}
+              className={`reveal reveal-delay-${i + 1} bezel transition-transform duration-500 ease-spring hover:-translate-y-1`}
+            >
+              <blockquote className="bezel-core flex h-full flex-col gap-6 p-7">
+                <Stroke
+                  d="M9 7H5a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2v3a2 2 0 0 1-2 2H4 M19 7h-4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2v3a2 2 0 0 1-2 2h-1"
+                  size={28}
+                  className="text-primary-500"
+                />
+                <p className="font-display text-xl leading-snug tracking-tightest text-ink-900">
+                  {qq.q}
+                </p>
+                <figcaption className="mt-auto flex items-center gap-3 border-t border-ink-900/5 pt-4">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary-400 to-accent-400 font-display text-white">
+                    {qq.a.split(' ').slice(-1)[0][0]}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-ink-900">{qq.a}</p>
+                    <p className="text-xs text-ink-500">{qq.r}</p>
+                  </div>
+                </figcaption>
+              </blockquote>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const FAQ = () => {
   const [openQuestion, setOpenQuestion] = useState<number | null>(null);
@@ -870,47 +977,137 @@ const FAQ = () => {
   );
 };
 
+/* ───── FINAL CTA ───── */
+const FinalCTA = () => (
+  <section className="relative px-4 py-32">
+    <div className="reveal mx-auto max-w-6xl">
+      <div className="relative rounded-[2rem] bg-primary-700/30 p-1.5 ring-1 ring-primary-500/40 shadow-glow-emerald">
+        <div className="relative overflow-hidden rounded-[calc(2rem-0.375rem)] bg-gradient-to-br from-primary-950 via-primary-900 to-teal-900 px-8 py-24 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] sm:px-16">
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-10 bg-mesh-emerald opacity-80"
+          />
+          <span className="eyebrow eyebrow-dark">Ready when you are</span>
+          <h2 className="mt-5 font-display text-5xl md:text-7xl tracking-tightest text-white text-balance">
+            Bring integrity back to{' '}
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  'linear-gradient(135deg, #6CE8B7 0%, #22D3EE 100%)',
+              }}
+            >
+              every assessment.
+            </span>
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-white/60 text-pretty">
+            Create fairer, faster, and more defensible assessments with EraEdu.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <Link to="/register" className="btn-island-emerald">
+              <span className="pr-1">Start free trial</span>
+              <span className="btn-icon-dark">
+                <Arrow />
+              </span>
+            </Link>
+            <Link to="/contact" className="btn-island-ghost-dark">
+              <span className="pr-1">Talk to sales</span>
+              <span className="btn-icon">
+                <Arrow />
+              </span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+/* ───── FOOTER ───── */
+const Footer = () => (
+  <footer className="border-t border-ink-900/5 bg-white">
+    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="grid gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-5">
+          <Brand to="/" />
+          <p className="mt-5 max-w-sm text-sm text-ink-500">
+            EraEdu is the learning platform for modern classrooms. Built by
+            educators, secured by engineers.
+          </p>
+        </div>
+        {[
+          {
+            h: 'Platform',
+            l: [
+              ['Features', '#features'],
+              ['Workflow', '#how'],
+              ['AI Integrity', '#integrity'],
+              ['Pricing', '#pricing'],
+              ['Trust', '#trust'],
+              ['FAQ', '#faq'],
+            ],
+          },
+          {
+            h: 'Account',
+            l: [
+              ['Sign in', '/login'],
+              ['Create account', '/register'],
+              ['Profile', '/profile'],
+            ],
+          },
+          {
+            h: 'Company',
+            l: [
+              ['Contact', '/contact'],
+              ['Privacy', '/privacy'],
+              ['Terms', '/terms'],
+            ],
+          },
+        ].map((col) => (
+          <div key={col.h} className="lg:col-span-2">
+            <p className="text-[10px] font-semibold uppercase tracking-eyebrow text-ink-400">
+              {col.h}
+            </p>
+            <ul className="mt-4 space-y-2.5">
+              {col.l.map(([label, href]) => (
+                <li key={label}>
+                  <Link
+                    to={href}
+                    className="text-sm text-ink-700 transition-colors duration-300 hover:text-primary-700"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div className="hairline-x mt-14" />
+      <div className="mt-6 flex flex-col items-start justify-between gap-4 text-xs text-ink-400 sm:flex-row sm:items-center">
+        <p>© {new Date().getFullYear()} EraEdu. All rights reserved.</p>
+        <p className="font-mono">Engineered for academic integrity.</p>
+      </div>
+    </div>
+  </footer>
+);
 
 /* ───── PAGE ROOT ───── */
 const LandingPage = () => {
-  useEffect(() => {
-    const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
-    if (!favicon) return;
-    const previous = favicon.href;
-    favicon.href = `${import.meta.env.BASE_URL}eraedu-mark.svg`;
-    return () => { favicon.href = previous; };
-  }, []);
   useReveal();
-  const [paused, setPaused] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
-
-  useEffect(() => {
-    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updatePreference = () => setReducedMotion(preference.matches);
-    preference.addEventListener("change", updatePreference);
-    return () => preference.removeEventListener("change", updatePreference);
-  }, []);
-
-  const stopped = paused || reducedMotion;
-  const motionControl = <MotionControl paused={stopped} reducedMotion={reducedMotion} onToggle={() => setPaused((value) => !value)} />;
 
   return (
-    <div
-      data-reveal-root
-      data-home-motion={stopped ? "paused" : "running"}
-      data-home-visible="true"
-      className="home-page min-h-[100dvh] bg-ink-50 text-ink-900 grain-fixed"
-    >
+    <div data-reveal-root className="landing-teal min-h-[100dvh] bg-[#f4fbf8] text-primary-950 grain-fixed">
       <a href="#main-content" className="skip-link">Skip to content</a>
+      <AnimatedQuoteBackground />
       <NavIsland />
       <main id="main-content" tabIndex={-1}>
-        <Hero motionControl={motionControl} />
-
-        <FeaturesBento motionControl={motionControl} />
+        <Hero />
+        <TrustByDesign />
+        <FeaturesBento />
         <HowItWorks />
-        <IntegritySpotlight motionControl={motionControl} />
+        <IntegritySpotlight />
         <Metrics />
         <Pricing />
         <Testimonials />

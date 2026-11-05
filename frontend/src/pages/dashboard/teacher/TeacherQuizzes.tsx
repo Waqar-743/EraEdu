@@ -438,12 +438,12 @@ const TeacherQuizzes = () => {
       header: 'Access Code',
       render: (quiz: Quiz) => (
         <div className="flex items-center gap-2">
-          <span className="font-mono font-bold text-lg text-primary-600 bg-primary-50 px-3 py-1 rounded-lg">
+          <span className="font-mono font-bold text-lg text-indigo-600 bg-indigo-50 px-3 py-1 rounded-lg">
             {quiz.accessCode}
           </span>
           <button
             onClick={(event) => { event.stopPropagation(); copyToClipboard(quiz.accessCode); }}
-            className="p-1 text-gray-400 hover:text-primary-600 transition-colors"
+            className="p-1 text-gray-400 hover:text-indigo-600 transition-colors"
             title="Copy code"
           >
             <ClipboardDocumentIcon className="h-4 w-4" />
@@ -477,7 +477,7 @@ const TeacherQuizzes = () => {
       header: 'Scheduled',
       render: (quiz: Quiz) => (
         quiz.scheduledStart ? (
-          <span className="text-primary-600 text-sm">
+          <span className="text-indigo-600 text-sm">
             {new Date(quiz.scheduledStart).toLocaleString()}
           </span>
         ) : (
@@ -518,7 +518,7 @@ const TeacherQuizzes = () => {
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
           Create Exam
@@ -533,7 +533,7 @@ const TeacherQuizzes = () => {
             placeholder="Search exams..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
       </div>
@@ -590,7 +590,7 @@ const TeacherQuizzes = () => {
                   onClick={() => setFormMode('quiz')}
                   disabled={saving}
                   className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                    formMode === 'quiz' ? 'bg-primary-700 text-white' : 'text-gray-600 hover:bg-gray-100'
+                    formMode === 'quiz' ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
                   Exam
@@ -600,7 +600,7 @@ const TeacherQuizzes = () => {
                   disabled={saving}
                   onClick={() => setFormMode('question')}
                   className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                    formMode === 'question' ? 'bg-primary-700 text-white' : 'text-gray-600 hover:bg-gray-100'
+                    formMode === 'question' ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >
                   Question
@@ -619,7 +619,7 @@ const TeacherQuizzes = () => {
                         type="text"
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="Enter exam title"
                         required
                       />
@@ -629,7 +629,7 @@ const TeacherQuizzes = () => {
                       <select
                         value={formData.courseId}
                         onChange={(e) => selectCourse(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         required
                       >
                         <option value="">Select a course</option>
@@ -686,7 +686,7 @@ const TeacherQuizzes = () => {
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       rows={2}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       placeholder="Brief description of the exam"
                     />
                   </div>
@@ -697,7 +697,7 @@ const TeacherQuizzes = () => {
                       type="checkbox"
                       checked={formData.cameraMonitoring}
                       onChange={(e) => setFormData({ ...formData, cameraMonitoring: e.target.checked })}
-                      className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 rounded"
+                      className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 rounded"
                     />
                     <label htmlFor="cameraMonitoring" className="text-sm text-gray-700 cursor-pointer">
                       <span className="font-medium">Require camera monitoring</span>
@@ -734,7 +734,7 @@ const TeacherQuizzes = () => {
                     <select
                       value={formData.courseId}
                       onChange={(e) => selectCourse(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       required
                     >
                       <option value="">Select a course</option>
@@ -751,7 +751,7 @@ const TeacherQuizzes = () => {
                       type="text"
                       value={formData.questionTitle}
                       onChange={(e) => setFormData({ ...formData, questionTitle: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                       placeholder="Enter question title"
                       required
                     />
@@ -762,7 +762,7 @@ const TeacherQuizzes = () => {
                       type="datetime-local"
                       value={formData.questionScheduledStart}
                       onChange={(e) => setFormData({ ...formData, questionScheduledStart: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                     />
                     <p className="mt-1 text-xs text-gray-500">
                       If set, students cannot start the question before this time
@@ -774,7 +774,7 @@ const TeacherQuizzes = () => {
                       type="checkbox"
                       checked={formData.cameraMonitoring}
                       onChange={(e) => setFormData({ ...formData, cameraMonitoring: e.target.checked })}
-                      className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 rounded"
+                      className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 rounded"
                     />
                     <label htmlFor="cameraMonitoringQ" className="text-sm text-gray-700 cursor-pointer">
                       <span className="font-medium">Require camera monitoring</span>
@@ -792,7 +792,7 @@ const TeacherQuizzes = () => {
                   <button
                     type="button"
                     onClick={addQuestion}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 text-sm bg-primary-100 text-primary-700 rounded-lg hover:bg-primary-200 transition-colors"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 text-sm bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors"
                   >
                     <PlusIcon className="h-4 w-4" />
                     Add Question
@@ -803,7 +803,7 @@ const TeacherQuizzes = () => {
                   <div className="mb-5 rounded-lg border border-gray-200 p-4">
                     <div className="mb-2 flex items-center justify-between gap-3">
                       <h5 className="text-sm font-semibold text-gray-900">Add from question bank</h5>
-                      <button type="button" onClick={fetchBankQuestions} className="text-xs font-medium text-primary-700 hover:text-primary-900">Refresh bank</button>
+                      <button type="button" onClick={fetchBankQuestions} className="text-xs font-medium text-indigo-700 hover:text-indigo-900">Refresh bank</button>
                     </div>
                     {!formData.courseId ? (
                       <p className="text-sm text-gray-500">Select a course to see its bank questions.</p>
@@ -832,7 +832,7 @@ const TeacherQuizzes = () => {
                             ))}
                           </div>
                         )}
-                        {selectedBankIds.length > 0 && <p className="mt-2 text-xs text-primary-700">{selectedBankIds.length} bank question{selectedBankIds.length === 1 ? '' : 's'} selected. Their question types and answers are kept when you save.</p>}
+                        {selectedBankIds.length > 0 && <p className="mt-2 text-xs text-indigo-700">{selectedBankIds.length} bank question{selectedBankIds.length === 1 ? '' : 's'} selected. Their question types and answers are kept when you save.</p>}
                       </>
                     )}
                   </div>
@@ -864,7 +864,7 @@ const TeacherQuizzes = () => {
                           <select
                             value={question.difficulty}
                             onChange={(e) => updateQuestion(qIndex, 'difficulty', e.target.value)}
-                            className="text-sm px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                            className="text-sm px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                           >
                             <option value="Easy">Easy</option>
                             <option value="Medium">Medium</option>
@@ -887,7 +887,7 @@ const TeacherQuizzes = () => {
                         value={question.text}
                         onChange={(e) => updateQuestion(qIndex, 'text', e.target.value)}
                         rows={2}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 mb-3"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 mb-3"
                         placeholder="Enter question text"
                         required
                       />
@@ -901,13 +901,13 @@ const TeacherQuizzes = () => {
                                 name={`correct-${qIndex}`}
                                 checked={question.correctAnswer === oIndex}
                                 onChange={() => updateQuestion(qIndex, 'correctAnswer', oIndex)}
-                                className="h-4 w-4 text-primary-600 focus:ring-primary-500"
+                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500"
                               />
                               <input
                                 type="text"
                                 value={option}
                                 onChange={(e) => updateOption(qIndex, oIndex, e.target.value)}
-                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                 placeholder={`Option ${oIndex + 1}`}
                                 required
                               />
@@ -927,7 +927,7 @@ const TeacherQuizzes = () => {
                         type="text"
                         value={question.explanation || ''}
                         onChange={(e) => updateQuestion(qIndex, 'explanation', e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="Explanation (optional)"
                       />
                     </div>
@@ -946,7 +946,7 @@ const TeacherQuizzes = () => {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 disabled:cursor-wait disabled:opacity-60"
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:cursor-wait disabled:opacity-60"
                 >
                   {saving ? 'Saving…' : editingQuiz ? 'Update Exam' : formMode === 'quiz' ? 'Create Exam' : 'Create Question'}
                 </button>

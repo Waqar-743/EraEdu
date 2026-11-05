@@ -4,7 +4,6 @@ import api from '../../services/api';
 import { CheckCircleIcon, XCircleIcon, TrophyIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import { ClockIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { PostQuizFeedbackModal } from '../../components/shared';
-import { useAuthStore } from '../../store/authStore';
 
 interface Violation {
   type?: string;
@@ -64,10 +63,6 @@ interface AttemptResult {
 const TeacherQuizResultsPage = () => {
   const { attemptId } = useParams<{ attemptId: string }>();
   const navigate = useNavigate();
-  const role = useAuthStore(state => state.user?.role);
-  const isStudent = role === 'student';
-  const dashboardPath = `/dashboard/${role || 'student'}`;
-  const historyPath = isStudent ? '/dashboard/student/quiz-history' : `${dashboardPath}/submissions`;
   const [result, setResult] = useState<AttemptResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -104,7 +99,7 @@ const TeacherQuizResultsPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
@@ -114,7 +109,7 @@ const TeacherQuizResultsPage = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error || 'Results not found'}</p>
-          <Link to={dashboardPath} className="text-primary-600 hover:text-primary-500">
+          <Link to="/dashboard/student" className="text-indigo-600 hover:text-indigo-500">
             Return to Dashboard
           </Link>
         </div>
@@ -128,19 +123,18 @@ const TeacherQuizResultsPage = () => {
 
   if (isPendingReview) {
     return (
-      <div className="min-h-screen bg-primary-50 py-8 px-4">
-        {isStudent && <PostQuizFeedbackModal attemptId={attemptId} />}
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8 px-4">
+        <PostQuizFeedbackModal attemptId={attemptId} />
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-xl shadow-sm border p-8 text-center">
             <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-amber-100 mb-4">
               <ClockIcon className="h-8 w-8 text-amber-600" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">{isStudent ? 'Submission Received' : 'Awaiting teacher review'}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Submission Received</h1>
             <p className="text-gray-600 mb-6">
-              {isStudent ? <>Your exam has been submitted and sent to your teacher for review.
+              Your exam has been submitted and sent to your teacher for review.
               Completed multiple-choice exams already count toward your dashboard scores.
-              Written-answer grades and question-by-question feedback appear after teacher review.</>
-                : <>Student: {result.studentName || 'Unknown student'}{result.studentEmail ? ` (${result.studentEmail})` : ''}. This submission is awaiting a final teacher grade.</>}
+              Written-answer grades and question-by-question feedback appear after teacher review.
             </p>
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-left mb-6">
               <p className="text-sm text-amber-800">
@@ -153,17 +147,17 @@ const TeacherQuizResultsPage = () => {
             </div>
             <div className="flex justify-center gap-4">
               <button
-                onClick={() => navigate(dashboardPath)}
+                onClick={() => navigate('/dashboard/student')}
                 className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50"
               >
                 <ArrowLeftIcon className="h-5 w-5" />
                 Back to Dashboard
               </button>
               <Link
-                to={historyPath}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-lg hover:bg-primary-800"
+                to="/dashboard/student/quiz-history"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
               >
-                {isStudent ? 'View Exam History' : 'View Submissions'}
+                View Exam History
               </Link>
             </div>
           </div>
@@ -173,21 +167,21 @@ const TeacherQuizResultsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-primary-50 py-8 px-4">
-      {isStudent && <PostQuizFeedbackModal attemptId={attemptId} />}
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 py-8 px-4">
+      <PostQuizFeedbackModal attemptId={attemptId} />
       <div className="max-w-3xl mx-auto">
         {/* Success Banner */}
-        <div className={`rounded-lg p-8 text-center mb-6 ${isPassing ? 'bg-green-500' : 'bg-orange-500'} text-white`}>
+        <div className={`rounded-2xl p-8 text-center mb-6 ${isPassing ? 'bg-green-500' : 'bg-orange-500'} text-white`}>
           <div className="inline-flex items-center justify-center h-20 w-20 rounded-full bg-white/20 mb-4">
             <TrophyIcon className="h-10 w-10" />
           </div>
           <h1 className="text-3xl font-bold mb-2">
-            {isStudent ? (isPassing ? 'Congratulations!' : 'Exam Completed!') : 'Student exam result'}
+            {isPassing ? 'Congratulations!' : 'Exam Completed!'}
           </h1>
           <p className="text-white/90">
-            {isStudent ? (isPassing
+            {isPassing 
               ? 'You passed the exam successfully!'
-              : 'Keep practicing to improve your score!') : (isPassing ? 'Passed' : 'Below passing score')}
+              : 'Keep practicing to improve your score!'}
           </p>
         </div>
 
@@ -195,10 +189,10 @@ const TeacherQuizResultsPage = () => {
         <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">{result.quiz.title}</h2>
           <p className="mb-4 text-sm text-gray-600">Student: {result.studentName || 'Unknown student'}{result.studentEmail ? ` (${result.studentEmail})` : ''} · Assessment: {result.quiz.title}</p>
-
+          
           <div className="grid grid-cols-4 gap-4 mb-6">
-            <div className="text-center p-4 bg-primary-50 rounded-lg">
-              <p className="text-4xl font-bold text-primary-600">{percentage}%</p>
+            <div className="text-center p-4 bg-indigo-50 rounded-lg">
+              <p className="text-4xl font-bold text-indigo-600">{percentage}%</p>
               <p className="text-sm text-gray-500">Score</p>
             </div>
             <div className="text-center p-4 bg-green-50 rounded-lg">
@@ -213,9 +207,9 @@ const TeacherQuizResultsPage = () => {
               }`}>{result.violations?.length || 0}</p>
               <p className="text-sm text-gray-500">Violations</p>
             </div>
-            <div className="text-center p-4 bg-primary-50 rounded-lg">
+            <div className="text-center p-4 bg-purple-50 rounded-lg">
               <div className="flex items-center justify-center gap-1">
-                <ClockIcon className="h-6 w-6 text-primary-600" />
+                <ClockIcon className="h-6 w-6 text-purple-600" />
               </div>
               <p className="text-sm text-gray-500 mt-1">
                 {result.completedAt ? new Date(result.completedAt).toLocaleTimeString() : 'N/A'}
@@ -236,7 +230,7 @@ const TeacherQuizResultsPage = () => {
                     <span className={`px-2 py-1 text-xs font-medium rounded ${
                       v.type === 'tab_switch' ? 'bg-orange-100 text-orange-700' :
                       v.type === 'copy_attempt' ? 'bg-red-100 text-red-700' :
-                      v.type === 'paste_attempt' ? 'bg-primary-100 text-primary-700' :
+                      v.type === 'paste_attempt' ? 'bg-purple-100 text-purple-700' :
                       'bg-gray-100 text-gray-700'
                     }`}>
                       {eventLabel(v)}
@@ -268,7 +262,7 @@ const TeacherQuizResultsPage = () => {
           <div className="space-y-4">
             {result.quiz.questions.map((question, qIndex) => {
               const userAnswer = result.answers.find(
-                a => a.questionId === `${result.id.split('-')[0]}-q${qIndex}` ||
+                a => a.questionId === `${result.id.split('-')[0]}-q${qIndex}` || 
                      a.questionId.endsWith(`-q${qIndex}`)
               );
               const selectedIndex = typeof userAnswer?.selectedAnswer === 'number' ? userAnswer.selectedAnswer : -1;
@@ -315,7 +309,7 @@ const TeacherQuizResultsPage = () => {
                           <span className="ml-2 text-green-600">(Correct)</span>
                         )}
                         {oIndex === selectedIndex && oIndex !== question.correctAnswer && (
-                          <span className="ml-2 text-red-600">({isStudent ? 'Your answer' : 'Student answer'})</span>
+                          <span className="ml-2 text-red-600">(Your answer)</span>
                         )}
                       </div>
                     ))}
@@ -338,17 +332,17 @@ const TeacherQuizResultsPage = () => {
         {/* Actions */}
         <div className="flex justify-center gap-4">
           <button
-            onClick={() => navigate(dashboardPath)}
+            onClick={() => navigate('/dashboard/student')}
             className="inline-flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50"
           >
             <ArrowLeftIcon className="h-5 w-5" />
             Back to Dashboard
           </button>
           <Link
-            to={isStudent ? '/dashboard/student/join-quiz' : historyPath}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary-700 text-white rounded-lg hover:bg-primary-800"
+            to="/dashboard/student/join-quiz"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
           >
-            {isStudent ? 'Take Another Exam' : 'View Submissions'}
+            Take Another Exam
           </Link>
         </div>
       </div>

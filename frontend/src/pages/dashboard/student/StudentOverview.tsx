@@ -102,14 +102,78 @@ const StudentOverview = () => {
   </div>;
 
   return (
-    <div className="mx-auto max-w-7xl space-y-8">
+    <div className="student-teal mx-auto max-w-7xl space-y-8">
       {!!analytics?.pendingReviews && <p role="status" className="rounded bg-amber-50 p-3 text-amber-900">{analytics.pendingReviews} exam result(s) await a final teacher grade. Completed multiple-choice exams are included automatically.</p>}
-      <section className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div><h1 className="text-2xl font-semibold text-gray-900">Welcome back, {user?.name}</h1>
-          <p className="mt-2 text-sm text-gray-600">Enter the exam code shared by your teacher to begin.</p>
-          <p className="mt-2 text-sm text-gray-500">{analytics?.streakDays || 0} day streak · {analytics?.totalQuizzes || 0} exams completed</p>
+      {/* HERO */}
+      <section className="relative overflow-hidden rounded-[2rem] bg-primary-100/70 p-1.5 ring-1 ring-primary-200/70">
+        <div
+          className="
+            relative overflow-hidden rounded-[calc(2rem-0.375rem)] bg-gradient-to-br from-primary-950 via-primary-900 to-teal-800
+            px-6 py-8 sm:px-10 sm:py-10
+            shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
+          "
+          style={{
+            backgroundImage:
+              'radial-gradient(60% 80% at 0% 0%, rgba(167,243,208,0.24) 0%, transparent 55%), radial-gradient(50% 60% at 100% 100%, rgba(103,232,249,0.20) 0%, transparent 55%), linear-gradient(135deg, #065F46 0%, #047857 52%, #0F766E 100%)',
+          }}
+        >
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-3 py-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/70">
+                  Learner Console
+                </span>
+              </div>
+              <h1 className="mt-4 font-display text-[36px] sm:text-[44px] leading-[1.05] tracking-tightest text-white">
+                Welcome back,{' '}
+                <span className="bg-gradient-to-r from-primary-300 via-primary-200 to-accent-300 bg-clip-text text-transparent">
+                  {user?.name}
+                </span>
+              </h1>
+              <p className="mt-3 max-w-xl text-[14.5px] leading-relaxed text-white/60">
+                Ready to take an exam? Enter the code shared by your teacher to begin.
+              </p>
+
+              <div className="mt-5 flex items-center gap-4">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] ring-1 ring-white/10 px-3 py-1.5">
+                  <span className="text-amber-300">
+                    <Stroke d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" size={14} />
+                  </span>
+                  <span className="text-[12px] font-medium text-white">{analytics?.streakDays || 0} day streak</span>
+                </div>
+                <span className="h-3 w-px bg-white/15" />
+                <span className="text-[12px] text-white/60">
+                  {analytics?.totalQuizzes || 0} exams completed
+                </span>
+              </div>
+            </div>
+
+            <Link
+              to="/dashboard/student/join-quiz"
+              className="
+                group inline-flex items-center gap-2 rounded-full
+                bg-white pl-5 pr-1.5 py-1.5
+                text-[13px] font-semibold text-ink-900
+                transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
+                hover:bg-primary-50 active:scale-[0.98]
+                shadow-[0_8px_30px_-10px_rgba(16,185,129,0.6)]
+              "
+            >
+              Join Exam
+              <span
+                className="
+                  flex h-8 w-8 items-center justify-center rounded-full
+                  bg-ink-900/5 ring-1 ring-ink-900/5
+                  transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
+                  group-hover:translate-x-0.5 group-hover:-translate-y-[1px] group-hover:bg-primary-100
+                "
+              >
+                <Stroke d="M5 12h14 M12 5l7 7-7 7" size={13} />
+              </span>
+            </Link>
+          </div>
         </div>
-        <Link to="/dashboard/student/join-quiz" className="btn-primary">Join Exam</Link>
       </section>
 
       {/* Stats */}
@@ -145,18 +209,24 @@ const StudentOverview = () => {
       {/* Performance + Notifications */}
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Performance */}
-        <div className="lg:col-span-2 rounded-lg border border-gray-200 bg-white">
-          <div className="rounded-lg bg-white p-6 sm:p-7 shadow-sm">
+        <div className="lg:col-span-2 rounded-[1.5rem] p-1.5 bg-ink-900/[0.03] ring-1 ring-ink-900/5">
+          <div className="rounded-[calc(1.5rem-0.375rem)] bg-white p-6 sm:p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
             <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-400">
               Trajectory
             </span>
-            <h3 className="mt-1 font-sans text-[20px] tracking-tight text-ink-900">
+            <h3 className="mt-1 font-display text-[20px] tracking-tightest text-ink-900">
               Performance Trend
             </h3>
             {analytics?.performanceData && analytics.performanceData.length > 0 ? (
               <div className="h-64 mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={analytics.performanceData}>
+                    <defs>
+                      <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stopColor="#10B981" />
+                        <stop offset="100%" stopColor="#06B6D4" />
+                      </linearGradient>
+                    </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="#EFF1F3" />
                     <XAxis dataKey="week" stroke="#7E8896" fontSize={11} />
                     <YAxis stroke="#7E8896" fontSize={11} domain={[0, 100]} />
@@ -172,10 +242,10 @@ const StudentOverview = () => {
                     <Line
                       type="monotone"
                       dataKey="score"
-                      stroke="#2563eb"
+                      stroke="url(#lineGrad)"
                       strokeWidth={2.5}
-                      dot={{ fill: '#2563eb', strokeWidth: 0, r: 4 }}
-                      activeDot={{ r: 7, fill: '#2563eb', stroke: '#fff', strokeWidth: 3 }}
+                      dot={{ fill: '#10B981', strokeWidth: 0, r: 4 }}
+                      activeDot={{ r: 7, fill: '#10B981', stroke: '#fff', strokeWidth: 3 }}
                     />
                   </LineChart>
                 </ResponsiveContainer>
@@ -183,7 +253,7 @@ const StudentOverview = () => {
             ) : (
               <div className="h-64 mt-4 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-lg bg-ink-50 ring-1 ring-ink-900/5 text-ink-400">
+                  <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-ink-50 ring-1 ring-ink-900/5 text-ink-400">
                     <Stroke d="M3 21h18 M6 17V9 M11 17V5 M16 17v-7 M21 17v-3" />
                   </div>
                   <p className="text-[13px] text-ink-500">Complete exams to see your performance trend</p>
@@ -194,14 +264,14 @@ const StudentOverview = () => {
         </div>
 
         {/* Notifications */}
-        <div className="rounded-lg border border-gray-200 bg-white">
-          <div className="rounded-lg bg-white p-6 shadow-sm">
+        <div className="rounded-[1.5rem] p-1.5 bg-ink-900/[0.03] ring-1 ring-ink-900/5">
+          <div className="rounded-[calc(1.5rem-0.375rem)] bg-white p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-400">
                   Inbox
                 </span>
-                <h3 className="mt-1 font-sans text-[20px] tracking-tight text-ink-900">
+                <h3 className="mt-1 font-display text-[20px] tracking-tightest text-ink-900">
                   Notifications
                 </h3>
               </div>
@@ -225,12 +295,12 @@ const StudentOverview = () => {
                   <li
                     key={notif.id}
                     className={`
-                      relative rounded-lg px-4 py-3 transition-colors duration-500
+                      relative rounded-2xl px-4 py-3 transition-colors duration-500
                       ${notif.is_read ? 'bg-ink-50/60 ring-1 ring-ink-900/[0.04]' : 'bg-primary-50/60 ring-1 ring-primary-100'}
                     `}
                   >
                     {!notif.is_read && (
-                      <span className="absolute left-0 top-3 bottom-3 w-[3px] rounded-r-full bg-primary-500" />
+                      <span className="absolute left-0 top-3 bottom-3 w-[3px] rounded-r-full bg-gradient-to-b from-primary-400 to-accent-400" />
                     )}
                     <p className="text-[13px] font-semibold text-ink-900">{notif.title}</p>
                     <p className="mt-0.5 text-[12px] text-ink-500 line-clamp-2">{notif.message}</p>
@@ -252,12 +322,12 @@ const StudentOverview = () => {
       </section>
 
       {/* Quick Actions */}
-      <section className="rounded-lg border border-gray-200 bg-white">
-        <div className="rounded-lg bg-white p-6 sm:p-7 shadow-sm">
+      <section className="rounded-[1.5rem] p-1.5 bg-ink-900/[0.03] ring-1 ring-ink-900/5">
+        <div className="rounded-[calc(1.5rem-0.375rem)] bg-white p-6 sm:p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.6)]">
           <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-400">
             Shortcuts
           </span>
-          <h3 className="mt-1 font-sans text-[20px] tracking-tight text-ink-900">Quick Actions</h3>
+          <h3 className="mt-1 font-display text-[20px] tracking-tightest text-ink-900">Quick Actions</h3>
 
           <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2">
             {[
@@ -290,14 +360,14 @@ const StudentOverview = () => {
                 key={a.to}
                 to={a.to}
                 className="
-                  group flex items-center gap-4 rounded-lg
+                  group flex items-center gap-4 rounded-2xl
                   bg-ink-50/60 ring-1 ring-ink-900/[0.04] px-4 py-3.5
-                  transition-colors duration-150 ease-[cubic-bezier(0.32,0.72,0,1)]
-                  hover:bg-white hover:ring-primary-200 hover:shadow-sm
-
+                  transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
+                  hover:bg-white hover:ring-primary-200 hover:shadow-[0_24px_60px_-30px_rgba(16,185,129,0.4)]
+                  active:scale-[0.99]
                 "
               >
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white ring-1 ring-ink-900/5 text-primary-700 shadow-sm">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white ring-1 ring-ink-900/5 text-primary-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                   <Stroke d={a.d} size={16} />
                 </span>
                 <div className="min-w-0 flex-1">
@@ -308,8 +378,8 @@ const StudentOverview = () => {
                   className="
                     flex h-8 w-8 items-center justify-center rounded-full
                     bg-ink-900/[0.04] ring-1 ring-ink-900/5 text-ink-500
-                    transition-colors duration-150 ease-[cubic-bezier(0.32,0.72,0,1)]
-
+                    transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
+                    group-hover:translate-x-0.5 group-hover:-translate-y-[1px]
                     group-hover:bg-primary-50 group-hover:text-primary-700 group-hover:ring-primary-200
                   "
                 >

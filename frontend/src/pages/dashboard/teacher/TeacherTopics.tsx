@@ -141,8 +141,8 @@ const TeacherTopics = () => {
       header: 'Topic',
       render: (topic: TopicWithCourse) => (
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-primary-100 rounded-lg">
-            <FolderIcon className="h-5 w-5 text-primary-600" />
+          <div className="p-2 bg-indigo-100 rounded-lg">
+            <FolderIcon className="h-5 w-5 text-indigo-600" />
           </div>
           <div>
             <p className="font-medium text-gray-900">{topic.title}</p>
@@ -208,7 +208,7 @@ const TeacherTopics = () => {
         </div>
         <button
           onClick={() => handleOpenModal()}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
           Add Topic
@@ -225,13 +225,13 @@ const TeacherTopics = () => {
               placeholder="Search topics..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             />
           </div>
           <select
             value={selectedCourse}
             onChange={(e) => setSelectedCourse(e.target.value)}
-            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+            className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
           >
             <option value="all">All Courses</option>
             {courses.map((course) => (
@@ -248,14 +248,14 @@ const TeacherTopics = () => {
         {loadError ? (
           <div className="p-8 text-center">
             <p className="text-gray-600 mb-4">{loadError}</p>
-            <button onClick={fetchData} className="text-primary-600 hover:text-primary-800 font-medium">
+            <button onClick={fetchData} className="text-indigo-600 hover:text-indigo-800 font-medium">
               Retry
             </button>
           </div>
         ) : courses.length === 0 && !loading ? (
           <div className="p-8 text-center">
             <p className="text-gray-500 mb-4">You need to create a course before adding topics.</p>
-            <a href="/dashboard/teacher/courses/new" className="text-primary-600 hover:text-primary-800 font-medium">
+            <a href="/dashboard/teacher/courses/new" className="text-indigo-600 hover:text-indigo-800 font-medium">
               Create your first course →
             </a>
           </div>
@@ -283,7 +283,7 @@ const TeacherTopics = () => {
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   required
                 />
               </div>
@@ -293,7 +293,7 @@ const TeacherTopics = () => {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   required
                 />
               </div>
@@ -302,7 +302,7 @@ const TeacherTopics = () => {
                 <select
                   value={formData.courseId}
                   onChange={(e) => setFormData({ ...formData, courseId: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   required
                 >
                   <option value="">Select a course</option>
@@ -320,7 +320,7 @@ const TeacherTopics = () => {
                   min="1"
                   value={formData.order}
                   onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   required
                 />
               </div>
@@ -334,7 +334,7 @@ const TeacherTopics = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800"
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700"
                 >
                   {editingTopic ? 'Update' : 'Create'}
                 </button>

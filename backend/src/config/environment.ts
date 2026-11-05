@@ -65,9 +65,6 @@ if (isProduction && serviceKey.length < 20) {
   throw new Error('FATAL: SUPABASE_SERVICE_KEY must be configured in production.');
 }
 
-const emailProvider = (process.env.EMAIL_PROVIDER || 'resend').trim().toLowerCase();
-const smtpUser = (process.env.SMTP_USER || '').trim();
-
 export const config = {
   nodeEnv,
   port: process.env.PORT || 5000,
@@ -97,17 +94,8 @@ export const config = {
     }
     return rejectProductionPlaceholder('JWT_SECRET', secret);
   })(),
-  emailProvider,
-  resendApiKey: (process.env.RESEND_API_KEY || '').trim(),
-  emailFrom: (process.env.EMAIL_FROM || (emailProvider === 'smtp'
-    ? `EraEdu <${smtpUser}>` : 'EraEdu <onboarding@resend.dev>')).trim(),
-  smtp: {
-    host: (process.env.SMTP_HOST || '').trim(),
-    port: Number(process.env.SMTP_PORT?.trim() || '465'),
-    user: smtpUser,
-    // Passwords can contain spaces; preserve the exact secret supplied.
-    pass: process.env.SMTP_PASS || '',
-  },
+  resendApiKey: process.env.RESEND_API_KEY || '',
+  emailFrom: process.env.EMAIL_FROM || 'EraEdu <onboarding@resend.dev>',
   geminiApiKey: process.env.GEMINI_API_KEY || '',
   safepayEnvironment: process.env.SAFEPAY_ENV || 'sandbox',
   safepaySecretKey: process.env.SAFEPAY_SECRET_KEY || '',

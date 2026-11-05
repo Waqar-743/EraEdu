@@ -38,7 +38,7 @@ const LoginPage = () => {
         {errors.password && <p id="password-error" role="alert" className="mt-1 text-sm text-red-600">{errors.password.message as string}</p>}
         <div className="mt-2 text-right"><Link to="/forgot-password" className="text-sm font-medium text-primary-600 hover:text-primary-500">Forgot password?</Link></div>
       </div>
-      <button type="submit" disabled={isLoading} className="flex w-full justify-center rounded-md bg-primary-700 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-800 disabled:opacity-50">{isLoading ? 'Signing in…' : 'Sign in'}</button>
+      <button type="submit" disabled={isLoading} className="flex w-full justify-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 disabled:opacity-50">{isLoading ? 'Signing in…' : 'Sign in'}</button>
     </form>
   </div>;
 };

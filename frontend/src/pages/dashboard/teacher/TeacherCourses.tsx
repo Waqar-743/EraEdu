@@ -134,7 +134,7 @@ const TeacherCourses = () => {
 
   const confirmDelete = async () => {
     if (!courseToDelete) return;
-
+    
     try {
       await api.delete(`/courses/${courseToDelete._id}`);
       toast.success('Course deleted successfully');
@@ -173,7 +173,7 @@ const TeacherCourses = () => {
       header: 'Course',
       render: (course: TeacherCourse) => (
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-br from-primary-100 to-primary-200 rounded-lg flex items-center justify-center">
             <span className="text-lg font-bold text-primary-700">
               {course.title.charAt(0)}
             </span>
@@ -201,7 +201,7 @@ const TeacherCourses = () => {
               toast.success(`Code "${course.courseCode}" copied!`);
             }
           }}
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-primary-50 text-primary-700 rounded-md font-mono text-sm font-semibold hover:bg-primary-100 transition-colors"
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-indigo-50 text-indigo-700 rounded-md font-mono text-sm font-semibold hover:bg-indigo-100 transition-colors"
           title="Click to copy"
         >
           {course.courseCode || '—'}
@@ -296,7 +296,7 @@ const TeacherCourses = () => {
         </div>
         <Link
           to={`${coursesPath}/new`}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
         >
           <PlusIcon className="h-5 w-5" />
           Create Course
@@ -350,7 +350,7 @@ const TeacherCourses = () => {
                 type="text"
                 value={editForm.title}
                 onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -360,7 +360,7 @@ const TeacherCourses = () => {
                 value={editForm.description}
                 onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -372,7 +372,7 @@ const TeacherCourses = () => {
                   onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
                   maxLength={MAX_COURSE_CATEGORY_LENGTH + 20}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               <div>
@@ -380,7 +380,7 @@ const TeacherCourses = () => {
                 <select
                   value={editForm.difficulty}
                   onChange={(e) => setEditForm({ ...editForm, difficulty: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="Beginner">Beginner</option>
                   <option value="Intermediate">Intermediate</option>
@@ -399,7 +399,7 @@ const TeacherCourses = () => {
                 value={editForm.maxStudents}
                 onChange={(e) => setEditForm({ ...editForm, maxStudents: e.target.value })}
                 placeholder="e.g. 50"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
               />
               <p className="mt-1 text-xs text-gray-500">
                 Currently enrolled: {editingCourse.enrollmentCount || 0}
@@ -420,7 +420,7 @@ const TeacherCourses = () => {
               <button
                 type="submit"
                 disabled={savingEdit}
-                className="px-4 py-2 bg-primary-700 text-white rounded-lg font-medium hover:bg-primary-800 disabled:opacity-50"
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50"
               >
                 {savingEdit ? 'Saving…' : 'Save Changes'}
               </button>

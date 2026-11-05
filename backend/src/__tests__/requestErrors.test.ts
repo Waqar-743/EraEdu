@@ -3,7 +3,6 @@ import express from 'express';
 import request from 'supertest';
 import { errorHandler } from '../middleware/errorHandler';
 import { teacherTimingSchemaError, legacyTeacherAttemptError } from '../services/teacherTimingSchema';
-import { PASSWORD_RESET_EMAIL_UNAVAILABLE } from '../services/emailDeliveryError';
 
 const app = express();
 app.use(express.json({ limit: '100b' }));
@@ -12,16 +11,9 @@ app.get('/cors', (_req, _res, next) => next(new Error('Not allowed by CORS')));
 app.get('/timing', (_req, _res, next) => next(teacherTimingSchemaError({ code: 'PGRST202',
   message: 'Could not find the function public.start_teacher_attempt in the schema cache' })));
 app.get('/legacy-attempt', (_req, _res, next) => next(legacyTeacherAttemptError()));
-app.get('/email-unavailable', (_req, _res, next) => next(Object.assign(new Error(PASSWORD_RESET_EMAIL_UNAVAILABLE), { statusCode: 503 })));
 app.use(errorHandler);
 beforeAll(() => { jest.spyOn(console, 'error').mockImplementation(() => {}); });
 afterAll(() => jest.restoreAllMocks());
-it('preserves the safe email delivery failure in production without returning a stack', async () => {
-  const response = await request(app).get('/email-unavailable');
-  expect(response.status).toBe(503);
-  expect(response.body.error.message).toBe(PASSWORD_RESET_EMAIL_UNAVAILABLE);
-  expect(response.body).not.toHaveProperty('stack');
-});
 it('malformed JSON returns a safe 400 instead of 500 or raw parser text', async () => {
   const response = await request(app).post('/body').set('Content-Type', 'application/json').send('{"private":');
   expect(response.status).toBe(400);

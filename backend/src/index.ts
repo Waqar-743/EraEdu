@@ -5,7 +5,6 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import pinoHttp from 'pino-http';
 import { config } from './config/environment';
-import { getEmailSetupStatus } from './services/emailConfiguration';
 import { connectDatabase } from './config/database';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import { logger, serializeHttpRequest } from './config/logger';
@@ -168,7 +167,6 @@ app.get('/health', async (_req, res) => {
   // Gemini is an optional enhancement. Its absence must never report the API
   // as down or prevent core sign-in, quiz, and database functionality.
   checks.ai = config.geminiApiKey ? 'ok' : 'not_configured';
-  checks.email = getEmailSetupStatus();
 
   const databaseOk = checks.database === 'ok';
   res.status(databaseOk ? 200 : 503).json({

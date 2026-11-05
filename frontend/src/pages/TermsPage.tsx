@@ -38,7 +38,7 @@ const TermsPage = () => {
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {termsPoints.map((point) => (
-            <section key={point.title} className="rounded-lg border border-slate-200 bg-slate-50 p-6">
+            <section key={point.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
               <h2 className="text-base font-semibold text-slate-900">{point.title}</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">{point.description}</p>
             </section>
@@ -48,7 +48,7 @@ const TermsPage = () => {
         <div className="mt-12 flex flex-col gap-3 sm:flex-row">
           <Link
             to="/register"
-            className="inline-flex items-center justify-center rounded-md bg-primary-700 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-800"
+            className="inline-flex items-center justify-center rounded-md bg-primary-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-primary-700"
           >
             Get started
           </Link>

@@ -110,7 +110,7 @@ const StudentRecommendations = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -118,7 +118,7 @@ const StudentRecommendations = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <header className="bg-primary-700 rounded-xl p-6 text-white">
+      <header className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-xl p-6 text-white">
         <div className="flex items-center gap-3 mb-2">
           <SparklesIcon className="h-8 w-8" />
           <h1 className="text-2xl font-bold">Learning Recommendations</h1>
@@ -147,7 +147,7 @@ const StudentRecommendations = () => {
         {/* Main Recommendations */}
         <div className="lg:col-span-2 space-y-4">
           <h2 className="text-lg font-semibold text-gray-900">Recommended for You</h2>
-
+          
           {recommendations.length > 0 ? (
             recommendations.map((rec) => (
               <div
@@ -186,7 +186,7 @@ const StudentRecommendations = () => {
                       {rec.actionUrl && (
                         <Link
                           to={rec.actionUrl}
-                          className="flex-shrink-0 inline-flex items-center gap-1 rounded-lg bg-primary-700 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-800"
+                          className="flex-shrink-0 inline-flex items-center gap-1 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
                         >
                           {rec.actionLabel || 'Start'}
                           <ArrowRightIcon className="h-4 w-4" />
@@ -211,7 +211,7 @@ const StudentRecommendations = () => {
         {/* Learning Insights Sidebar */}
         <div className="space-y-4">
           <h2 className="text-lg font-semibold text-gray-900">Learning Insights</h2>
-
+          
           {insights.length > 0 ? (
             insights.map((insight, index) => (
               <div
@@ -249,7 +249,7 @@ const StudentRecommendations = () => {
           )}
 
           {/* Quick Actions */}
-          <div className="bg-primary-50 rounded-xl border border-primary-100 p-4">
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl border border-primary-100 p-4">
             <h4 className="font-medium text-gray-900 mb-3">Quick Actions</h4>
             <div className="space-y-2">
               <Link

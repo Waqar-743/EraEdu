@@ -56,7 +56,7 @@ const adminItems: SidebarItem[] = [
   { label: 'Command Center', href: '/dashboard/admin', icon: <Stroke d="M3 11l9-7 9 7v9a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2v-9z" /> },
   { label: 'User Governance', href: '/dashboard/admin/users', icon: <Stroke d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2 M16 3.1a4 4 0 0 1 0 7.8 M22 21v-2a4 4 0 0 0-3-3.9" /> },
   { label: 'Courses', href: '/dashboard/admin/courses', icon: <Stroke d="M4 5a2 2 0 0 1 2-2h11v17H6a2 2 0 0 1-2-2V5z M9 3v17 M17 7H9 M17 11H9" /> },
-  { label: 'Assessments', href: '/dashboard/admin/attempts', icon: <Stroke d="M9 11l3 3 7-7 M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1 2-2h10" /> },
+  { label: 'Assessments', href: '/dashboard/admin/quizzes', icon: <Stroke d="M9 11l3 3 7-7 M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1 2-2h10" /> },
   { label: 'Submissions', href: '/dashboard/admin/submissions', icon: <Stroke d="M5 7h14v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7 M9 12h6 M9 16h4" /> },
   { label: 'Analytics', href: '/dashboard/admin/analytics', icon: <Stroke d="M3 21h18 M6 17V9 M11 17V5 M16 17v-7 M21 17v-3" /> },
 ];
@@ -130,8 +130,24 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
   };
 
   return (
-    <div className="app-workspace flex min-h-screen bg-gray-50 overflow-hidden relative">
+    <div className="app-workspace dashboard-teal flex min-h-[100dvh] bg-ink-50 overflow-hidden relative">
       <a href="#dashboard-content" className="skip-link">Skip to dashboard content</a>
+      {/* Subtle ambient mesh */}
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 opacity-[0.5]"
+        style={{
+          background:
+            'radial-gradient(60% 40% at 80% 0%, rgba(16,185,129,0.06) 0%, transparent 60%), radial-gradient(40% 30% at 0% 100%, rgba(6,182,212,0.05) 0%, transparent 60%)',
+        }}
+      />
+      <div aria-hidden="true" className="dashboard-learning-flow" />
+      <img
+        src="/dashboard-open-book.png"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none fixed -right-20 top-20 z-0 hidden w-[30rem] select-none opacity-[0.10] blur-[0.2px] lg:block xl:w-[36rem]"
+      />
       <RoleSidebar
         items={sidebarItems}
         isOpen={sidebarOpen}
@@ -141,20 +157,22 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
       />
 
       <div className="flex-1 flex flex-col overflow-hidden relative">
-        {/* Application header */}
-        <header className="sticky top-0 z-20 border-b border-gray-200 bg-white px-3 sm:px-5 lg:px-6">
+        {/* Floating glass header */}
+        <header className="sticky top-0 z-20 px-3 sm:px-5 lg:px-6 pt-3 lg:pt-4">
           <div
             className="
-              mx-auto flex h-16 w-full items-center gap-2
+              mx-auto flex h-14 w-full items-center gap-2 rounded-full px-2
+              bg-white/75 backdrop-blur-2xl ring-1 ring-ink-900/5
+              shadow-[0_12px_40px_-20px_rgba(5,7,11,0.15)]
             "
           >
             <button
               onClick={() => setSidebarOpen(true)}
               className="
                 flex h-10 w-10 items-center justify-center rounded-full
-                text-ink-500 transition-colors duration-150 ease-[cubic-bezier(0.32,0.72,0,1)]
+                text-ink-500 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                 hover:bg-ink-900/[0.04] hover:text-ink-900 lg:hidden
-
+                active:scale-[0.96]
               "
               aria-label="Open sidebar"
               aria-expanded={sidebarOpen}
@@ -179,7 +197,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                 {role === 'teacher' ? 'Educator' : role === 'admin' ? 'Administrator' : 'Learner'}
               </span>
               <span className="h-3 w-px bg-ink-900/10" />
-              <span className="font-sans text-[15px] font-semibold tracking-tight text-ink-900">
+              <span className="font-display text-[15px] font-semibold tracking-tightest text-ink-900">
                 Dashboard
               </span>
             </div>
@@ -191,14 +209,14 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                   onClick={() => setShowNotifications((s) => !s)}
                   className="
                     relative flex h-10 w-10 items-center justify-center rounded-full
-                    text-ink-500 transition-colors duration-150 ease-[cubic-bezier(0.32,0.72,0,1)]
-                    hover:bg-ink-900/[0.04] hover:text-ink-900
+                    text-ink-500 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
+                    hover:bg-ink-900/[0.04] hover:text-ink-900 active:scale-[0.96]
                   "
                   aria-label="Notifications"
                 >
                   <Stroke d="M6 8a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9z M10 21a2 2 0 0 0 4 0" />
                   {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-primary-500 px-1 text-[9px] font-bold text-white ring-2 ring-white">
+                    <span className="absolute top-1.5 right-1.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-rose-500 px-1 text-[9px] font-bold text-white ring-2 ring-white">
                       {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                   )}
@@ -207,9 +225,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                 <div
                   className={`
                     absolute right-0 mt-3 w-[22rem] origin-top-right
-                    rounded-lg border border-gray-200 bg-white
-                    shadow-sm
-                    transition-colors duration-150 ease-[cubic-bezier(0.32,0.72,0,1)]
+                    rounded-3xl p-1.5 bg-ink-900/[0.04] ring-1 ring-ink-900/5
+                    shadow-[0_30px_80px_-20px_rgba(5,7,11,0.25)]
+                    transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                     ${
                       showNotifications
                         ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
@@ -217,7 +235,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                     }
                   `}
                 >
-                  <div className="rounded-lg bg-white overflow-hidden">
+                  <div className="rounded-[calc(1.5rem-0.375rem)] bg-white overflow-hidden">
                     <div className="flex items-center justify-between border-b border-ink-900/5 px-4 py-3">
                       <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-400">
                         Notifications
@@ -234,7 +252,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                     <div className="overflow-y-auto max-h-80">
                       {notifications.length === 0 ? (
                         <div className="py-12 text-center">
-                          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-lg bg-ink-50 text-ink-300">
+                          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-ink-50 text-ink-300">
                             <Stroke d="M6 8a6 6 0 1 1 12 0c0 7 3 7 3 9H3c0-2 3-2 3-9z M10 21a2 2 0 0 0 4 0" />
                           </div>
                           <p className="text-sm text-ink-500">No notifications yet</p>
@@ -250,7 +268,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                           >
                             <div className="flex items-start gap-2.5">
                               {!notif.is_read && (
-                                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary-500 " />
+                                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary-500 shadow-[0_0_6px_rgba(16,185,129,0.7)]" />
                               )}
                               <div className="min-w-0 flex-1">
                                 <p className="text-sm font-semibold text-ink-900">{notif.title}</p>
@@ -289,12 +307,16 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                   className="
                     group flex items-center gap-2 rounded-full p-1 pr-3
                     ring-1 ring-ink-900/5 bg-ink-900/[0.03]
-                    transition-colors duration-150 ease-[cubic-bezier(0.32,0.72,0,1)]
-                    hover:bg-ink-900/[0.06]
+                    transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
+                    hover:bg-ink-900/[0.06] active:scale-[0.98]
                   "
                 >
                   <span
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-100 font-semibold text-sm text-primary-800"
+                    className="flex h-8 w-8 items-center justify-center rounded-full font-display text-sm text-white"
+                    style={{
+                      background: 'linear-gradient(135deg, #047857 0%, #10B981 50%, #06B6D4 100%)',
+                      boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.18)',
+                    }}
                   >
                     {user?.name?.charAt(0).toUpperCase() || 'U'}
                   </span>
@@ -305,9 +327,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                 <div
                   className={`
                     absolute right-0 mt-3 w-60 origin-top-right
-                    rounded-lg bg-white p-1.5 ring-1 ring-ink-900/5
-                    shadow-sm
-                    transition-colors duration-150 ease-[cubic-bezier(0.32,0.72,0,1)]
+                    rounded-2xl bg-white p-1.5 ring-1 ring-ink-900/5
+                    shadow-[0_24px_60px_-20px_rgba(5,7,11,0.2)]
+                    transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
                     ${
                       showUserMenu
                         ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto'
@@ -341,7 +363,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
                   </Link>
                   <button
                     onClick={handleSignOut}
-                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-primary-600 transition-colors duration-300 hover:bg-primary-50"
+                    className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm text-rose-600 transition-colors duration-300 hover:bg-rose-50"
                   >
                     <Stroke d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3 M10 17l-5-5 5-5 M5 12h12" size={15} />
                     Sign out

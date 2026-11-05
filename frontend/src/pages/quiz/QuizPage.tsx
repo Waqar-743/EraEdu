@@ -84,7 +84,7 @@ const QuizPage: React.FC = () => {
   if (loading && !currentQuestion) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
@@ -97,7 +97,7 @@ const QuizPage: React.FC = () => {
           <p className="text-gray-700 mb-6">{error}</p>
           <button 
             onClick={() => navigate('/dashboard')}
-            className="bg-primary-700 text-white px-4 py-2 rounded hover:bg-primary-800"
+            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
           >
             Return to Dashboard
           </button>
@@ -130,12 +130,12 @@ const QuizPage: React.FC = () => {
           <h2 className="text-2xl font-bold text-gray-900">Exam Session</h2>
           <div className="flex items-center gap-4">
             <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg font-mono font-bold ${
-              timeLeft < 10 ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-primary-100 text-primary-700'
+              timeLeft < 10 ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-indigo-100 text-indigo-700'
             }`}>
               <ClockIcon className="h-4 w-4" />
               {formatTime(timeLeft)}
             </div>
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
               {currentQuestion.difficulty}
             </span>
           </div>
@@ -157,14 +157,14 @@ const QuizPage: React.FC = () => {
                   onClick={() => handleOptionSelect(idx)}
                   className={`relative border rounded-lg p-4 cursor-pointer flex items-center transition-colors
                     ${selectedAnswer === idx
-                      ? 'border-primary-500 ring-2 ring-primary-500 bg-primary-50'
-                      : 'border-gray-300 hover:border-primary-400 hover:bg-gray-50'
+                      ? 'border-indigo-500 ring-2 ring-indigo-500 bg-indigo-50' 
+                      : 'border-gray-300 hover:border-indigo-400 hover:bg-gray-50'
                     }`}
                 >
                   <div className={`h-4 w-4 rounded-full border flex items-center justify-center mr-3
-                    ${selectedAnswer === idx ? 'border-primary-600' : 'border-gray-400'}`}>
+                    ${selectedAnswer === idx ? 'border-indigo-600' : 'border-gray-400'}`}>
                     {selectedAnswer === idx && (
-                      <div className="h-2 w-2 rounded-full bg-primary-700" />
+                      <div className="h-2 w-2 rounded-full bg-indigo-600" />
                     )}
                   </div>
                   <span className="text-gray-900">{option}</span>
@@ -177,7 +177,7 @@ const QuizPage: React.FC = () => {
             <button
               type="button"
               onClick={handleRequestHint}
-              className="inline-flex items-center text-sm text-gray-500 hover:text-primary-600"
+              className="inline-flex items-center text-sm text-gray-500 hover:text-indigo-600"
             >
               <LightBulbIcon className="h-5 w-5 mr-1" />
               Need a hint?
@@ -188,7 +188,7 @@ const QuizPage: React.FC = () => {
               onClick={() => handleSubmit()}
               disabled={selectedAnswer === null || loading}
               className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white 
-                ${selectedAnswer === null || loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'}`}
+                ${selectedAnswer === null || loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'}`}
             >
               {loading ? 'Submitting...' : 'Submit Answer'}
             </button>
