@@ -14,10 +14,10 @@ const QuizResultsPage: React.FC = () => {
     if (attemptId) void getAttemptResults(attemptId);
   }, [attemptId, getAttemptResults]);
 
-  if (loading) return <div className="app-workspace era-assessment flex min-h-screen items-center justify-center bg-primary-50"><span className="h-12 w-12 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600" /></div>;
+  if (loading) return <div className="flex min-h-screen items-center justify-center bg-primary-50"><span className="h-12 w-12 animate-spin rounded-full border-4 border-primary-200 border-t-primary-600" /></div>;
 
   if (error || !currentAttempt) {
-    return <div className="app-workspace era-assessment flex min-h-screen items-center justify-center bg-primary-50 px-4"><div className="text-center"><p className="text-red-700">{error || 'Results not found'}</p><Link to="/dashboard" className="mt-4 inline-block font-semibold text-primary-700 hover:text-primary-800">Return to Dashboard</Link></div></div>;
+    return <div className="flex min-h-screen items-center justify-center bg-primary-50 px-4"><div className="text-center"><p className="text-red-700">{error || 'Results not found'}</p><Link to="/dashboard" className="mt-4 inline-block font-semibold text-primary-700 hover:text-primary-800">Return to Dashboard</Link></div></div>;
   }
 
   // Teacher-graded and short-answer submissions deliberately return no score
@@ -42,7 +42,7 @@ const QuizResultsPage: React.FC = () => {
   };
 
   return (
-    <div className="app-workspace era-assessment min-h-screen bg-primary-50/60 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-primary-50/60 px-4 py-12 sm:px-6 lg:px-8">
       {/* Teacher-exam feedback is keyed to teacher_quizzes; topic exams have a separate quiz table. */}
       {isStudent && !result.isTopicExam && <PostQuizFeedbackModal attemptId={attemptId} />}
       <div className="mx-auto max-w-3xl overflow-hidden rounded-3xl border border-primary-900/10 bg-white shadow-soft">

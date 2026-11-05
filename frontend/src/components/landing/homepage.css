@@ -1,0 +1,27 @@
+/* Every override is contained by the homepage. Shared app styles and internal
+   routes retain the colors, typography and controls they had before redesign. */
+.home-page :is(a, button):focus-visible {
+  outline: 2px solid #059669;
+  outline-offset: 4px;
+}
+
+.home-page .btn-island-primary {
+  background-color: #0b0e14;
+  box-shadow: 0 10px 30px -12px rgba(5, 7, 11, 0.5);
+}
+
+.home-page .btn-island-primary:hover {
+  background-color: #161a22;
+}
+
+.home-page .text-secondary-700 { color: #6d28d9; }
+.home-page .bg-secondary-50 { background-color: #f5f3ff; }
+.home-page .ring-secondary-200 { --tw-ring-color: #ddd6fe; }
+
+@media (prefers-reduced-motion: reduce) {
+  .home-page .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

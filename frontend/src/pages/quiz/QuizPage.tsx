@@ -8,11 +8,11 @@ const FaceDetectionCamera = lazy(() => import('../../components/shared/FaceDetec
 const QuizPage: React.FC = () => {
   const { quizId, attemptId } = useParams<{ quizId: string; attemptId: string }>();
   const navigate = useNavigate();
-  const {
-    currentQuestion,
-    loading,
-    error,
-    submitAnswer,
+  const { 
+    currentQuestion, 
+    loading, 
+    error, 
+    submitAnswer, 
     getHint,
     getCurrentTopicQuestion,
   } = useQuiz();
@@ -95,7 +95,7 @@ const QuizPage: React.FC = () => {
         <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
           <h2 className="text-red-600 text-xl font-bold mb-4">Error</h2>
           <p className="text-gray-700 mb-6">{error}</p>
-          <button
+          <button 
             onClick={() => navigate('/dashboard')}
             className="bg-primary-700 text-white px-4 py-2 rounded hover:bg-primary-800"
           >
@@ -117,7 +117,7 @@ const QuizPage: React.FC = () => {
   }
 
   return (
-    <div className="app-workspace era-assessment min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <Suspense fallback={<p role="status">Starting exam camera monitoring…</p>}>
         <FaceDetectionCamera enabled={!!currentQuestion && !error} onViolation={monitoring.reportViolation} showAwayLimit={false} />
       </Suspense>
@@ -152,7 +152,7 @@ const QuizPage: React.FC = () => {
 
             <div className="space-y-4 mt-6">
               {currentQuestion.options.map((option, idx) => (
-                <div
+                <div 
                   key={idx}
                   onClick={() => handleOptionSelect(idx)}
                   className={`relative border rounded-lg p-4 cursor-pointer flex items-center transition-colors
@@ -172,7 +172,7 @@ const QuizPage: React.FC = () => {
               ))}
             </div>
           </div>
-
+          
           <div className="bg-gray-50 px-4 py-4 sm:px-6 flex justify-between items-center">
             <button
               type="button"
@@ -182,18 +182,18 @@ const QuizPage: React.FC = () => {
               <LightBulbIcon className="h-5 w-5 mr-1" />
               Need a hint?
             </button>
-
+            
             <button
               type="button"
               onClick={() => handleSubmit()}
               disabled={selectedAnswer === null || loading}
-              className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white
+              className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white 
                 ${selectedAnswer === null || loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary-700 hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'}`}
             >
               {loading ? 'Submitting...' : 'Submit Answer'}
             </button>
           </div>
-
+          
           {showHint && hint && (
             <div className="bg-yellow-50 px-4 py-3 border-t border-yellow-100">
               <div className="flex">

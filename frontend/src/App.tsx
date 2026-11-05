@@ -60,7 +60,7 @@ const AdminLearningActivityPage = lazy(() => import('./pages/dashboard/admin/Adm
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated, isAuthChecking, authCheckError, checkAuth } = useAuthStore();
-
+  
   if (isAuthChecking) {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
@@ -70,22 +70,22 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
       <button type="button" onClick={() => void checkAuth()} className="rounded-lg bg-primary-700 px-4 py-2 font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-700">Retry account check</button>
     </div>;
   }
-
+  
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-
+  
   return children;
 };
 
 // Guest Route Component (redirect to dashboard if already logged in)
 const GuestRoute = ({ children }: { children: JSX.Element }) => {
   const { isAuthenticated, isAuthChecking, user } = useAuthStore();
-
+  
   if (isAuthChecking) {
     return <div className="flex items-center justify-center h-screen">Loading...</div>;
   }
-
+  
   if (isAuthenticated) {
     // Redirect to role-specific dashboard
     if (user?.role === 'admin') {
@@ -96,14 +96,14 @@ const GuestRoute = ({ children }: { children: JSX.Element }) => {
     }
     return <Navigate to="/dashboard/student" replace />;
   }
-
+  
   return children;
 };
 
 // Role-based dashboard redirect
 const DashboardRedirect = () => {
   const { user } = useAuthStore();
-
+  
   if (user?.role === 'admin') {
     return <Navigate to="/dashboard/admin" replace />;
   }
@@ -124,9 +124,6 @@ const AnalyticsRoute = () => {
 function App() {
   const { checkAuth, expireSession } = useAuthStore();
   const theme = usePreferencesStore((state) => state.theme);
-  const motionPaused = usePreferencesStore((state) => state.motionPaused);
-
-  useEffect(() => { document.documentElement.dataset.motion = motionPaused ? "paused" : "running"; }, [motionPaused]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -141,14 +138,14 @@ function App() {
   }, [checkAuth, expireSession]);
 
   return (
-    <div className="era-ui"><IntegrityReportSync /><Suspense fallback={<div className="flex items-center justify-center h-screen">Loading page...</div>}>
+    <><IntegrityReportSync /><Suspense fallback={<div className="flex items-center justify-center h-screen">Loading page...</div>}>
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />
       <Route path="/contact" element={<ContactPage />} />
-
+      
       {/* Auth Routes - redirect if already authenticated */}
       <Route element={
         <GuestRoute>
@@ -160,7 +157,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Route>
-
+      
       {/* Protected Routes */}
       <Route element={
         <ProtectedRoute>
@@ -216,7 +213,7 @@ function App() {
           <Route path="analytics" element={<AdminLearningActivityPage view="analytics" />} />
         </Route>
       </Route>
-
+      
       {/* Taking an exam is a student action, including direct/bookmarked URLs. */}
       <Route element={<ProtectedRoute><StudentRoute /></ProtectedRoute>}>
         <Route path="/quiz/start/:topicId" element={<QuizStartPage />} />
@@ -241,11 +238,11 @@ function App() {
       <Route element={<TeacherRoute />}>
         <Route path="/dashboard/teacher/courses/:courseId/topics/:topicId/create-question" element={<CreateQuestionPage />} />
       </Route>
-
+      
       {/* 404 */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
-    </Suspense></div>
+    </Suspense></>
   );
 }
 

@@ -1,4 +1,3 @@
-import WorkspaceHero from "../../../components/shared/WorkspaceHero";
 import { useState, useCallback } from 'react';
 import { useLiveRefresh } from '../../../hooks/useLiveRefresh';
 import { Link } from 'react-router-dom';
@@ -237,8 +236,41 @@ const TeacherOverview = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-8">
-      {/* HERO — Shared illustrated workspace */}
-<WorkspaceHero role="teacher" greeting="Welcome," name={user?.name} description="Create assessments, manage your courses, and give students useful feedback." >
+      {/* HERO — Editorial dark glass */}
+      <section
+        className="relative overflow-hidden rounded-[2rem] bg-primary-100/70 p-1.5 ring-1 ring-primary-200/70"
+      >
+        <div
+          className="
+            relative overflow-hidden rounded-[calc(2rem-0.375rem)] bg-gradient-to-br from-primary-800 via-primary-700 to-teal-700
+            px-6 py-8 sm:px-10 sm:py-10
+            shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
+          "
+          style={{
+            backgroundImage:
+              'radial-gradient(60% 80% at 0% 0%, rgba(167,243,208,0.24) 0%, transparent 55%), radial-gradient(50% 60% at 100% 100%, rgba(103,232,249,0.20) 0%, transparent 55%), linear-gradient(135deg, #065F46 0%, #047857 52%, #0F766E 100%)',
+          }}
+        >
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-3 py-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/70">
+                  Educator Console
+                </span>
+              </div>
+              <h1 className="mt-4 font-display text-[36px] sm:text-[44px] leading-[1.05] tracking-tightest text-white">
+                Welcome,{' '}
+                <span className="bg-gradient-to-r from-primary-300 via-primary-200 to-accent-300 bg-clip-text text-transparent">
+                  {user?.name}
+                </span>
+              </h1>
+              <p className="mt-3 max-w-xl text-[14.5px] leading-relaxed text-white/60">
+                Author exams, curate questions, and track your cohort's progress.
+              </p>
+            </div>
+
+            {/* CTA cluster */}
             <div className="flex flex-wrap items-center gap-2.5">
               <button
                 onClick={handleUpgrade}
@@ -267,23 +299,23 @@ const TeacherOverview = () => {
                 disabled={exporting}
                 className="
                   group inline-flex items-center gap-2 rounded-full
-                  bg-ink-50 ring-1 ring-ink-900/10 pl-5 pr-1.5 py-1.5
-                  text-[13px] font-medium text-ink-700
+                  bg-white/[0.06] ring-1 ring-white/10 pl-5 pr-1.5 py-1.5
+                  text-[13px] font-medium text-white
                   transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                  hover:bg-ink-100 active:scale-[0.98] disabled:opacity-50
+                  hover:bg-white/[0.10] active:scale-[0.98] disabled:opacity-50
                 "
               >
                 {exporting ? 'Exporting…' : 'Export Marks'}
                 <span
                   className="
                     flex h-8 w-8 items-center justify-center rounded-full
-                    bg-ink-900/5 ring-1 ring-ink-900/5
+                    bg-white/10 ring-1 ring-white/15
                     transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                    group-hover:translate-x-0.5 group-hover:-translate-y-[1px] group-hover:bg-ink-100
+                    group-hover:translate-x-0.5 group-hover:-translate-y-[1px] group-hover:bg-white/15
                   "
                 >
                   {exporting ? (
-                    <span className="h-3.5 w-3.5 animate-spin rounded-full border border-ink-900/40 border-t-ink-900" />
+                    <span className="h-3.5 w-3.5 animate-spin rounded-full border border-white/40 border-t-white" />
                   ) : (
                     <Stroke d="M12 4v12 M6 12l6 6 6-6 M5 21h14" size={13} />
                   )}
@@ -318,20 +350,21 @@ const TeacherOverview = () => {
                 to="/dashboard/teacher/questions"
                 className="
                   group inline-flex items-center gap-2 rounded-full
-                  bg-ink-50 ring-1 ring-ink-900/10 pl-5 pr-1.5 py-1.5
-                  text-[13px] font-medium text-ink-700
+                  bg-white/[0.06] ring-1 ring-white/10 pl-5 pr-1.5 py-1.5
+                  text-[13px] font-medium text-white
                   transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
-                  hover:bg-ink-100 active:scale-[0.98]
+                  hover:bg-white/[0.10] active:scale-[0.98]
                 "
               >
                 Add Question
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink-900/5 ring-1 ring-ink-900/5 transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-[1px]">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15 transition-all duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-[1px]">
                   <Stroke d="M5 12h14 M12 5l7 7-7 7" size={12} />
                 </span>
               </Link>
             </div>
-
-      </WorkspaceHero>
+          </div>
+        </div>
+      </section>
 
       {/* Stats — Bento */}
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">

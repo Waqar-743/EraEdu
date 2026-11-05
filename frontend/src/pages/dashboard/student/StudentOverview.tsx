@@ -1,4 +1,3 @@
-import WorkspaceHero from "../../../components/shared/WorkspaceHero";
 import { useCallback, useState } from 'react';
 import { useLiveRefresh } from '../../../hooks/useLiveRefresh';
 import { Link } from 'react-router-dom';
@@ -106,7 +105,50 @@ const StudentOverview = () => {
     <div className="student-teal mx-auto max-w-7xl space-y-8">
       {!!analytics?.pendingReviews && <p role="status" className="rounded bg-amber-50 p-3 text-amber-900">{analytics.pendingReviews} exam result(s) await a final teacher grade. Completed multiple-choice exams are included automatically.</p>}
       {/* HERO */}
-<WorkspaceHero role="student" greeting="Welcome back," name={user?.name} description="Your courses, assessments, and progress. Pick up where you left off." meta={`${analytics?.totalQuizzes || 0} exams completed · ${analytics?.streakDays || 0} day streak`}>
+      <section className="relative overflow-hidden rounded-[2rem] bg-primary-100/70 p-1.5 ring-1 ring-primary-200/70">
+        <div
+          className="
+            relative overflow-hidden rounded-[calc(2rem-0.375rem)] bg-gradient-to-br from-primary-950 via-primary-900 to-teal-800
+            px-6 py-8 sm:px-10 sm:py-10
+            shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]
+          "
+          style={{
+            backgroundImage:
+              'radial-gradient(60% 80% at 0% 0%, rgba(167,243,208,0.24) 0%, transparent 55%), radial-gradient(50% 60% at 100% 100%, rgba(103,232,249,0.20) 0%, transparent 55%), linear-gradient(135deg, #065F46 0%, #047857 52%, #0F766E 100%)',
+          }}
+        >
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-3 py-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
+                <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-white/70">
+                  Learner Console
+                </span>
+              </div>
+              <h1 className="mt-4 font-display text-[36px] sm:text-[44px] leading-[1.05] tracking-tightest text-white">
+                Welcome back,{' '}
+                <span className="bg-gradient-to-r from-primary-300 via-primary-200 to-accent-300 bg-clip-text text-transparent">
+                  {user?.name}
+                </span>
+              </h1>
+              <p className="mt-3 max-w-xl text-[14.5px] leading-relaxed text-white/60">
+                Ready to take an exam? Enter the code shared by your teacher to begin.
+              </p>
+
+              <div className="mt-5 flex items-center gap-4">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] ring-1 ring-white/10 px-3 py-1.5">
+                  <span className="text-amber-300">
+                    <Stroke d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" size={14} />
+                  </span>
+                  <span className="text-[12px] font-medium text-white">{analytics?.streakDays || 0} day streak</span>
+                </div>
+                <span className="h-3 w-px bg-white/15" />
+                <span className="text-[12px] text-white/60">
+                  {analytics?.totalQuizzes || 0} exams completed
+                </span>
+              </div>
+            </div>
+
             <Link
               to="/dashboard/student/join-quiz"
               className="
@@ -130,7 +172,9 @@ const StudentOverview = () => {
                 <Stroke d="M5 12h14 M12 5l7 7-7 7" size={13} />
               </span>
             </Link>
-      </WorkspaceHero>
+          </div>
+        </div>
+      </section>
 
       {/* Stats */}
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -19,7 +19,7 @@ const AccessByCodePage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (code.length !== 8) {
       setError('Please enter a valid 8-character code');
       return;
@@ -54,7 +54,7 @@ const AccessByCodePage = () => {
   };
 
   return (
-    <div className="app-workspace era-assessment min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center">
           <div className="h-16 w-16 bg-primary-100 rounded-full flex items-center justify-center">

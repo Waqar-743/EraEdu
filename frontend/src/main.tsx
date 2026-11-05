@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import App from './App'
 import './index.css'
-import './era-theme.css'
 
 const routerBasename = import.meta.env.BASE_URL.replace(/\/$/, '')
 

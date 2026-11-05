@@ -1,7 +1,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Brand } from "../components/shared";
-import MotionControl from "../components/shared/MotionControl";
+import MotionControl from "../components/landing/MotionControl";
+import "../components/landing/homepage.css";
 import api from "../services/api";
 import toast from "react-hot-toast";
 import { useReveal } from "../hooks/useReveal";
@@ -873,11 +874,25 @@ const FAQ = () => {
 /* ───── PAGE ROOT ───── */
 const LandingPage = () => {
   useReveal();
-  const motionControl = <MotionControl />;
+  const [paused, setPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setReducedMotion(preference.matches);
+    preference.addEventListener("change", updatePreference);
+    return () => preference.removeEventListener("change", updatePreference);
+  }, []);
+
+  const stopped = paused || reducedMotion;
+  const motionControl = <MotionControl paused={stopped} reducedMotion={reducedMotion} onToggle={() => setPaused((value) => !value)} />;
 
   return (
     <div
       data-reveal-root
+      data-home-motion={stopped ? "paused" : "running"}
       data-home-visible="true"
       className="home-page min-h-[100dvh] bg-ink-50 text-ink-900 grain-fixed"
     >

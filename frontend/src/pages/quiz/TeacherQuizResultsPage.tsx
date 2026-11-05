@@ -103,7 +103,7 @@ const TeacherQuizResultsPage = () => {
 
   if (loading) {
     return (
-      <div className="app-workspace era-assessment min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
       </div>
     );
@@ -111,7 +111,7 @@ const TeacherQuizResultsPage = () => {
 
   if (error || !result) {
     return (
-      <div className="app-workspace era-assessment min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error || 'Results not found'}</p>
           <Link to={dashboardPath} className="text-primary-600 hover:text-primary-500">
@@ -128,7 +128,7 @@ const TeacherQuizResultsPage = () => {
 
   if (isPendingReview) {
     return (
-      <div className="app-workspace era-assessment min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
         {isStudent && <PostQuizFeedbackModal attemptId={attemptId} />}
         <div className="max-w-3xl mx-auto">
           <div className="bg-white rounded-xl shadow-sm border p-8 text-center">
@@ -173,7 +173,7 @@ const TeacherQuizResultsPage = () => {
   }
 
   return (
-    <div className="app-workspace era-assessment min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-50 py-8 px-4">
       {isStudent && <PostQuizFeedbackModal attemptId={attemptId} />}
       <div className="max-w-3xl mx-auto">
         {/* Success Banner */}
@@ -195,7 +195,7 @@ const TeacherQuizResultsPage = () => {
         <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">{result.quiz.title}</h2>
           <p className="mb-4 text-sm text-gray-600">Student: {result.studentName || 'Unknown student'}{result.studentEmail ? ` (${result.studentEmail})` : ''} · Assessment: {result.quiz.title}</p>
-
+          
           <div className="grid grid-cols-4 gap-4 mb-6">
             <div className="text-center p-4 bg-primary-50 rounded-lg">
               <p className="text-4xl font-bold text-primary-600">{percentage}%</p>
@@ -268,7 +268,7 @@ const TeacherQuizResultsPage = () => {
           <div className="space-y-4">
             {result.quiz.questions.map((question, qIndex) => {
               const userAnswer = result.answers.find(
-                a => a.questionId === `${result.id.split('-')[0]}-q${qIndex}` ||
+                a => a.questionId === `${result.id.split('-')[0]}-q${qIndex}` || 
                      a.questionId.endsWith(`-q${qIndex}`)
               );
               const selectedIndex = typeof userAnswer?.selectedAnswer === 'number' ? userAnswer.selectedAnswer : -1;
