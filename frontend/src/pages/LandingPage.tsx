@@ -1,7 +1,6 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Brand } from "../components/shared";
-import MotionControl from "../components/shared/MotionControl";
 import api from "../services/api";
 import toast from "react-hot-toast";
 import { useReveal } from "../hooks/useReveal";
@@ -219,7 +218,7 @@ const NavIsland = () => {
 };
 
 /* ───── HERO ───── */
-const Hero = ({ motionControl }: { motionControl: ReactNode }) => (
+const Hero = () => (
   <section className="relative overflow-hidden pt-40 md:pt-48 pb-24 md:pb-32">
     {/* Mesh background */}
     <div aria-hidden className="absolute inset-0 -z-10 bg-mesh-emerald" />
@@ -296,7 +295,6 @@ const Hero = ({ motionControl }: { motionControl: ReactNode }) => (
             </span>{" "}
             An illustrated workflow.
           </p>
-          {motionControl}
         </figcaption>
       </figure>
     </div>
@@ -403,7 +401,7 @@ const features: Feat[] = [
   },
 ];
 
-const FeaturesBento = ({ motionControl }: { motionControl: ReactNode }) => (
+const FeaturesBento = () => (
   <section id="features" className="relative py-24 md:py-32">
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="reveal mx-auto max-w-3xl text-center">
@@ -417,7 +415,6 @@ const FeaturesBento = ({ motionControl }: { motionControl: ReactNode }) => (
         </p>
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           <span className="text-xs text-ink-500">Workflow illustrations</span>
-          {motionControl}
         </div>
       </div>
       <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-12 md:auto-rows-[minmax(280px,auto)]">
@@ -512,11 +509,7 @@ const HowItWorks = () => {
 };
 
 /* ───── INTEGRITY SPOTLIGHT (dark editorial split) ───── */
-const IntegritySpotlight = ({
-  motionControl,
-}: {
-  motionControl: ReactNode;
-}) => (
+const IntegritySpotlight = () => (
   <section
     id="integrity"
     className="relative overflow-hidden bg-ink-950 py-24 text-white md:py-32"
@@ -564,7 +557,6 @@ const IntegritySpotlight = ({
           </div>
           <figcaption className="home-art-caption home-art-caption--dark mt-4 px-2">
             <p>Illustration · Submitted by students. Reviewed by you.</p>
-            {motionControl}
           </figcaption>
         </figure>
       </div>
@@ -873,7 +865,6 @@ const FAQ = () => {
 /* ───── PAGE ROOT ───── */
 const LandingPage = () => {
   useReveal();
-  const motionControl = <MotionControl />;
 
   return (
     <div
@@ -884,11 +875,11 @@ const LandingPage = () => {
       <a href="#main-content" className="skip-link">Skip to content</a>
       <NavIsland />
       <main id="main-content" tabIndex={-1}>
-        <Hero motionControl={motionControl} />
+        <Hero />
 
-        <FeaturesBento motionControl={motionControl} />
+        <FeaturesBento />
         <HowItWorks />
-        <IntegritySpotlight motionControl={motionControl} />
+        <IntegritySpotlight />
         <Metrics />
         <Pricing />
         <Testimonials />

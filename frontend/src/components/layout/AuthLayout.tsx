@@ -1,7 +1,6 @@
 import { Outlet, Navigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import Brand from '../shared/Brand';
-import MotionControl from '../shared/MotionControl';
 import { AssessmentJourney, CompactJourney } from '../landing/Illustrations';
 
 const AuthLayout = () => {
@@ -25,7 +24,6 @@ const AuthLayout = () => {
         <div className="bezel mt-10"><div className="bezel-core overflow-hidden bg-[#f7faf8]"><AssessmentJourney /><CompactJourney /></div></div>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
           <span className="text-xs text-ink-500">Create. Schedule. Review. Grade.</span>
-          <MotionControl />
         </div>
       </section>
       <section className="bezel era-auth-form" aria-label="Your account">

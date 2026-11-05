@@ -50,7 +50,6 @@
 .era-auth-form button[type="submit"] { min-height: 3rem; background: #0b0e14; font-weight: 600; }
 .era-auth-form button[type="submit"]:hover { background: #262c36; }
 .era-auth-footer { color: #7e8896; font-size: .7rem; padding-top: 1.5rem; padding-bottom: 1.5rem; border-top: 1px solid #e5e8eb; }
-.home-motion-control--compact { width: 2.5rem; min-height: 2.5rem; padding: 0; border-color: transparent; color: #56606e; background: transparent; }
 .qs-art[data-document-visible="false"] .qs-motion,
 :root[data-motion="paused"] :is(.qs-motion, .animate-pulse-soft) { animation-play-state: paused !important; }
 @media (max-width: 1023px) {

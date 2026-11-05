@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import RoleSidebar, { SidebarItem } from './RoleSidebar';
-import MotionControl from "./MotionControl";
 import ChatbotWidget from './ChatbotWidget';
 import { useAuthStore } from '../../store/authStore';
 import api from '../../services/api';
@@ -198,7 +197,6 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ role }) => {
             </div>
 
             <div className="ml-auto flex items-center gap-1.5 pr-1">
-              <MotionControl compact />
               {/* Notifications */}
               <div className="relative" ref={notifRef}>
                 <button
