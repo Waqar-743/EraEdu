@@ -102,9 +102,13 @@ Safepay (including via the signed webhook).
 
 Optional AI integration: `GEMINI_API_KEY`.
 
-Password recovery requires `RESEND_API_KEY` and an `EMAIL_FROM` address on a
-domain verified in Resend. The `onboarding@resend.dev` sender is restricted to
-testing with the Resend account owner's address. Set `FRONTEND_URL`
+Password recovery supports SMTP without buying a domain: set
+`EMAIL_PROVIDER=smtp`, `SMTP_HOST`, `SMTP_PORT` (465 or 587), `SMTP_USER`,
+`SMTP_PASS`, and an `EMAIL_FROM` authorized by that mailbox. Gmail requires
+an App Password. Alternatively, keep `EMAIL_PROVIDER=resend` (the default)
+with `RESEND_API_KEY` and a sender on a domain verified in Resend. The shared
+`onboarding@resend.dev` sender only permits tests to the Resend account owner.
+Set `FRONTEND_URL`
 to the full frontend app URL, including `/EraEdu` when using GitHub Pages, so
 recovery links open the correct application. Redeploy the backend after changing
 these settings. See [password recovery setup](PASSWORD-RECOVERY.md).

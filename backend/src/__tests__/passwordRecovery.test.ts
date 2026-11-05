@@ -45,7 +45,10 @@ function setup({ users = [account] as any[], writeError = null as any } = {}) {
 beforeEach(() => {
   mockFrom.mockReset();
   mockResetEmail.mockReset().mockResolvedValue({ id: 'message-1' });
+  config.emailProvider = 'resend';
   config.resendApiKey = 'unit-test-mail-key';
+  config.emailFrom = 'EraEdu <recovery@mail.example.test>';
+  config.frontendAppUrl = 'https://waqar-743.github.io/EraEdu';
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 afterEach(() => jest.restoreAllMocks());
@@ -75,6 +78,19 @@ it('uses the same success response for an unknown account without sending any em
   await expect(authService.requestPasswordReset('unknown@example.test')).resolves.toEqual(registered);
   expect(mockResetEmail).not.toHaveBeenCalled();
   expect(writes).toHaveLength(0);
+});
+
+it('creates a recovery link on the free Vercel frontend when using SMTP without Resend', async () => {
+  setup();
+  config.emailProvider = 'smtp';
+  config.resendApiKey = '';
+  config.smtp = { host: 'smtp.gmail.com', port: 465, user: 'sender@gmail.com', pass: 'unit-test-app-password' };
+  config.emailFrom = 'EraEdu <sender@gmail.com>';
+  config.frontendAppUrl = 'https://era-edu-mtoc.vercel.app';
+  await authService.requestPasswordReset(account.email);
+  const link = new URL(mockResetEmail.mock.calls[0][2]);
+  expect(link.origin + link.pathname).toBe('https://era-edu-mtoc.vercel.app/reset-password');
+  expect(link.searchParams.get('token')).toMatch(/^[a-f0-9]{64}$/);
 });
 
 it('reports missing email setup before account lookup or token creation', async () => {

@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import { config } from '../config/environment';
 import { assertPasswordResetEmailConfigured } from './emailConfiguration';
 import { PASSWORD_RESET_EMAIL_UNAVAILABLE } from './emailDeliveryError';
@@ -17,6 +18,23 @@ function getResend(): Resend {
     resendClient = new Resend(config.resendApiKey);
   }
   return resendClient;
+}
+
+function getSmtp() {
+  return nodemailer.createTransport({
+    host: config.smtp.host,
+    port: config.smtp.port,
+    secure: config.smtp.port === 465,
+    requireTLS: config.smtp.port !== 465,
+    auth: { user: config.smtp.user, pass: config.smtp.pass },
+    connectionTimeout: 5000,
+    greetingTimeout: 5000,
+    socketTimeout: 10000,
+    disableFileAccess: true,
+    disableUrlAccess: true,
+    logger: false,
+    debug: false,
+  });
 }
 
 export const emailService = {
@@ -81,7 +99,7 @@ export const emailService = {
     assertPasswordResetEmailConfigured();
 
     try {
-      const { data, error } = await getResend().emails.send({
+      const message = {
         from: config.emailFrom,
         to: [email],
         subject: 'Reset your EraEdu password',
@@ -104,7 +122,20 @@ export const emailService = {
             <p>If you did not request this, you can safely ignore this email.</p>
           </div>
         `,
-      });
+      };
+
+      if (config.emailProvider === 'smtp') {
+        const result = await getSmtp().sendMail(message);
+        const recipientAccepted = result.accepted?.some(address =>
+          address.toLowerCase() === email.toLowerCase());
+        // A locally generated message ID alone does not confirm SMTP acceptance.
+        if (!result.messageId || !recipientAccepted) {
+          throw new Error('SMTP server did not accept the reset message.');
+        }
+        return { id: result.messageId };
+      }
+
+      const { data, error } = await getResend().emails.send(message);
 
       // The Resend SDK reports many delivery failures in its `error` result
       // instead of rejecting the promise. Do not claim the reset link was
