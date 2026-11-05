@@ -4,6 +4,7 @@ import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { config } from '../config/environment';
 import { emailService } from './emailService';
+import { assertPasswordResetEmailConfigured } from './emailConfiguration';
 import { accountStateError, assertActiveAccount, isAccountSchemaError } from './accountState';
 
 const createHttpError = (message: string, statusCode = 400) =>
@@ -278,6 +279,9 @@ export const authService = {
   async requestPasswordReset(email: string) {
     const normalizedEmail = email?.trim().toLowerCase();
     if (!normalizedEmail) throw createHttpError('Email is required');
+    // Check this for every address, before lookup/token creation. An unavailable
+    // mail service should never produce a misleading "link sent" response.
+    assertPasswordResetEmailConfigured();
 
     const { data: users, error } = await supabase
       .from('users')
@@ -306,7 +310,21 @@ export const authService = {
     if (updateError) throw new Error('Database error');
 
     const resetUrl = `${config.frontendAppUrl}/reset-password?token=${encodeURIComponent(rawToken)}`;
-    await emailService.sendPasswordResetEmail(user.email, user.name, resetUrl);
+    try {
+      await emailService.sendPasswordResetEmail(user.email, user.name, resetUrl);
+    } catch (deliveryError) {
+      // Remove only this undelivered token; a concurrent successful request may
+      // already have stored a different token for the same account.
+      try {
+        const { error: cleanupError } = await supabase.from('users')
+          .update({ reset_password_token: null, reset_password_expires_at: null })
+          .eq('id', user.id).eq('reset_password_token', hashedToken);
+        if (cleanupError) console.error('Could not clear an undelivered password reset token.');
+      } catch {
+        console.error('Could not clear an undelivered password reset token.');
+      }
+      throw deliveryError;
+    }
 
     return { message: PASSWORD_RESET_SUCCESS_MESSAGE };
   },

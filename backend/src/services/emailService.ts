@@ -1,5 +1,11 @@
 import { Resend } from 'resend';
 import { config } from '../config/environment';
+import { assertPasswordResetEmailConfigured } from './emailConfiguration';
+import { PASSWORD_RESET_EMAIL_UNAVAILABLE } from './emailDeliveryError';
+
+const escapeHtml = (value: string) => value.replace(/[&<>"']/g, character => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[character]!));
 
 let resendClient: Resend | null = null;
 
@@ -72,27 +78,28 @@ export const emailService = {
   },
 
   async sendPasswordResetEmail(email: string, name: string, resetUrl: string) {
-    if (!config.resendApiKey) {
-      throw Object.assign(new Error('Password reset email service is not configured.'), { statusCode: 503 });
-    }
+    assertPasswordResetEmailConfigured();
 
     try {
       const { data, error } = await getResend().emails.send({
         from: config.emailFrom,
         to: [email],
         subject: 'Reset your EraEdu password',
+        text: `Hello ${name},\n\nWe received a request to reset your EraEdu password.\n\nOpen this link to choose a new password:\n${resetUrl}\n\nThis link expires in 1 hour. If you did not request it, ignore this email.`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2>Hello ${name},</h2>
+            <h2>Hello ${escapeHtml(name)},</h2>
             <p>We received a request to reset your EraEdu password.</p>
             <p>
               <a
-                href="${resetUrl}"
+                href="${escapeHtml(resetUrl)}"
                 style="display: inline-block; padding: 12px 20px; background: #2563eb; color: #ffffff; text-decoration: none; border-radius: 8px;"
               >
                 Reset Password
               </a>
             </p>
+            <p>If the button does not open, copy this link into your browser:</p>
+            <p style="word-break: break-all;">${escapeHtml(resetUrl)}</p>
             <p>This link will expire in 1 hour.</p>
             <p>If you did not request this, you can safely ignore this email.</p>
           </div>
@@ -102,15 +109,19 @@ export const emailService = {
       // The Resend SDK reports many delivery failures in its `error` result
       // instead of rejecting the promise. Do not claim the reset link was
       // sent when the provider rejected it.
-      if (error) {
-        console.error('Password reset email rejected by Resend:', error);
-        throw Object.assign(new Error('Unable to send the password reset email. Please try again later.'), { statusCode: 503 });
+      if (error || !data?.id) {
+        console.error('Password reset email was not accepted by the provider:', {
+          name: error?.name || 'missing_message_id',
+          statusCode: error?.statusCode,
+        });
+        throw new Error('Email provider did not accept the reset message.');
       }
 
       return data;
     } catch (error) {
-      console.error('Error sending password reset email:', error);
-      throw Object.assign(new Error('Failed to send password reset email.'), { statusCode: 503 });
+      // Do not log the message, recipient or reset URL, which contains a secret.
+      console.error('Password reset email delivery failed:', error instanceof Error ? error.name : 'Error');
+      throw Object.assign(new Error(PASSWORD_RESET_EMAIL_UNAVAILABLE), { statusCode: 503 });
     }
   },
   async sendStudentLoginOtp(email: string, name: string, code: string) {

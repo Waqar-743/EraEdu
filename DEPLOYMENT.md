@@ -100,6 +100,13 @@ returns to `/profile?payment=cancelled`, which is informational only; plan
 activation occurs solely after the backend verifies `TRACKER_ENDED` with
 Safepay (including via the signed webhook).
 
-Optional integrations: `GEMINI_API_KEY`, `RESEND_API_KEY`.
+Optional AI integration: `GEMINI_API_KEY`.
+
+Password recovery requires `RESEND_API_KEY` and an `EMAIL_FROM` address on a
+domain verified in Resend. The `onboarding@resend.dev` sender is restricted to
+testing with the Resend account owner's address. Set `FRONTEND_URL`
+to the full frontend app URL, including `/EraEdu` when using GitHub Pages, so
+recovery links open the correct application. Redeploy the backend after changing
+these settings. See [password recovery setup](PASSWORD-RECOVERY.md).
 
 After deployment, verify `/health`, login, quiz launch, and the admin control center. See `PRE_LAUNCH_CHECKLIST.md` for the complete sign-off process.
